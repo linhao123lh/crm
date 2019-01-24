@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tfs.crm.settings.qx.user.dao.UserDao">
+	<!-- 根据用户名和密码获取用户信息 -->
+	<select id="selectUserByLoginActAndLoginPwd" parameterType="string" resultType="User">
+		select * from tbl_user where loginAct=#{loginAct} and loginPwd=#{loginPwd}
+	</select>
+	
+	<!-- 修改密码 -->
+	<update id="updatePwdById" parameterType="string">
+		UPDATE tbl_user SET loginPwd = #{newPwd} WHERE id=#{id};
+	</update>
+
+	<!-- 查询所有的用户 -->
+	<select id="selectAllUsers" resultType="User">
+		select * from tbl_user where lockStatus = "1" order by id;
+	</select>
+</mapper>
