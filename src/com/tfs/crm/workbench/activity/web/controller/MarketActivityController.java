@@ -30,4 +30,6 @@ public class MarketActivityController {
         return userList;
     }
 
+    //明天接着写监听器===================
+
 }
