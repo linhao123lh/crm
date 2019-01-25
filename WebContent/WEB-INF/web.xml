@@ -67,7 +67,7 @@
   		<param-value>true</param-value>
   	</init-param>
   	<init-param>
-  		<param-name>foreceResponseEncoding</param-name>
+  		<param-name>forceResponseEncoding</param-name>
   		<param-value>true</param-value>
   	</init-param>
   </filter>

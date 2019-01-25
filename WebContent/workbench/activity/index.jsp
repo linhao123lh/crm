@@ -87,6 +87,77 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				}
 			});
 		});
+
+		//给"保存"按钮添加点击事件
+        $("#saveCreateActivityBtn").click(function () {
+            //收集参数
+            var owner = $("#create-owner").val();
+            var type = $("#create-type").val();
+            var name = $("#create-name").val();
+            var state = $("#create-state").val();
+            var startDate = $("#create-startDate").val();
+            var endDate = $("#create-endDate").val();
+            var actualCost = $.trim($("#create-actualCost").val());
+            var budgetCost = $.trim($("#create-budgetCost").val());
+            var description = $.trim($("#create-description").val());
+            //表单验证
+            //姓名不能为空
+            if (name == null || name.length == 0){
+                alert("姓名不能为空！");
+                return;
+            }
+            //开始日期不能大于结束日期
+            if (startDate!=null && startDate.length>0 && endDate!=null && endDate.length>0){
+                if (endDate < startDate){
+                    alert("结束时间不能小于开始时间！");
+                    return;
+                }
+            }
+            //实际成本和预算成本必须为非负整数
+            var regExp=/^([1-9][0-9]*|0)$/;
+            if (actualCost != null && actualCost.length >0 && !regExp.test(actualCost)) {
+                alert("实际成本必须为非负整数！");
+                return;
+            }
+            if (budgetCost != null && budgetCost.length >0 && !regExp.test(budgetCost)) {
+                alert("预算成本必须为非负整数！");
+                return;
+            }
+            //发起ajax请求
+            $.ajax({
+                url:"workbench/activity/saveCreateMarketActivity.do",
+                data:{
+                    owner:owner,
+                    type:type,
+                    name:name,
+                    state:state,
+                    startDate:startDate,
+                    endDate:endDate,
+                    actualCost:actualCost,
+                    budgetCost:budgetCost,
+                    description:description
+                },
+
+                dataType:"json",
+                success:function (data) {
+					if (data.success){
+						//关闭模态窗口
+						$("#createActivityModal").modal("hide");
+						//市场活动列表
+					} else {
+						alert("创建市场活动失败！")
+						$("#createActivityModal").modal("show");
+					}
+                },
+                error:function () {
+					alert("请求失败！")
+                }
+            });
+
+
+
+
+        });
 		
 	});
 	
@@ -123,7 +194,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 								  <option></option>
 								  <C:if test="${not empty marketActivityTypeList}">
 									  <c:forEach var="tl" items="${marketActivityTypeList}">
-										  <option id="${tl.id}">${tl.text}</option>
+										  <option value="${tl.id}">${tl.text}</option>
 									  </c:forEach>
 								  </C:if>
 								</select>
@@ -141,7 +212,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 								  <option></option>
 								  <c:if test="${not empty marketActivityStatusList}">
 									  <c:forEach var="sl" items="${marketActivityStatusList}">
-										  <option id="${sl.id}">${sl.text}</option>
+										  <option value="${sl.id}">${sl.text}</option>
 									  </c:forEach>
 								  </c:if>
 								</select>
@@ -182,7 +253,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button id="saveCreateActivityBtn" type="button" class="btn btn-primary">保存</button>
 				</div>
 			</div>
 		</div>

@@ -46,7 +46,8 @@
         	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
         	<property name="basePackage"
 					  value="com.tfs.crm.settings.qx.user.dao,
-					  com.tfs.crm.settings.dictionary.value.dao"></property>
+					  com.tfs.crm.settings.dictionary.value.dao
+					  com.tfs.crm.workbench.activity.dao"></property>
 
         </bean>
 </beans>

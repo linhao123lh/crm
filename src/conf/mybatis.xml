@@ -7,11 +7,13 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<typeAliases>
 		<package name="com.tfs.crm.settings.qx.user.domain"/>
 		<package name="com.tfs.crm.settings.dictionary.value.domain"/>
+		<package name="com.tfs.crm.workbench.activity.domain"/>
 	</typeAliases>
 	
 	<!-- sql映射文件 -->
 	<mappers>
 		<package name="com.tfs.crm.settings.qx.user.dao"/>
 		<package name="com.tfs.crm.settings.dictionary.value.dao"/>
+		<package name="com.tfs.crm.workbench.activity.dao"/>
 	</mappers>
 </configuration>

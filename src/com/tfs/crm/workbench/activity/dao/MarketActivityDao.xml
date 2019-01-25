@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tfs.crm.workbench.activity.dao.MarketActivityDao">
+
+	<!-- 保存创建的市场活动 -->
+	<insert id="saveCreateActivityByActivity" parameterType="MarketActivity">
+		insert into tbl_marketing_activities
+		(id, owner, type, name, state, startDate, endDate, budgetCost, actualCost, description, createBy, createTime)
+		values
+		(#{id},#{owner},#{type},#{name},#{state},#{startDate},#{endDate},#{budgetCost},#{actualCost},#{description},#{createBy},#{createTime})
+	</insert>
+
+</mapper>
