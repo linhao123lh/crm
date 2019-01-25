@@ -23,6 +23,10 @@
 	<listener>
 		<listener-class>com.tfs.crm.commons.web.listener.QueryActivityStateContextListener</listener-class>
 	</listener>
+	<!-- 注册市场活动类型监听器-->
+	<listener>
+		<listener-class>com.tfs.crm.commons.web.listener.QueryActivityTypeContextListener</listener-class>
+	</listener>
 
   <!-- 登录过滤器 -->
   <filter>
