@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tfs.crm.settings.dictionary.value.dao.DictionaryValueDao">
+
+	<!-- 根据字典类型code获取字典值 -->
+	<select id="selectDictonaryValueByTypeCode" resultType="DictionaryValue" parameterType="string">
+		select * from tbl_dictionary_value where typeCode=#{typeCode} order by orderNo;
+	</select>
+
+</mapper>

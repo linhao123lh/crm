@@ -41,7 +41,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 	        pickerPosition: "bottom-left"
 		});
 		*/
-		
+
 		//定制字段
 		$("#definedColumns > li").click(function(e) {
 			//防止下拉菜单消失
@@ -134,10 +134,11 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-state">
 								  <option></option>
-								  <option>计划中</option>
-								  <option>激活的</option>
-								  <option>休眠</option>
-								  <option>完成</option>
+								  <c:if test="${not empty marketActivityStatusList}">
+									  <c:forEach var="sl" items="${marketActivityStatusList}">
+										  <option id="${sl.id}">${sl.text}</option>
+									  </c:forEach>
+								  </c:if>
 								</select>
 							</div>
 						</div>

@@ -6,10 +6,12 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<!-- 起别名 -->
 	<typeAliases>
 		<package name="com.tfs.crm.settings.qx.user.domain"/>
+		<package name="com.tfs.crm.settings.dictionary.value.domain"/>
 	</typeAliases>
 	
 	<!-- sql映射文件 -->
 	<mappers>
 		<package name="com.tfs.crm.settings.qx.user.dao"/>
+		<package name="com.tfs.crm.settings.dictionary.value.dao"/>
 	</mappers>
 </configuration>
