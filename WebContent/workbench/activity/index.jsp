@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
 %>
@@ -41,6 +42,17 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 	        pickerPosition: "bottom-left"
 		});
 		*/
+
+		//添加日历
+		$('.mydate').datetimepicker({
+			language: 'zh-CN',//显示中文
+			format: 'yyyy-mm-dd',//显示格式
+			minView: 3,//设置只显示到月份.  0,1,2,3,4分别代表分,时,天,月,年
+			initialDate: new Date(),//初始化当前日期
+			autoclose: true,//选中自动关闭
+			todayBtn: true,//显示今日按钮
+			clearBtn:true //显示清空按钮
+		});
 
 		//定制字段
 		$("#definedColumns > li").click(function(e) {
@@ -97,7 +109,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<form id="createActivityForm" class="form-horizontal" role="form">
 					
 						<div class="form-group">
-							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
+							<label class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-owner">
 								  <%--<option>zhangsan</option>
@@ -105,32 +117,25 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 								  <option>wangwu</option>--%>
 								</select>
 							</div>
-							<label for="create-marketActivityType" class="col-sm-2 control-label">类型</label>
+							<label class="col-sm-2 control-label">类型</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-type">
 								  <option></option>
-								  <option>会议</option>
-								  <option>web研讨</option>
-								  <option>交易会</option>
-								  <option>公开媒介</option>
-								  <option>合作伙伴</option>
-								  <option>推举程序</option>
-								  <option>广告</option>
-								  <option>条幅广告</option>
-								  <option>直接邮件</option>
-								  <option>邮箱</option>
-								  <option>电子市场</option>
-								  <option>其它</option>
+								  <C:if test="${not empty marketActivityTypeList}">
+									  <c:forEach var="tl" items="${marketActivityTypeList}">
+										  <option id="${tl.id}">${tl.text}</option>
+									  </c:forEach>
+								  </C:if>
 								</select>
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
+							<label class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<input type="text" class="form-control" id="create-name">
 							</div>
-							<label for="create-marketActivityState" class="col-sm-2 control-label">状态</label>
+							<label class="col-sm-2 control-label">状态</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-state">
 								  <option></option>
@@ -144,13 +149,13 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</div>
 						
 						<div class="form-group">
-							<label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
+							<label class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-startDate">
+								<input type="text" class="form-control mydate" id="create-startDate">
 							</div>
-							<label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
+							<label class="col-sm-2 control-label mydate">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-endDate">
+								<input type="text" class="form-control mydate" id="create-endDate">
 							</div>
 						</div>
 						
@@ -166,7 +171,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</div>
 						
 						<div class="form-group">
-							<label for="create-describe" class="col-sm-2 control-label">描述</label>
+							<label class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
 								<textarea class="form-control" rows="3" id="create-description"></textarea>
 							</div>
@@ -227,11 +232,11 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</div>
 						
 						<div class="form-group">
-							<label for="edit-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
+							<label class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<input type="text" class="form-control" id="edit-name" value="发传单">
 							</div>
-							<label for="edit-marketActivityState" class="col-sm-2 control-label">状态</label>
+							<label class="col-sm-2 control-label">状态</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-state">
 								  <option></option>
@@ -244,13 +249,13 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</div>
 						
 						<div class="form-group">
-							<label for="edit-startTime" class="col-sm-2 control-label">开始日期</label>
+							<label class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="edit-startDate" value="2020-10-10">
+								<input type="text" class="form-control mydate" id="edit-startDate" value="2020-10-10">
 							</div>
-							<label for="edit-endTime" class="col-sm-2 control-label">结束日期</label>
+							<label class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="edit-endDate" value="2020-10-20">
+								<input type="text" class="form-control mydate" id="edit-endDate" value="2020-10-20">
 							</div>
 						</div>
 						
@@ -266,7 +271,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</div>
 						
 						<div class="form-group">
-							<label for="edit-describe" class="col-sm-2 control-label">描述</label>
+							<label class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
 								<textarea class="form-control" rows="3" id="edit-description">市场活动Marketing，是指品牌主办或参与的展览会议与公关市场活动，包括自行主办的各类研讨会、客户交流会、演示会、新产品发布会、体验会、答谢会、年会和出席参加并布展或演讲的展览会、研讨会、行业交流会、颁奖典礼等</textarea>
 							</div>
@@ -389,14 +394,14 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">开始日期</div>
-					  <input class="form-control" type="text" id="query-startDate" />
+					  <input class="form-control mydate" type="text" id="query-startDate" />
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">结束日期</div>
-					  <input class="form-control" type="text" id="query-endDate">
+					  <input class="form-control mydate" type="text" id="query-endDate">
 				    </div>
 				  </div>
 				  
