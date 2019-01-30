@@ -9,19 +9,21 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 <html>
 <head>
 <meta charset="UTF-8">
-
-<link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-<link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
-
-<script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
-<script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
-
+<%-- jQuery插件引入--%>
+    <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
+<%-- 日期插件引入 --%>
+    <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+<%-- 分页插件引入--%>
+    <link href="jquery/bs_pagination/css/jquery.bs_pagination.min.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="jquery/bs_pagination/js/jquery.bs_pagination.min.js"></script>
+    <script type="text/javascript" src="jquery/bs_pagination/js/localization/en.js"></script>
 <script type="text/javascript">
-
+//D:\devsoft\crm\WebContent\jquery\bs_pagination\js\jquery.bs_pagination.min.js
 	$(function(){
-		
 		//以下日历插件在FF中存在兼容问题，在IE浏览器中可以正常使用。
 		/*
 		$("#startTime").datetimepicker({
@@ -137,13 +139,14 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                     budgetCost:budgetCost,
                     description:description
                 },
-
+                type:"post",
                 dataType:"json",
                 success:function (data) {
 					if (data.success){
 						//关闭模态窗口
 						$("#createActivityModal").modal("hide");
-						//市场活动列表
+						//市场活动列表第一页
+						display(1,$("#pageNoDiv").bs_pagination('getOption','rowsPerPage'));
 					} else {
 						alert("创建市场活动失败！")
 						$("#createActivityModal").modal("show");
@@ -153,11 +156,101 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					alert("请求失败！")
                 }
             });
-
-
-
-
         });
+
+        //页面加载完显示所有数据第一页
+        display(1,10);
+
+        //给"查询"按钮添加点击事件
+        $("#queryActivityBtn").click(function () {
+            display(1,$("#pageNoDiv").bs_pagination('getOption','rowsPerPage'));
+        });
+
+        function display(pageNo,pageSize) {
+            //收集参数
+            var name = $.trim($("#query-name").val());
+            var owner = $.trim($("#query-owner").val());
+            var type = $("#query-type").val();
+            var state = $("#query-state").val();
+            var startDate = $("#query-startDate").val();
+            var endDate = $("#query-endDate").val();
+            //发起ajax请求
+            $.ajax({
+                url:"workbench/activity/queryMarketActivityForPageByCondition.do",
+                type:"post",
+                dataType:"json",
+                data:{
+                    name:name,
+                    owner:owner,
+                    type:type,
+                    state:state,
+                    startDate:startDate,
+                    endDate:endDate,
+                    pageNo:pageNo,
+                    pageSize:pageSize
+                },
+                success:function (data) {
+                    var htmlStr ="";
+                    $.each(data.dataList,function (index,obj) {
+                        htmlStr +="<tr>";
+                        htmlStr += "<td><input value='"+obj.id+"' type='checkbox' /></td>";
+                        htmlStr += "<td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.name+"</a></td>";
+                        htmlStr += "<td>"+(obj.typey==null?'':obj.typey)+"</td>";
+                        htmlStr += "<td>"+(obj.statey==null?'':obj.statey)+"</td>";
+                        htmlStr += "<td>"+obj.startDate+"</td>";
+                        htmlStr += "<td>"+obj.endDate+"</td>";
+                        htmlStr += "<td>"+obj.owner+"</td>";
+                        htmlStr += "<td>"+(obj.budgetCosty==null?'':obj.budgetCosty)+"</td>";
+                        htmlStr += "<td>"+(obj.actualCosty==null?'':obj.actualCosty)+"</td>";
+                        htmlStr += "<td>"+obj.createBy+"</td>";
+                        htmlStr += "<td>"+obj.createTime+"</td>";
+                        htmlStr += "<td>"+(obj.editBy==null?'':obj.editBy)+"</td>";
+                        htmlStr += "<td>"+(obj.editTime==null?'':obj.editTime)+"</td>";
+                        htmlStr += "<td>"+obj.description+"</td>";
+                        htmlStr +="</tr>";
+                    });
+                    $("#showActivityTBody").html(htmlStr);
+                    //隔行变色
+                    $("#showActivityTBody tr:even").addClass("active");
+
+
+                    //总页数
+                    var totalPages = 1;
+                    if (data.count % pageSize == 0){
+                        totalPages = Math.floor(data.count / pageSize);
+                    }else {
+                        totalPages = Math.floor(data.count / pageSize) + 1;
+                    }
+                    //alert("totalPages="+totalPages);
+                    //分页
+                    $("#pageNoDiv").bs_pagination({
+                        currentPage:pageNo,//当前页号
+                        rowsPerPage:pageSize,//每页显示条数
+                        totalRows:data.count,//总条数
+                        totalPages: totalPages, //总页数. 必须根据总条数和每页显示条数手动计算总页数.
+
+                        visiblePageLinks:5,//最多可以显示的卡片数
+
+                        showGoToPage:true,//是否显示跳转到第几页
+                        showRowsPerPage:true,//是否显示每页显示条数
+                        showRowsInfo:true,//是否显示记录信息
+                        /**
+                         用来监听页号切换的事件.
+                         event就代表这个事件;pageObj就代表翻页信息.
+                         */
+                        onChangePage: function(event,pageObj) { // returns page_num and rows_per_page after a link has clicked
+                           display(pageObj.currentPage,pageObj.rowsPerPage);
+                        }
+                    });
+                },
+                error:function () {
+                    alert("请求失败！");
+                }
+            });
+        };
+
+
+
 		
 	});
 	
@@ -173,7 +266,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">×</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">创建市场活动</h4>
+					<h4 class="modal-title" <%--id="myModalLabel"--%>>创建市场活动</h4>
 				</div>
 				<div class="modal-body">
 				
@@ -267,14 +360,14 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">×</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">修改市场活动</h4>
+					<h4 class="modal-title" <%--id="myModalLabel"--%>>修改市场活动</h4>
 				</div>
 				<div class="modal-body">
 				
 					<form class="form-horizontal" role="form">
 					
 						<div class="form-group">
-							<label for="edit-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
+							<label class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-owner">
 								  <option>zhangsan</option>
@@ -282,7 +375,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 								  <option>wangwu</option>
 								</select>
 							</div>
-							<label for="edit-marketActivityType" class="col-sm-2 control-label">类型</label>
+							<label class="col-sm-2 control-label">类型</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-type">
 								  <option></option>
@@ -431,18 +524,11 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				      <div class="input-group-addon">类型</div>
 					  <select id="query-type" class="form-control">
 					  	  <option></option>
-					      <option>会议</option>
-						  <option>web研讨</option>
-						  <option>交易会</option>
-						  <option>公开媒介</option>
-						  <option>合作伙伴</option>
-						  <option>推举程序</option>
-						  <option>广告</option>
-						  <option>条幅广告</option>
-						  <option>直接邮件</option>
-						  <option>邮箱</option>
-						  <option>电子市场</option>
-						  <option>其它</option>
+                          <c:if test="${not empty marketActivityTypeList}">
+                              <c:forEach var="tList" items="${marketActivityTypeList}">
+                                  <option value="${tList.id}">${tList.text}</option>
+                              </c:forEach>
+                          </c:if>
 					  </select>
 				    </div>
 				  </div>
@@ -454,10 +540,11 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				      <div class="input-group-addon">状态</div>
 					  <select id="query-state" class="form-control">
 					  	<option></option>
-					    <option>计划中</option>
-					    <option>激活的</option>
-					    <option>休眠</option>
-					    <option>完成</option>
+					    <c:if test="${not empty marketActivityStatusList}">
+                            <c:forEach var="sList" items="${marketActivityStatusList}">
+                                <option value="${sList.id}">${sList.text}</option>
+                            </c:forEach>
+                        </c:if>
 					  </select>
 				    </div>
 				  </div>
@@ -476,7 +563,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				    </div>
 				  </div>
 				  
-				  <button type="submit" class="btn btn-default">查询</button>
+				  <button id="queryActivityBtn" type="button" class="btn btn-default">查询</button>
 				  
 				</form>
 			</div>
@@ -543,8 +630,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<td width="10%">描述</td>
 						</tr>
 					</thead>
-					<tbody>
-						<tr class="active">
+					<tbody id="showActivityTBody">
+						<%--<tr class="active">
 							<td><input type="checkbox" /></td>
 							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">发传单</a></td>
 							<td>广告</td>
@@ -575,12 +662,13 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<td>zhangsan</td>
 							<td>2017-01-19 10:10:10</td>
 							<td>发传单....</td>
-						</tr>
+						</tr>--%>
 					</tbody>
 				</table>
+                <div id="pageNoDiv"></div>
 			</div>
 			
-			<div style="height: 50px; position: relative;top: 30px;">
+			<%--<div style="height: 50px; position: relative;top: 30px;">
 				<div>
 					<button type="button" class="btn btn-default" style="cursor: default;">共<b>50</b>条记录</button>
 				</div>
@@ -613,7 +701,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</ul>
 					</nav>
 				</div>
-			</div>
+			</div>--%>
 			
 		</div>
 		
