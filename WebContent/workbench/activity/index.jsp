@@ -103,9 +103,9 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
             var budgetCost = $.trim($("#create-budgetCost").val());
             var description = $.trim($("#create-description").val());
             //表单验证
-            //姓名不能为空
+            //活动名称不能为空
             if (name == null || name.length == 0){
-                alert("姓名不能为空！");
+                alert("活动名称不能为空！");
                 return;
             }
             //开始日期不能大于结束日期
@@ -185,7 +185,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				$.ajax({
 					url:"workbench/activity/deleteMarketActivities.do",
 					data:ids,
-					type:"get",
+					type:"post",
 					dataType:"json",
 					success:function (data) {
 						if (data.success){
@@ -201,6 +201,126 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				});
 			}
 		});
+
+		//给"修改"按钮添加点击事件
+		$("#editActivityBtn").click(function () {
+			//收集参数
+			var ckdId = $("#showActivityTBody input[type='checkbox']:checked");
+			if (ckdId.length == 0){
+				alert("请选择要修改的市场活动！");
+				return;
+			}
+			if (ckdId.length > 1){
+				alert("只能修改一条市场活动！");
+				return;
+			}
+			var id = ckdId.val();
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/activity/editMarketActivityById.do",
+				data:{
+					id:id
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					var htmlStr = "";
+					$.each(data.userList,function (index,obj) {
+						if (obj.id == data.activity.owner){
+							htmlStr += "<option value='"+obj.id+"' selected>"+obj.name+"</option>";
+						}else {
+							htmlStr += "<option value='"+obj.id+"'>"+obj.name+"</option>";
+						}
+					});
+					$("#edit-owner").html(htmlStr);
+					$("#edit-id").val(data.activity.id);
+					$("#edit-type").val(data.activity.type);
+					$("#edit-name").val(data.activity.name);
+					$("#edit-state").val(data.activity.state);
+					$("#edit-startDate").val(data.activity.startDate);
+					$("#edit-endDate").val(data.activity.endDate);
+					$("#edit-actualCost").val(data.activity.actualCost);
+					$("#edit-description").val(data.activity.description);
+					//显示模态窗口
+					$("#editActivityModal").modal("show");
+				},
+				error:function () {
+					alert("请求失败！")
+				}
+			});
+		});
+
+		//给"更新"按钮添加点击事件
+		$("#saveEditActivityBtn").click(function () {
+			//收集参数
+			var owner = $("#edit-owner").val();
+			var type = $("#edit-type").val();
+			var name = $.trim($("#edit-name").val());
+			var state = $("#edit-state").val();
+			var startDate = $("#edit-startDate").val();
+			var endDate = $("#edit-endDate").val();
+			var actualCost = $.trim($("#edit-actualCost").val());
+			var budgetCost = $.trim($("#edit-budgetCost").val());
+			var description = $.trim($("#edit-description").val());
+			var id = $("#edit-id").val();
+			//表单验证
+			//活动名称不能为空
+			if (name == null || name.length == 0){
+				alert("活动名称不能为空！");
+				return;
+			}
+			//开始日期不能大于结束日期
+			if (startDate!=null && startDate.length>0 && endDate!=null && endDate.length>0){
+				if (endDate < startDate){
+					alert("结束时间不能小于开始时间！");
+					return;
+				}
+			}
+			//实际成本和预算成本必须为非负整数
+			var regExp=/^([1-9][0-9]*|0)$/;
+			if (actualCost != null && actualCost.length >0 && !regExp.test(actualCost)) {
+				alert("实际成本必须为非负整数！");
+				return;
+			}
+			if (budgetCost != null && budgetCost.length >0 && !regExp.test(budgetCost)) {
+				alert("预算成本必须为非负整数！");
+				return;
+			}
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/activity/saveEditMarketActivity.do",
+				data:{
+					id:id,
+					owner:owner,
+					type:type,
+					name:name,
+					state:state,
+					startDate:startDate,
+					endDate:endDate,
+					actualCost:actualCost,
+					budgetCost:budgetCost,
+					description:description
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//关闭模态窗口
+						$("#editActivityModal").modal("hide");
+						//显示市场活动类别第一页
+						display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
+					} else {
+						alert("修改市场活动失败！");
+						$("#editActivityModal").modal("show");
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+
+		});
+
 
 
         //页面展示
@@ -233,13 +353,13 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                         htmlStr +="<tr>";
                         htmlStr += "<td><input value='"+obj.id+"' type='checkbox' /></td>";
                         htmlStr += "<td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.name+"</a></td>";
-                        htmlStr += "<td>"+(obj.typey==null?'':obj.typey)+"</td>";
-                        htmlStr += "<td>"+(obj.statey==null?'':obj.statey)+"</td>";
+                        htmlStr += "<td>"+(obj.type==null?'':obj.type)+"</td>";
+                        htmlStr += "<td>"+(obj.state==null?'':obj.state)+"</td>";
                         htmlStr += "<td>"+obj.startDate+"</td>";
                         htmlStr += "<td>"+obj.endDate+"</td>";
                         htmlStr += "<td>"+obj.owner+"</td>";
-                        htmlStr += "<td>"+(obj.budgetCosty==null?'':obj.budgetCosty)+"</td>";
-                        htmlStr += "<td>"+(obj.actualCosty==null?'':obj.actualCosty)+"</td>";
+                        htmlStr += "<td>"+(obj.budgetCost==null?'':obj.budgetCost)+"</td>";
+                        htmlStr += "<td>"+(obj.actualCost==null?'':obj.actualCost)+"</td>";
                         htmlStr += "<td>"+obj.createBy+"</td>";
                         htmlStr += "<td>"+obj.createTime+"</td>";
                         htmlStr += "<td>"+(obj.editBy==null?'':obj.editBy)+"</td>";
@@ -287,9 +407,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
             });
         };
 
-
-
-		
 	});
 	
 </script>
@@ -403,32 +520,25 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<div class="modal-body">
 				
 					<form class="form-horizontal" role="form">
-					
+						<input type="hidden" id="edit-id">
 						<div class="form-group">
 							<label class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-owner">
-								  <option>zhangsan</option>
+								  <%--<option>zhangsan</option>
 								  <option>lisi</option>
-								  <option>wangwu</option>
+								  <option>wangwu</option>--%>
 								</select>
 							</div>
 							<label class="col-sm-2 control-label">类型</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-type">
 								  <option></option>
-								  <option>会议</option>
-								  <option>web研讨</option>
-								  <option>交易会</option>
-								  <option>公开媒介</option>
-								  <option>合作伙伴</option>
-								  <option>推举程序</option>
-								  <option selected>广告</option>
-								  <option>条幅广告</option>
-								  <option>直接邮件</option>
-								  <option>邮箱</option>
-								  <option>电子市场</option>
-								  <option>其它</option>
+								  <c:if test="${not empty marketActivityTypeList}">
+									  <c:forEach var="tl" items="${marketActivityTypeList}">
+										  <option value="${tl.id}">${tl.text}</option>
+									  </c:forEach>
+								  </c:if>
 								</select>
 							</div>
 						</div>
@@ -442,10 +552,11 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-state">
 								  <option></option>
-								  <option>计划中</option>
-								  <option selected>激活的</option>
-								  <option>休眠</option>
-								  <option>完成</option>
+								  <c:if test="${not empty marketActivityStatusList}">
+									  <c:forEach var="sl" items="${marketActivityStatusList}">
+										  <option value="${sl.id}">${sl.text}</option>
+									  </c:forEach>
+								  </c:if>
 								</select>
 							</div>
 						</div>
@@ -484,7 +595,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+					<button id="saveEditActivityBtn" type="button" class="btn btn-primary">更新</button>
 				</div>
 			</div>
 		</div>
@@ -608,7 +719,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 5px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button id="createActivityBtn" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button id="editActivityBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button id="deleteActivityBtn" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				<div class="btn-group" style="position: relative; top: 18%;">

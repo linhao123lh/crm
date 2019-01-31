@@ -13,4 +13,8 @@ public interface MarketActivityDao {
     Long queryCountForPageByCondition(Map<String, Object> paramMap);
 
     int deleteActivitiesByIds(String[] ids);
+
+    MarketActivity queryMarketActivityById(String id);
+
+    int saveEditMarketActivity(MarketActivity activity);
 }

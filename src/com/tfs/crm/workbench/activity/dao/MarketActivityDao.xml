@@ -83,4 +83,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
 	</delete>
+
+    <!-- 根据id获取市场活动信息-->
+    <select id="queryMarketActivityById" parameterType="string" resultType="MarketActivity">
+        select * from tbl_marketing_activities where id=#{id};
+    </select>
+
+	<!-- 更新市场活动 -->
+	<update id="saveEditMarketActivity" parameterType="MarketActivity">
+		update tbl_marketing_activities set owner=#{owner},type=#{type},name=#{name},state=#{state},startDate=#{startDate},endDate=#{endDate},
+			actualCost=#{actualCost},budgetCost=#{budgetCost},description=#{description},editBy=#{editBy},editTime=#{editTime}
+		where id=#{id}
+	</update>
 </mapper>

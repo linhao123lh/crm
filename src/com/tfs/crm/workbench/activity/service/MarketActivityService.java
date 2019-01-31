@@ -12,4 +12,8 @@ public interface MarketActivityService {
     PaginationVO<MarketActivity> queryMarketActivityForPageByCondition(Map<String, Object> paramMap);
 
     int deleteMarketActivitiesByIds(String[] ids);
+
+    MarketActivity queryMarketActivityById(String id);
+
+    int saveEditMarketActivity(MarketActivity activity);
 }

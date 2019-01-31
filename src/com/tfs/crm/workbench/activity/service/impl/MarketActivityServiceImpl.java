@@ -53,4 +53,19 @@ public class MarketActivityServiceImpl implements MarketActivityService {
     public int deleteMarketActivitiesByIds(String[] ids) {
         return marketActivityDao.deleteActivitiesByIds(ids);
     }
+
+    /**
+     * 根据Id获取市场活动信息
+     * @param id
+     * @return
+     */
+    @Override
+    public MarketActivity queryMarketActivityById(String id) {
+        return marketActivityDao.queryMarketActivityById(id);
+    }
+
+    @Override
+    public int saveEditMarketActivity(MarketActivity activity) {
+        return marketActivityDao.saveEditMarketActivity(activity);
+    }
 }

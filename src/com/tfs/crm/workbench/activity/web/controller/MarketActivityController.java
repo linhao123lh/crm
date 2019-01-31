@@ -148,13 +148,80 @@ public class MarketActivityController {
         return vo;
     }
 
-    @RequestMapping(value = "deleteMarketActivities.do",method = RequestMethod.GET)
+    /**
+     * 批量删除市场活动
+     * @param ids
+     * @return
+     */
+    @RequestMapping(value = "deleteMarketActivities.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> deleteMarketActivities(@RequestParam(value = "id",required = true) String[] ids){
 
         System.out.println(Arrays.toString(ids));
         int ret = marketActivityService.deleteMarketActivitiesByIds(ids);
 
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
+    /**
+     * 获取要修改的市场活动信息
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "editMarketActivityById.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> editMarketActivityById(@RequestParam(value = "id",required = true) String id){
+
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        List<User> userList = userService.quertAllUsers();
+        retMap.put("userList",userList);
+
+        MarketActivity activity = marketActivityService.queryMarketActivityById(id);
+        retMap.put("activity",activity);
+
+        return retMap;
+    }
+
+    @RequestMapping(value = "saveEditMarketActivity.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> saveEditMarketActivity(@RequestParam(value = "owner",required = true) String owner, HttpServletRequest request,
+                                                     @RequestParam(value = "type",required = false) String type,
+                                                     @RequestParam(value = "name",required = true) String name,
+                                                     @RequestParam(value = "state",required = false) String state,
+                                                     @RequestParam(value = "startDate",required = false) String startDate,
+                                                     @RequestParam(value = "endDate",required = false) String endDate,
+                                                     @RequestParam(value = "actualCost",required = false) String actualCostStr,
+                                                     @RequestParam(value = "budgetCost",required = false) String budgetCostStr,
+                                                     @RequestParam(value = "description",required = false) String description,
+                                                     @RequestParam(value = "id",required = true) String id){
+        //封装参数
+        MarketActivity activity = new MarketActivity();
+        activity.setId(id);
+        activity.setOwner(owner);
+        activity.setType(type);
+        activity.setName(name);
+        activity.setState(state);
+        activity.setStartDate(startDate);
+        activity.setEndDate(endDate);
+        if (actualCostStr != null && actualCostStr.trim().length() > 0){
+            activity.setActualCost(Long.parseLong(actualCostStr));
+        };
+        if (budgetCostStr != null && budgetCostStr.trim().length() > 0){
+            activity.setBudgetCost(Long.parseLong(budgetCostStr));
+        }
+        activity.setDescription(description);
+        User user = (User) request.getSession().getAttribute("user");
+        activity.setEditBy(user.getId());
+        activity.setEditTime(DateUtil.formateDateTime(new Date()));
+
+        //调用方法
+        int ret = marketActivityService.saveEditMarketActivity(activity);
         Map<String,Object> retMap = new HashMap<String, Object>();
         if (ret > 0){
             retMap.put("success",true);
