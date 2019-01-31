@@ -75,4 +75,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</select>
+
+	<!-- 批量删除市场活动 -->
+	<delete id="deleteActivitiesByIds" parameterType="arraylist">
+		delete from tbl_marketing_activities where id in
+		<foreach collection="array" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+	</delete>
 </mapper>

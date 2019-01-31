@@ -99,6 +99,18 @@ public class MarketActivityController {
         return retMap;
     }
 
+    /**
+     * 根据条件分页查询市场活动
+     * @param name
+     * @param owner
+     * @param state
+     * @param type
+     * @param startDate
+     * @param endDate
+     * @param pageNoStr
+     * @param pageSizeStr
+     * @return
+     */
     @RequestMapping(value = "queryMarketActivityForPageByCondition.do", method = RequestMethod.POST)
     @ResponseBody
     public PaginationVO<MarketActivity> queryMarketActivity(@RequestParam(value = "name", required = false) String name,
@@ -134,6 +146,22 @@ public class MarketActivityController {
        // System.out.println("count=============="+vo.getCoount());
         //System.out.println("dataList=============="+vo.getDataList());
         return vo;
+    }
+
+    @RequestMapping(value = "deleteMarketActivities.do",method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> deleteMarketActivities(@RequestParam(value = "id",required = true) String[] ids){
+
+        System.out.println(Arrays.toString(ids));
+        int ret = marketActivityService.deleteMarketActivitiesByIds(ids);
+
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
     }
 
 }
