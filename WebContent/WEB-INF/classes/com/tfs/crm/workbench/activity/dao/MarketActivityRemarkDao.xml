@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tfs.crm.workbench.activity.dao.MarketActivityRemarkDao">
+
+	<!-- 根据市场活动id查询市场活动明细-->
+	<select id="queryMarketAcitivityRemarkById" parameterType="string" resultType="MarketActivityRemark">
+		select mar.id,u1.name as notePerson,mar.noteContent,mar.noteTime,u2.name as editPerson,mar.editTime,mar.editFlag
+		from tbl_marketing_activities_remark mar
+		join tbl_user u1 on mar.notePerson = u1.id
+		left join tbl_user u2 on mar.editPerson = u2.id
+		where marketingActivitiesId=#{activityId}
+		order by mar.noteTime
+	</select>
+</mapper>

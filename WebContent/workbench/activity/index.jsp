@@ -379,9 +379,9 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                         htmlStr += "<td><input value='"+obj.id+"' type='checkbox' /></td>";
 
                         if ($("#definedColumns input[name='name']").prop("checked")){
-							htmlStr += "<td name='name'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.name+"</a></td>";
+							htmlStr += "<td name='name'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"workbench/activity/detailActivityRemark.do?id="+obj.id+"\";'>"+obj.name+"</a></td>";
 						}else {
-							htmlStr += "<td name='name' style='display: none'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.name+"</a></td>";
+							htmlStr += "<td name='name' style='display: none'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"workbench/activity/detailActivityRemark.do?id="+obj.id+"\";'>"+obj.name+"</a></td>";
 						}
 
 						if ($("#definedColumns input[name='type']").prop("checked")){
@@ -873,7 +873,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<tbody id="showActivityTBody">
 						<%--<tr class="active">
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">发传单</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">发传单</a></td>
 							<td>广告</td>
 							<td>激活的</td>
 							<td>2020-10-10</td>
@@ -889,7 +889,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</tr>
 						<tr>
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">发传单</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">发传单</a></td>
 							<td>广告</td>
 							<td>激活的</td>
 							<td>2020-10-10</td>

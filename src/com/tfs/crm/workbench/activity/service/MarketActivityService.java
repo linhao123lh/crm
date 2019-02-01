@@ -16,4 +16,6 @@ public interface MarketActivityService {
     MarketActivity queryMarketActivityById(String id);
 
     int saveEditMarketActivity(MarketActivity activity);
+
+    MarketActivity queryActivityDetailRemarkById(String activityId);
 }

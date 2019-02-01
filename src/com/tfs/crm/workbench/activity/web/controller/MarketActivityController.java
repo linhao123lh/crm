@@ -6,6 +6,8 @@ import com.tfs.crm.commons.util.UUIDUtil;
 import com.tfs.crm.settings.qx.user.domain.User;
 import com.tfs.crm.settings.qx.user.service.UserService;
 import com.tfs.crm.workbench.activity.domain.MarketActivity;
+import com.tfs.crm.workbench.activity.domain.MarketActivityRemark;
+import com.tfs.crm.workbench.activity.service.MarketActivityRemarkService;
 import com.tfs.crm.workbench.activity.service.MarketActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,8 @@ public class MarketActivityController {
     private UserService userService;
     @Autowired
     private MarketActivityService marketActivityService;
+    @Autowired
+    private MarketActivityRemarkService marketActivityRemarkService;
 
     /**
      * 创建市场活动
@@ -188,6 +192,21 @@ public class MarketActivityController {
         return retMap;
     }
 
+    /**
+     * 更新市场活动
+     * @param owner
+     * @param request
+     * @param type
+     * @param name
+     * @param state
+     * @param startDate
+     * @param endDate
+     * @param actualCostStr
+     * @param budgetCostStr
+     * @param description
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "saveEditMarketActivity.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> saveEditMarketActivity(@RequestParam(value = "owner",required = true) String owner, HttpServletRequest request,
@@ -229,6 +248,18 @@ public class MarketActivityController {
             retMap.put("success",false);
         }
         return retMap;
+    }
+
+    @RequestMapping("detailActivityRemark.do")
+    public String detailActivityRemark(HttpServletRequest request,
+                                     @RequestParam(value = "id",required = true) String id){
+
+        MarketActivity activity = marketActivityService.queryActivityDetailRemarkById(id);
+        List<MarketActivityRemark> remarkList = marketActivityRemarkService.queryMarketAcitivityRemarkById(id);
+
+        request.setAttribute("activity",activity);
+        request.setAttribute("remarkList",remarkList);
+        return "forward:/workbench/activity/detail.jsp";
     }
 
 }
