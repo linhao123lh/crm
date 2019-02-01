@@ -321,7 +321,32 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 
 		});
 
+		//当页面加载完成之后,默认选中"添加字段"下的所有复选框
+		$("#definedColumns input[type='checkbox']").prop("checked",true);
 
+		//给"添加字段"下所有的复选框添加单击事件
+		$("#definedColumns input[type='checkbox']").click(function () {
+			if (this.checked){
+				$("td[name='"+this.name+"']").show();
+			}else {
+				$("td[name='"+this.name+"']").hide();
+			}
+		});
+
+		//给"全选"复选框添加单击事件
+		$("#ckd_all").click(function () {
+			$("#showActivityTBody input[type='checkbox']").prop("checked",this.checked);
+
+		});
+
+		//给列表中所有的复选框添加单击事件
+		$("#showActivityTBody").on("click","input[type='checkbox']",function () {
+			if ($("#showActivityTBody input[type='checkbox']").size() == $("#showActivityTBody input[type='checkbox']:checked").size()) {
+				$("#ckd_all").prop("checked",true);
+			}else {
+				$("#ckd_all").prop("checked",false);
+			}
+		});
 
         //页面展示
         function display(pageNo,pageSize) {
@@ -352,19 +377,85 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                     $.each(data.dataList,function (index,obj) {
                         htmlStr +="<tr>";
                         htmlStr += "<td><input value='"+obj.id+"' type='checkbox' /></td>";
-                        htmlStr += "<td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.name+"</a></td>";
-                        htmlStr += "<td>"+(obj.type==null?'':obj.type)+"</td>";
-                        htmlStr += "<td>"+(obj.state==null?'':obj.state)+"</td>";
-                        htmlStr += "<td>"+obj.startDate+"</td>";
-                        htmlStr += "<td>"+obj.endDate+"</td>";
-                        htmlStr += "<td>"+obj.owner+"</td>";
-                        htmlStr += "<td>"+(obj.budgetCost==null?'':obj.budgetCost)+"</td>";
-                        htmlStr += "<td>"+(obj.actualCost==null?'':obj.actualCost)+"</td>";
-                        htmlStr += "<td>"+obj.createBy+"</td>";
-                        htmlStr += "<td>"+obj.createTime+"</td>";
-                        htmlStr += "<td>"+(obj.editBy==null?'':obj.editBy)+"</td>";
-                        htmlStr += "<td>"+(obj.editTime==null?'':obj.editTime)+"</td>";
-                        htmlStr += "<td>"+obj.description+"</td>";
+
+                        if ($("#definedColumns input[name='name']").prop("checked")){
+							htmlStr += "<td name='name'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.name+"</a></td>";
+						}else {
+							htmlStr += "<td name='name' style='display: none'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.name+"</a></td>";
+						}
+
+						if ($("#definedColumns input[name='type']").prop("checked")){
+							htmlStr += "<td name='type'>"+(obj.type==null?'':obj.type)+"</td>";
+						}else {
+							htmlStr += "<td name='type' style='display: none'>"+(obj.type==null?'':obj.type)+"</td>";
+						}
+
+						if ($("#definedColumns input[name='state']").prop("checked")){
+							htmlStr += "<td name='state'>"+(obj.state==null?'':obj.state)+"</td>";
+						}else {
+							htmlStr += "<td name='state' style='display: none'>"+(obj.state==null?'':obj.state)+"</td>";
+						}
+
+						if ($("#definedColumns input[name='startDate']").prop("checked")){
+							htmlStr += "<td name='startDate'>"+obj.startDate+"</td>";
+						}else {
+							htmlStr += "<td name='startDate' style='display: none'>"+obj.startDate+"</td>";
+						}
+
+						if ($("#definedColumns input[name='endDate']").prop("checked")){
+							htmlStr += "<td name='endDate'>"+obj.endDate+"</td>";
+						}else {
+							htmlStr += "<td name='endDate' style='display: none'>"+obj.endDate+"</td>";
+						}
+
+						if ($("#definedColumns input[name='owner']").prop("checked")){
+							htmlStr += "<td name='owner'>"+obj.owner+"</td>";
+						}else {
+							htmlStr += "<td name='owner' style='display: none'>"+obj.owner+"</td>";
+						}
+
+						if ($("#definedColumns input[name='budgetCost']").prop("checked")){
+							htmlStr += "<td name='budgetCost'>"+(obj.budgetCost==null?'':obj.budgetCost)+"</td>";
+						}else {
+							htmlStr += "<td name='budgetCost' style='display: none'>"+(obj.budgetCost==null?'':obj.budgetCost)+"</td>";
+						}
+
+						if ($("#definedColumns input[name='actualCost']").prop("checked")){
+							htmlStr += "<td name='actualCost'>"+(obj.actualCost==null?'':obj.actualCost)+"</td>";
+						}else {
+							htmlStr += "<td name='actualCost' style='display: none'>"+(obj.actualCost==null?'':obj.actualCost)+"</td>";
+						}
+
+						if ($("#definedColumns input[name='createBy']").prop("checked")){
+							htmlStr += "<td name='createBy'>"+obj.createBy+"</td>";
+						}else {
+							htmlStr += "<td name='createBy' style='display: none'>"+obj.createBy+"</td>";
+						}
+
+						if ($("#definedColumns input[name='createTime']").prop("checked")){
+							htmlStr += "<td name='createTime'>"+obj.createTime+"</td>";
+						}else {
+							htmlStr += "<td name='createTime' style='display: none'>"+obj.createTime+"</td>";
+						}
+
+						if ($("#definedColumns input[name='editBy']").prop("checked")){
+							htmlStr += "<td name='editBy'>"+(obj.editBy==null?'':obj.editBy)+"</td>";
+						}else {
+							htmlStr += "<td name='editBy' style='display: none'>"+(obj.editBy==null?'':obj.editBy)+"</td>";
+						}
+
+						if ($("#definedColumns input[name='editTime']").prop("checked")){
+							htmlStr += "<td name='editTime'>"+(obj.editTime==null?'':obj.editTime)+"</td>";
+						}else {
+							htmlStr += "<td name='editTime' style='display: none'>"+(obj.editTime==null?'':obj.editTime)+"</td>";
+						}
+
+						if ($("#definedColumns input[name='description']").prop("checked")){
+							htmlStr += "<td name='description'>"+obj.description+"</td>";
+						}else {
+							htmlStr += "<td name='description' style='display: none'>"+obj.description+"</td>";
+						}
+
                         htmlStr +="</tr>";
                     });
                     $("#showActivityTBody").html(htmlStr);
@@ -734,19 +825,19 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<ul id="definedColumns" class="dropdown-menu" role="menu"> 
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 名称</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 类型</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 状态</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 开始日期</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 结束日期</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 所有者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 预算成本</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 实际成本</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 创建者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 创建时间</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 修改者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 修改时间</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 描述</a></li>
+						<li><a href="javascript:void(0);"><input name="name" type="checkbox"/> 名称</a></li>
+						<li><a href="javascript:void(0);"><input name="type" type="checkbox"/> 类型</a></li>
+						<li><a href="javascript:void(0);"><input name="state" type="checkbox"/> 状态</a></li>
+						<li><a href="javascript:void(0);"><input name="startDate" type="checkbox"/> 开始日期</a></li>
+						<li><a href="javascript:void(0);"><input name="endDate" type="checkbox"/> 结束日期</a></li>
+						<li><a href="javascript:void(0);"><input name="owner" type="checkbox"/> 所有者</a></li>
+						<li><a href="javascript:void(0);"><input name="budgetCost" type="checkbox"/> 预算成本</a></li>
+						<li><a href="javascript:void(0);"><input name="actualCost" type="checkbox"/> 实际成本</a></li>
+						<li><a href="javascript:void(0);"><input name="createBy" type="checkbox"/> 创建者</a></li>
+						<li><a href="javascript:void(0);"><input name="createTime" type="checkbox"/> 创建时间</a></li>
+						<li><a href="javascript:void(0);"><input name="editBy" type="checkbox"/> 修改者</a></li>
+						<li><a href="javascript:void(0);"><input name="editTime" type="checkbox"/> 修改时间</a></li>
+						<li><a href="javascript:void(0);"><input name="description" type="checkbox"/> 描述</a></li>
 					</ul>
 				</div>
 
@@ -763,20 +854,20 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<table class="table table-hover">
 					<thead>
 						<tr style="color: #B3B3B3;">
-							<td><input type="checkbox" /></td>
-							<td>名称</td>
-							<td>类型</td>
-							<td>状态</td>
-							<td>开始日期</td>
-							<td>结束日期</td>
-							<td>所有者</td>
-							<td>预算成本</td>
-							<td>实际成本</td>
-							<td>创建者</td>
-							<td>创建时间</td>
-							<td>修改者</td>
-							<td>修改时间</td>
-							<td width="10%">描述</td>
+							<td><input id ="ckd_all"  type="checkbox" /></td>
+							<td name="name">名称</td>
+							<td name="type">类型</td>
+							<td name="state">状态</td>
+							<td name="startDate">开始日期</td>
+							<td name="endDate">结束日期</td>
+							<td name="owner">所有者</td>
+							<td name="budgetCost">预算成本</td>
+							<td name="actualCost">实际成本</td>
+							<td name="createBy">创建者</td>
+							<td name="createTime">创建时间</td>
+							<td name="editBy">修改者</td>
+							<td name="editTime">修改时间</td>
+							<td name="description" width="10%">描述</td>
 						</tr>
 					</thead>
 					<tbody id="showActivityTBody">
