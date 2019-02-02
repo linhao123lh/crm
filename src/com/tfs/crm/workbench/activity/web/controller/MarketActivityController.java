@@ -268,6 +268,13 @@ public class MarketActivityController {
         return "forward:/workbench/activity/detail.jsp";
     }
 
+    /**
+     * 保存创建的市场活动备注
+     * @param request
+     * @param noteContent
+     * @param activityId
+     * @return
+     */
     @RequestMapping(value = "saveCreateActivityRemark.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> saveCreateMarketActivityRemark(HttpServletRequest request,@RequestParam(value = "noteContent",required = true)String noteContent,
@@ -287,6 +294,20 @@ public class MarketActivityController {
         if (ret > 0){
             retMap.put("success",true);
             retMap.put("remark",remark);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
+    @RequestMapping(value = "deleteActivityRemark.do", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> deleteActivityRemarkById(@RequestParam(value = "id",required = true) String id){
+
+        int ret = marketActivityRemarkService.deleteActivityRemarkById(id);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
         }else {
             retMap.put("success",false);
         }

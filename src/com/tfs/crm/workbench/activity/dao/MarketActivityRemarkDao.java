@@ -8,4 +8,6 @@ public interface MarketActivityRemarkDao {
     List<MarketActivityRemark> queryMarketAcitivityRemarkById(String activityId);
 
     int saveCreateMarketActivityRemark(MarketActivityRemark remark);
+
+    int deleteActivityRemarkById(String id);
 }

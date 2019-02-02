@@ -20,6 +20,11 @@ public class MarketActivityRemarkServiceImpl implements MarketActivityRemarkServ
     }
 
     @Override
+    public int deleteActivityRemarkById(String id) {
+        return marketActivityRemarkDao.deleteActivityRemarkById(id);
+    }
+
+    @Override
     public int saveCreateMarketActivityRemark(MarketActivityRemark remark) {
         return marketActivityRemarkDao.saveCreateMarketActivityRemark(remark);
     }

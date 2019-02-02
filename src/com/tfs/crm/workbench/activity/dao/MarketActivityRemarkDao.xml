@@ -14,11 +14,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by mar.noteTime
 	</select>
 
-	<!-- 创建市场活动明细 -->
+	<!-- 创建市场活动备注 -->
 	<insert id="saveCreateMarketActivityRemark" parameterType="MarketActivityRemark">
 		insert into tbl_marketing_activities_remark
 		(id,notePerson,noteContent,noteTime,editFlag,marketingActivitiesId)
 		values
 		(#{id},#{notePerson},#{noteContent},#{noteTime},#{editFlag},#{marketingActivitiesId})
 	</insert>
+
+	<!-- 删除市场活动备注 -->
+	<delete id="deleteActivityRemarkById" parameterType="string">
+		delete from tbl_marketing_activities_remark where id = #{id}
+	</delete>
 </mapper>
