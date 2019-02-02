@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface MarketActivityRemarkDao {
     List<MarketActivityRemark> queryMarketAcitivityRemarkById(String activityId);
+
+    int saveCreateMarketActivityRemark(MarketActivityRemark remark);
 }

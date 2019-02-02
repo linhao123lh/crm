@@ -250,6 +250,12 @@ public class MarketActivityController {
         return retMap;
     }
 
+    /**
+     * 市场活动明细
+     * @param request
+     * @param id
+     * @return
+     */
     @RequestMapping("detailActivityRemark.do")
     public String detailActivityRemark(HttpServletRequest request,
                                      @RequestParam(value = "id",required = true) String id){
@@ -262,4 +268,28 @@ public class MarketActivityController {
         return "forward:/workbench/activity/detail.jsp";
     }
 
+    @RequestMapping(value = "saveCreateActivityRemark.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> saveCreateMarketActivityRemark(HttpServletRequest request,@RequestParam(value = "noteContent",required = true)String noteContent,
+                                                             @RequestParam(value = "activityId",required = true) String activityId){
+        //封装参数
+        MarketActivityRemark remark = new MarketActivityRemark();
+        remark.setId(UUIDUtil.getUuid());
+        remark.setNoteContent(noteContent);
+        User user = (User) request.getSession().getAttribute("user");
+        remark.setNotePerson(user.getId());
+        remark.setNoteTime(DateUtil.formateDateTime(new Date()));
+        remark.setEditFlag(0);
+        remark.setMarketingActivitiesId(activityId);
+
+        int ret = marketActivityRemarkService.saveCreateMarketActivityRemark(remark);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+            retMap.put("remark",remark);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
 }

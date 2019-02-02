@@ -13,4 +13,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where marketingActivitiesId=#{activityId}
 		order by mar.noteTime
 	</select>
+
+	<!-- 创建市场活动明细 -->
+	<insert id="saveCreateMarketActivityRemark" parameterType="MarketActivityRemark">
+		insert into tbl_marketing_activities_remark
+		(id,notePerson,noteContent,noteTime,editFlag,marketingActivitiesId)
+		values
+		(#{id},#{notePerson},#{noteContent},#{noteTime},#{editFlag},#{marketingActivitiesId})
+	</insert>
 </mapper>
