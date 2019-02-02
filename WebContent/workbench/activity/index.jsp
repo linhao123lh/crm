@@ -240,6 +240,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					$("#edit-startDate").val(data.activity.startDate);
 					$("#edit-endDate").val(data.activity.endDate);
 					$("#edit-actualCost").val(data.activity.actualCost);
+					$("#edit-budgetCost").val(data.activity.budgetCost);
 					$("#edit-description").val(data.activity.description);
 					//显示模态窗口
 					$("#editActivityModal").modal("show");
