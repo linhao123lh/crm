@@ -26,4 +26,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteActivityRemarkById" parameterType="string">
 		delete from tbl_marketing_activities_remark where id = #{id}
 	</delete>
+
+	<!-- 保存修改的市场活动备注 -->
+	<update id="saveEditActivityRemark" parameterType="MarketActivityRemark">
+		update tbl_marketing_activities_remark set noteContent=#{noteContent},editFlag=#{editFlag},
+			editTime=#{editTime},editPerson=#{editPerson} where id=#{id}
+	</update>
 </mapper>

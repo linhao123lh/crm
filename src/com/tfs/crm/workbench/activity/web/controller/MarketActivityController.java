@@ -300,14 +300,48 @@ public class MarketActivityController {
         return retMap;
     }
 
+    /**
+     * 删除市场活动备注
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "deleteActivityRemark.do", method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> deleteActivityRemarkById(@RequestParam(value = "id",required = true) String id){
 
+        System.out.println("id=============="+id);
         int ret = marketActivityRemarkService.deleteActivityRemarkById(id);
+        System.out.println("ret==============="+ret);
         Map<String,Object> retMap = new HashMap<String, Object>();
         if (ret > 0){
             retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
+    @RequestMapping(value = "saveEditActivityRemark.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> saveEditActivityRemark(@RequestParam(value = "id",required = true) String id,HttpServletRequest request,
+                                                     @RequestParam(value = "noteContent",required = true) String noteContent){
+
+        System.out.println(id);
+        System.out.println(noteContent);
+        //封装参数
+        MarketActivityRemark remark = new MarketActivityRemark();
+        remark.setId(id);
+        remark.setNoteContent(noteContent);
+        remark.setEditFlag(1);
+        User user = (User) request.getSession().getAttribute("user");
+        remark.setEditPerson(user.getId());
+        remark.setEditTime(DateUtil.formateDateTime(new Date()));
+
+        int ret = marketActivityRemarkService.saveEditActivityRemark(remark);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+            retMap.put("remark",remark);
         }else {
             retMap.put("success",false);
         }

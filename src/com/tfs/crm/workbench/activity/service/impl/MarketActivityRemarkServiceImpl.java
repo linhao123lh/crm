@@ -25,6 +25,11 @@ public class MarketActivityRemarkServiceImpl implements MarketActivityRemarkServ
     }
 
     @Override
+    public int saveEditActivityRemark(MarketActivityRemark remark) {
+        return marketActivityRemarkDao.saveEditActivityRemark(remark);
+    }
+
+    @Override
     public int saveCreateMarketActivityRemark(MarketActivityRemark remark) {
         return marketActivityRemarkDao.saveCreateMarketActivityRemark(remark);
     }

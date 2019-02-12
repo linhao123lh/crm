@@ -10,4 +10,6 @@ public interface MarketActivityRemarkService {
     int saveCreateMarketActivityRemark(MarketActivityRemark remark);
 
     int deleteActivityRemarkById(String id);
+
+    int saveEditActivityRemark(MarketActivityRemark remark);
 }
