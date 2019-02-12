@@ -321,6 +321,13 @@ public class MarketActivityController {
         return retMap;
     }
 
+    /**
+     * 修改市场活动备注
+     * @param id
+     * @param request
+     * @param noteContent
+     * @return
+     */
     @RequestMapping(value = "saveEditActivityRemark.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> saveEditActivityRemark(@RequestParam(value = "id",required = true) String id,HttpServletRequest request,
