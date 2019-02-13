@@ -27,6 +27,26 @@
 	<listener>
 		<listener-class>com.tfs.crm.commons.web.listener.QueryActivityTypeContextListener</listener-class>
 	</listener>
+	<!-- 注册线索状态监听器-->
+	<listener>
+		<listener-class>com.tfs.crm.commons.web.listener.QueryClueStateContextListener</listener-class>
+	</listener>
+	<!-- 注册称呼的监听器-->
+	<listener>
+		<listener-class>com.tfs.crm.commons.web.listener.QueryAppellationContextListener</listener-class>
+	</listener>
+	<!-- 注册来源的监听器-->
+	<listener>
+		<listener-class>com.tfs.crm.commons.web.listener.QuerySourceContextListener</listener-class>
+	</listener>
+	<!-- 注册行业的监听器-->
+	<listener>
+		<listener-class>com.tfs.crm.commons.web.listener.QueryIndustryContextListener</listener-class>
+	</listener>
+	<!-- 注册等级的监听器-->
+	<listener>
+		<listener-class>com.tfs.crm.commons.web.listener.QueryGradeContextListener</listener-class>
+	</listener>
 
   <!-- 登录过滤器 -->
   <filter>

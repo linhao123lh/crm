@@ -23,6 +23,8 @@
 		<context:component-scan base-package="com.tfs.crm.workbench.activity.service"/>
 		<!-- 字典值 -->
 		<context:component-scan base-package="com.tfs.crm.settings.dictionary.value.service"/>
+		<!-- 线索 -->
+		<context:component-scan base-package="com.tfs.crm.workbench.clue.service"/>
 
         <!-- 加载数据库配置文件 -->
         <context:property-placeholder location="classpath:conf/db.properties"/>
