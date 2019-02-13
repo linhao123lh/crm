@@ -21,6 +21,17 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 <script type="text/javascript">
 
 	$(function(){
+
+		//添加日历
+		$('.mydate').datetimepicker({
+			language: 'zh-CN',//显示中文
+			format: 'yyyy-mm-dd',//显示格式
+			minView: 3,//设置只显示到月份.  0,1,2,3,4分别代表分,时,天,月,年
+			initialDate: new Date(),//初始化当前日期
+			autoclose: true,//选中自动关闭
+			todayBtn: true,//显示今日按钮
+			clearBtn:true //显示清空按钮
+		});
 		
 		//定制字段
 		$("#definedColumns > li").click(function(e) {
@@ -54,8 +65,89 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					alert("请求失败！");
 				}
 			});
+		});
 
+		//给"保存"按钮添加点击事件
+		$("#saveCreateClueBtn").click(function () {
+			//收集参数
+			var owner = $("#create-owner").val();
+			var company = $.trim($("#create-company").val());
+			var appellation = $("#create-appellation").val();
+			var fullName = $.trim($("#create-fullName").val());
+			var job = $.trim($("#create-job").val());
+			var email = $.trim($("#create-email").val());
+			var phone = $.trim($("#create-phone").val());
+			var website = $.trim($("#create-website").val());
+			var mphone = $.trim($("#create-mphone").val());
+			var state = $("#create-state").val();
+			var source = $("#create-source").val();
+			var empNums = $.trim($("#create-empNums").val());
+			var industry = $("#create-industry").val();
+			var grade = $("#create-grade").val();
+			var annualIncome = $.trim($("#create-annualIncome").val());
+			var description = $.trim($("#create-description").val());
+			var contactSummary = $.trim($("#create-contactSummary").val());
+			var nextContactTime = $("#create-nextContactTime").val();
+			var country = $.trim($("#create-country").val());
+			var province = $.trim($("#create-province").val());
+			var city = $.trim($("#create-city").val());
+			var street = $.trim($("#create-street").val());
+			var zipcode = $.trim($("#create-zipcode").val());
+			//验证表单
+			if (company == null || company.length == 0){
+				alert("公司不能为空！");
+				return;
+			}
+			if (fullName == null || fullName.length == 0){
+				alert("姓名不能为空！");
+				return;
+			}
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/clue/saveCreateClue.do",
+				data:{
+					owner:owner,
+					company:company,
+					appellation:appellation,
+					fullName:fullName,
+					job:job,
+					email:email,
+					phone:phone,
+					website:website,
+					mphone:mphone,
+					state:state,
+					source:source,
+					empNums:empNums,
+					industry:industry,
+					grade:grade,
+					annualIncome:annualIncome,
+					description:description,
+					contactSummary:contactSummary,
+					nextContactTime:nextContactTime,
+					country:country,
+					province:province,
+					city:city,
+					street:street,
+					zipcode:zipcode
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//刷新列表,显示第一页
 
+						//关闭模态窗口
+						$("#createClueModal").modal("hide");
+					} else {
+						alert("创建线索失败！");
+						$("#createClueModal").modal("show");
+					}
+
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
 		});
 		
 	});
@@ -146,7 +238,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 										  <option value="${cs.id}">${cs.text}</option>
 									  </c:forEach>
 								  </c:if>
-
 								</select>
 							</div>
 						</div>
@@ -217,9 +308,9 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="create-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
+								<label for="create-nextContactTime" class="col-sm-2 control-label ">下次联系时间</label>
 								<div class="col-sm-10" style="width: 300px;">
-									<input type="text" class="form-control" id="create-nextContactTime">
+									<input type="text" class="form-control mydate" id="create-nextContactTime">
 								</div>
 							</div>
 						</div>
@@ -261,7 +352,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button id="saveCreateClueBtn" type="button" class="btn btn-primary">保存</button>
 				</div>
 			</div>
 		</div>

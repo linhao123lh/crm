@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<package name="com.tfs.crm.settings.qx.user.domain"/>
 		<package name="com.tfs.crm.settings.dictionary.value.domain"/>
 		<package name="com.tfs.crm.workbench.activity.domain"/>
+		<package name="com.tfs.crm.workbench.clue.domain"/>
 	</typeAliases>
 	
 	<!-- sql映射文件 -->
@@ -15,5 +16,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<package name="com.tfs.crm.settings.qx.user.dao"/>
 		<package name="com.tfs.crm.settings.dictionary.value.dao"/>
 		<package name="com.tfs.crm.workbench.activity.dao"/>
+		<package name="com.tfs.crm.workbench.clue.dao"/>
 	</mappers>
 </configuration>

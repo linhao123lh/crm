@@ -49,7 +49,8 @@
         	<property name="basePackage"
 					  value="com.tfs.crm.settings.qx.user.dao,
 					  com.tfs.crm.settings.dictionary.value.dao
-					  com.tfs.crm.workbench.activity.dao"></property>
+					  com.tfs.crm.workbench.activity.dao,
+                      com.tfs.crm.workbench.clue.dao"></property>
 
         </bean>
 </beans>
