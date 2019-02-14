@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				and  ma.name like '%' #{name} '%'
 			</if>
 			<if test="owner != null and owner != ''">
-				and  ma.owner like '%' #{owner} '%'
+				and  u1.name like '%' #{owner} '%'
 			</if>
 			<if test="type != null and type != ''">
 				and  ma.type = #{type}
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				and  ma.name like '%' #{name} '%'
 			</if>
 			<if test="owner != null and owner != ''">
-				and  ma.owner like '%' #{owner} '%'
+				and  u1.name like '%' #{owner} '%'
 			</if>
 			<if test="type != null and type != ''">
 				and  ma.type = #{type}

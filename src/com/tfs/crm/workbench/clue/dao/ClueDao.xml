@@ -12,4 +12,92 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(#{id},#{owner},#{company},#{phone},#{website},#{grade},#{industry},#{annualIncome},#{empNums},#{country},#{province},#{city},#{street},#{zipcode},#{description},#{fullName},#{appellation},#{source},#{email},#{mphone},#{job},#{state},#{createBy},#{createTime},#{contactSummary},#{nextContactTime})
 	</insert>
 
+	<!-- 根据条件分页查询线索 -->
+	<select id="selectClueForPageByCondition" parameterType="hashmap" resultType="Clue">
+		select c.fullName,dv0.text as appellation,c.company,c.phone,c.mphone,c.email,dv1.text as source,u1.name as owner,c.job,c.website,dv2.text as state,dv3.text as industry,
+			c.empNums,c.annualIncome,dv4.text as grade,u2.name as createBy,c.createTime,u3.name as editBy,c.editTime,c.country,c.province,c.city,c.street,c.description,c.contactSummary,c.nextContactTime
+		from tbl_clue c
+		left join tbl_dictionary_value dv0 on c.appellation = dv0.id
+		left join tbl_dictionary_value dv1 on c.source = dv1.id
+		join tbl_user u1 on c.owner = u1.id
+		left join tbl_dictionary_value dv2 on c.state = dv2.id
+		left join tbl_dictionary_value dv3 on c.industry = dv3.id
+		left join tbl_dictionary_value dv4 on c.grade = dv4.id
+		join tbl_user u2 on c.createBy = u2.id
+		left join tbl_user u3 on c.editBy = u3.id
+		<where>
+			<if test="fullName != null and fullName != ''">
+				and c.fullName like '%' #{fullName} '%'
+			</if>
+			<if test="company != null and company != ''">
+				and c.company like '%' #{company} '%'
+			</if>
+			<if test="phone != null and phone != ''">
+				and c.phone = #{phone}
+			</if>
+			<if test="source != null and source != ''">
+				and c.source = #{source}
+			</if>
+			<if test="owner != null and owner != ''">
+				and u1.name like '%' #{owner} '%'
+			</if>
+			<if test="mphone != null and mphone != ''">
+				and c.mphone = #{mphone}
+			</if>
+			<if test="state != null and state != ''">
+				and c.state = #{state}
+			</if>
+			<if test="industry != null and industry != ''">
+				and c.industry = #{industry}
+			</if>
+			<if test="grade != null and grade != ''">
+				and c.grade = #{grade}
+			</if>
+		</where>
+		order by c.createTime desc
+		limit #{beginNo},#{pageSize}
+	</select>
+
+	<!-- 根据条件查询线索总条数-->
+	<select id="selectCountByCondition" parameterType="hashmap" resultType="long">
+		select count(*) from tbl_clue c
+		left join tbl_dictionary_value dv0 on c.appellation = dv0.id
+		left join tbl_dictionary_value dv1 on c.source = dv1.id
+		join tbl_user u1 on c.owner = u1.id
+		left join tbl_dictionary_value dv2 on c.state = dv2.id
+		left join tbl_dictionary_value dv3 on c.industry = dv3.id
+		left join tbl_dictionary_value dv4 on c.grade = dv4.id
+		join tbl_user u2 on c.createBy = u2.id
+		left join tbl_user u3 on c.editBy = u3.id
+		<where>
+			<if test="fullName != null and fullName != ''">
+				and c.fullName like '%' #{fullName} '%'
+			</if>
+			<if test="company != null and company != ''">
+				and c.company like '%' #{company} '%'
+			</if>
+			<if test="phone != null and phone != ''">
+				and c.phone = #{phone}
+			</if>
+			<if test="source != null and source != ''">
+				and c.source = #{source}
+			</if>
+			<if test="owner != null and owner != ''">
+				and u1.name like '%' #{owner} '%'
+			</if>
+			<if test="mphone != null and mphone != ''">
+				and c.source = #{source}
+			</if>
+			<if test="state != null and state != ''">
+				and c.state = #{state}
+			</if>
+			<if test="industry != null and industry != ''">
+				and c.industry = #{industry}
+			</if>
+			<if test="grade != null and grade != ''">
+				and c.grade = #{grade}
+			</if>
+		</where>
+	</select>
+
 </mapper>

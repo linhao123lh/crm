@@ -18,6 +18,10 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 
+<%-- 分页插件引入--%>
+<link href="jquery/bs_pagination/css/jquery.bs_pagination.min.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="jquery/bs_pagination/js/jquery.bs_pagination.min.js"></script>
+<script type="text/javascript" src="jquery/bs_pagination/js/localization/en.js"></script>
 <script type="text/javascript">
 
 	$(function(){
@@ -135,7 +139,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				success:function (data) {
 					if (data.success){
 						//刷新列表,显示第一页
-
+						display(1,$("#pageNoDiv").bs_pagination('getOption','rowsPerPage'));
 						//关闭模态窗口
 						$("#createClueModal").modal("hide");
 					} else {
@@ -149,6 +153,111 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				}
 			});
 		});
+
+		//页面加载完，显示列表第一页
+		display(1,10);
+
+		//给"查询"按钮添加点击事件
+		$("#queryClueBtn").click(function () {
+			display(1,$("#pageNoDiv").bs_pagination('getOption','rowsPerPage'));
+		});
+
+		//分页列表
+		function display(pageNo,pageSize) {
+			//收集参数
+			var fullName = $.trim($("#query-fullName").val());
+			var company = $.trim($("#query-company").val());
+			var phone = $.trim($("#query-phone").val());
+			var source = $("#query-source").val();
+			var owner = $.trim($("#query-owner").val());
+			var mphone = $.trim($("#query-mphone").val());
+			var state = $("#query-state").val();
+			var industry = $("#query-industry").val();
+			var grade = $("#query-grade").val();
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/clue/queryClueForPageByCondition.do",
+				data:{
+					pageNo:pageNo,
+					pageSize:pageSize,
+					fullName:fullName,
+					company:company,
+					phone:phone,
+					source:source,
+					owner:owner,
+					mphone:mphone,
+					state:state,
+					industry:industry,
+					grade:grade
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					var htmlStr = "";
+					$.each(data.dataList,function (index,obj) {
+						htmlStr += "<tr>";
+						htmlStr += "<td><input type='checkbox' /></td>";
+						htmlStr += "<td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.fullName+obj.appellation+"</a></td>";
+						htmlStr += "<td>"+obj.company+"</td>";
+						htmlStr += "<td>"+obj.phone+"</td>";
+						htmlStr += "<td>"+obj.mphone+"</td>";
+						htmlStr += "<td>"+obj.email+"</td>";
+						htmlStr += "<td>"+obj.source+"</td>";
+						htmlStr += "<td>"+obj.owner+"</td>";
+						htmlStr += "<td>"+obj.job+"</td>";
+						htmlStr += "<td>"+obj.website+"</td>";
+						htmlStr += "<td>"+obj.state+"</td>";
+						htmlStr += "<td>"+obj.industry+"</td>";
+						htmlStr += "<td>"+obj.empNums+"</td>";
+						htmlStr += "<td>"+obj.annualIncome+"</td>";
+						htmlStr += "<td>"+obj.grade+"</td>";
+						htmlStr += "<td>"+obj.createBy+"</td>";
+						htmlStr += "<td>"+obj.createTime+"</td>";
+						htmlStr += "<td>"+(obj.editBy==null?'':obj.editBy)+"</td>";
+						htmlStr += "<td>"+(obj.editTime==null?'':obj.editTime)+"</td>";
+						htmlStr += "<td>"+obj.country+obj.province+obj.city+obj.street+"</td>";
+						htmlStr += "<td>"+obj.description+"</td>";
+						htmlStr += "<td>"+obj.contactSummary+"</td>";
+						htmlStr += "<td>"+obj.nextContactTime+"</td>";
+						htmlStr += "</tr>";
+					});
+					$("#clueTBody").html(htmlStr);
+					//隔行变色
+					$("#clueTBody tr:even").addClass("active");
+
+					//总页数
+					var totalPages = 0;
+					if (data.count % pageSize == 0){
+						totalPages = data.count / pageSize;
+					} else {
+						totalPages = Math.floor(data.count / pageSize) + 1;
+					}
+					//分页
+					$("#pageNoDiv").bs_pagination({
+						currentPage:pageNo,//当前页号
+						rowsPerPage:pageSize,//每页显示条数
+						totalRows:data.count,//总条数
+						totalPages: totalPages, //总页数. 必须根据总条数和每页显示条数手动计算总页数.
+
+						visiblePageLinks:5,//最多可以显示的卡片数
+
+						showGoToPage:true,//是否显示跳转到第几页
+						showRowsPerPage:true,//是否显示每页显示条数
+						showRowsInfo:true,//是否显示记录信息
+						/**
+						 用来监听页号切换的事件.
+						 event就代表这个事件;pageObj就代表翻页信息.
+						 */
+						onChangePage: function(event,pageObj) { // returns page_num and rows_per_page after a link has clicked
+							display(pageObj.currentPage,pageObj.rowsPerPage);
+						}
+					});
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			})
+		};
 		
 	});
 	
@@ -391,11 +500,11 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-appellation">
 								  <option></option>
-								  <option selected>先生</option>
-								  <option>夫人</option>
-								  <option>女士</option>
-								  <option>博士</option>
-								  <option>教授</option>
+									<c:if test="${not empty appellationList}">
+										<c:forEach var="al" items="${appellationList}">
+											<option value="${al.id}">${al.text}</option>
+										</c:forEach>
+									</c:if>
 								</select>
 							</div>
 							<label for="edit-surname" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
@@ -435,13 +544,11 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-state">
 								  <option></option>
-								  <option>试图联系</option>
-								  <option>将来联系</option>
-								  <option selected>已联系</option>
-								  <option>虚假线索</option>
-								  <option>丢失线索</option>
-								  <option>未联系</option>
-								  <option>需要条件</option>
+									<c:if test="${not empty clueStateList}">
+										<c:forEach var="cs" items="${clueStateList}">
+											<option value="${cs.id}">${cs.text}</option>
+										</c:forEach>
+									</c:if>
 								</select>
 							</div>
 						</div>
@@ -451,20 +558,11 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-source">
 								  <option></option>
-								  <option selected>广告</option>
-								  <option>推销电话</option>
-								  <option>员工介绍</option>
-								  <option>外部介绍</option>
-								  <option>在线商场</option>
-								  <option>合作伙伴</option>
-								  <option>公开媒介</option>
-								  <option>销售邮件</option>
-								  <option>合作伙伴研讨会</option>
-								  <option>内部研讨会</option>
-								  <option>交易会</option>
-								  <option>web下载</option>
-								  <option>web调研</option>
-								  <option>聊天</option>
+									<c:if test="${not empty sourceList}">
+										<c:forEach var="sl" items="${sourceList}">
+											<option value="${sl.id}">${sl.text}</option>
+										</c:forEach>
+									</c:if>
 								</select>
 							</div>
 							<label for="edit-empnums" class="col-sm-2 control-label">员工数</label>
@@ -478,33 +576,22 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-industry">
 								  <option></option>
-								  <option>应用服务提供商</option>
-								  <option>数据/电信/OEM</option>
-								  <option>企业资源管理</option>
-								  <option>政府/军队</option>
-								  <option>大企业</option>
-								  <option>管理软件提供商</option>
-								  <option>MSP（管理服务提供商）</option>
-								  <option>网络设备（企业）</option>
-								  <option>非管理软件提供商</option>
-								  <option>光网络</option>
-								  <option>服务提供商</option>
-								  <option selected>中小企业</option>
-								  <option>存储设备</option>
-								  <option>存储服务提供商</option>
-								  <option>系统集成</option>
-								  <option>无线企业</option>
+									<c:if test="${not empty industryList}">
+										<c:forEach var="il" items="${industryList}">
+											<option value="${il.id}">${il.text}</option>
+										</c:forEach>
+									</c:if>
 								</select>
 							</div>
 							<label for="edit-grade" class="col-sm-2 control-label">等级</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-grade">
 								  <option></option>
-								  <option selected>已获得</option>
-								  <option>激活的</option>
-								  <option>市场失败</option>
-								  <option>项目取消</option>
-								  <option>关闭</option>
+									<c:if test="${not empty gradeList}">
+										<c:forEach var="gl" items="${gradeList}">
+											<option value="${gl.id}">${gl.text}</option>
+										</c:forEach>
+									</c:if>
 								</select>
 							</div>
 						</div>
@@ -641,43 +728,34 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">名称</div>
-				      <input class="form-control" type="text">
+				      <input id="query-fullName" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">公司</div>
-				      <input class="form-control" type="text">
+				      <input id="query-company" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">电话</div>
-				      <input class="form-control" type="text">
+				      <input id="query-phone" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">来源</div>
-					  <select class="form-control">
+					  <select id="query-source" class="form-control">
 					  	  <option></option>
-					  	  <option>广告</option>
-						  <option>推销电话</option>
-						  <option>员工介绍</option>
-						  <option>外部介绍</option>
-						  <option>在线商场</option>
-						  <option>合作伙伴</option>
-						  <option>公开媒介</option>
-						  <option>销售邮件</option>
-						  <option>合作伙伴研讨会</option>
-						  <option>内部研讨会</option>
-						  <option>交易会</option>
-						  <option>web下载</option>
-						  <option>web调研</option>
-						  <option>聊天</option>
+						  <c:if test="${not empty sourceList}">
+							  <c:forEach var="sl" items="${sourceList}">
+								  <option value="${sl.id}">${sl.text}</option>
+							  </c:forEach>
+						  </c:if>
 					  </select>
 				    </div>
 				  </div>
@@ -687,7 +765,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">所有者</div>
-				      <input class="form-control" type="text">
+				      <input id="query-owner" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
@@ -696,22 +774,20 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">手机</div>
-				      <input class="form-control" type="text">
+				      <input id="query-mphone" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">状态</div>
-					  <select class="form-control">
+					  <select id="query-state" class="form-control">
 					  	<option></option>
-					  	<option>试图联系</option>
-					  	<option>将来联系</option>
-					  	<option>已联系</option>
-					  	<option>虚假线索</option>
-					  	<option>丢失线索</option>
-					  	<option>未联系</option>
-					  	<option>需要条件</option>
+						  <c:if test="${not empty clueStateList}">
+							  <c:forEach var="cs" items="${clueStateList}">
+								  <option value="${cs.id}">${cs.text}</option>
+							  </c:forEach>
+						  </c:if>
 					  </select>
 				    </div>
 				  </div>
@@ -719,24 +795,13 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">行业</div>
-					  <select class="form-control">
+					  <select id="query-industry" class="form-control">
 					  	  <option></option>
-						  <option>应用服务提供商</option>
-						  <option>数据/电信/OEM</option>
-						  <option>企业资源管理</option>
-						  <option>政府/军队</option>
-						  <option>大企业</option>
-						  <option>管理软件提供商</option>
-						  <option>MSP（管理服务提供商）</option>
-						  <option>网络设备（企业）</option>
-						  <option>非管理软件提供商</option>
-						  <option>光网络</option>
-						  <option>服务提供商</option>
-						  <option>中小企业</option>
-						  <option>存储设备</option>
-						  <option>存储服务提供商</option>
-						  <option>系统集成</option>
-						  <option>无线企业</option>
+						  <c:if test="${not empty industryList}">
+							  <c:forEach var="il" items="${industryList}">
+								  <option value="${il.id}">${il.text}</option>
+							  </c:forEach>
+						  </c:if>
 					  </select>
 				    </div>
 				  </div>
@@ -746,18 +811,18 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">等级</div>
-					  <select class="form-control">
+					  <select id="query-grade" class="form-control">
 					  	<option></option>
-					  	<option>已获得</option>
-					  	<option>激活的</option>
-					  	<option>市场失败</option>
-					  	<option>项目取消</option>
-					  	<option>关闭</option>
+						  <c:if test="${not empty gradeList}">
+							  <c:forEach var="gl" items="${gradeList}">
+								  <option value="${gl.id}">${gl.text}</option>
+							  </c:forEach>
+						  </c:if>
 					  </select>
 				    </div>
 				  </div>
 				  
-				  <button type="submit" class="btn btn-default">查询</button>
+				  <button id="queryClueBtn" type="button" class="btn btn-default">查询</button>
 				  
 				</form>
 			</div>
@@ -818,32 +883,32 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<thead>
 						<tr style="color: #B3B3B3;">
 							<td><input type="checkbox" /></td>
-							<td>名称</td>
-							<td>公司</td>
-							<td>电话</td>
+							<td width="80px">名称</td>
+							<td width="100px">公司</td>
+							<td width="80px">电话</td>
 							<td>手机</td>
 							<td>邮箱</td>
-							<td>来源</td>
+							<td width="80px">来源</td>
 							<td>所有者</td>
-							<td>职位</td>
+							<td width="50px">职位</td>
 							<td>网站</td>
-							<td>状态</td>
-							<td>行业</td>
+							<td width="70px">状态</td>
+							<td width="120px">行业</td>
 							<td>员工数</td>
 							<td>年收入</td>
-							<td>等级</td>
-							<td>创建者</td>
-							<td>创建时间</td>
-							<td>修改者</td>
-							<td>修改时间</td>
-							<td width="10%">地址</td>
-							<td width="10%">描述</td>
-							<td>联系纪要</td>
+							<td width="70px">等级</td>
+							<td width="50px">创建者</td>
+							<td width="150px">创建时间</td>
+							<td width="50px">修改者</td>
+							<td width="150px">修改时间</td>
+							<td width="150px">地址</td>
+							<td width="100px">描述</td>
+							<td width="80px">联系纪要</td>
 							<td>下次联系时间</td>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
+					<tbody id="clueTBody">
+						<%--<tr>
 							<td><input type="checkbox" /></td>
 							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">李四先生</a></td>
 							<td>动力节点</td>
@@ -892,12 +957,13 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<td>这是一条线索的描述信息</td>
 							<td>这条线索即将被转换</td>
 							<td>2017-05-01</td>
-						</tr>
+						</tr>--%>
 					</tbody>
 				</table>
+				<div id="pageNoDiv"></div>
 			</div>
 			
-			<div style="height: 50px; position: relative;top: 60px;">
+			<%--<div style="height: 50px; position: relative;top: 60px;">
 				<div>
 					<button type="button" class="btn btn-default" style="cursor: default;">共<b>50</b>条记录</button>
 				</div>
@@ -930,7 +996,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</ul>
 					</nav>
 				</div>
-			</div>
+			</div>--%>
 			
 		</div>
 		

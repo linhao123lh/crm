@@ -1,5 +1,6 @@
 package com.tfs.crm.workbench.clue.web.controller;
 
+import com.tfs.crm.commons.domain.PaginationVO;
 import com.tfs.crm.commons.util.DateUtil;
 import com.tfs.crm.commons.util.UUIDUtil;
 import com.tfs.crm.settings.qx.user.domain.User;
@@ -76,8 +77,8 @@ public class ClueController {
     @ResponseBody
     public Map<String,Object> saveCreateClue(HttpServletRequest request, @RequestParam(value = "owner",required = true) String owner,
                                              @RequestParam(value = "company",required = true) String company,
-                                             @RequestParam(value = "appellation",required = false) String fullName,
-                                             @RequestParam(value = "fullName",required = true) String appellation,
+                                             @RequestParam(value = "appellation",required = false) String appellation,
+                                             @RequestParam(value = "fullName",required = true) String fullName,
                                              @RequestParam(value = "job",required = false) String job,
                                              @RequestParam(value = "email",required = false) String email,
                                              @RequestParam(value = "phone",required = false) String phone,
@@ -140,5 +141,61 @@ public class ClueController {
             retMap.put("success",false);
         }
         return retMap;
+    }
+
+    /**
+     * 根据条件分页查询线索
+     * @param pageNoStr
+     * @param pageSizeStr
+     * @param fullName
+     * @param company
+     * @param phone
+     * @param source
+     * @param owner
+     * @param mphone
+     * @param state
+     * @param industry
+     * @param grade
+     * @return
+     */
+    @RequestMapping(value = "queryClueForPageByCondition.do",method = RequestMethod.POST)
+    @ResponseBody
+    public PaginationVO<Clue> queryClueForPageByCondition(@RequestParam(value = "pageNo",required = true) String pageNoStr,
+                                                          @RequestParam(value = "pageSize",required = true) String pageSizeStr,
+                                                          @RequestParam(value = "fullName",required = false) String fullName,
+                                                          @RequestParam(value = "company",required = false) String company,
+                                                          @RequestParam(value = "phone",required = false) String phone,
+                                                          @RequestParam(value = "source",required = false) String source,
+                                                          @RequestParam(value = "owner",required = false) String owner,
+                                                          @RequestParam(value = "mphone",required = false) String mphone,
+                                                          @RequestParam(value = "state",required = false) String state,
+                                                          @RequestParam(value = "industry",required = false) String industry,
+                                                          @RequestParam(value = "grade",required = false) String grade){
+        //收集参数
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("fullName",fullName);
+        paramMap.put("company",company);
+        paramMap.put("phone",phone);
+        paramMap.put("source",source);
+        paramMap.put("owner",owner);
+        paramMap.put("mphone",mphone);
+        paramMap.put("state",state);
+        paramMap.put("industry",industry);
+        paramMap.put("grade",grade);
+        Long pageNo = 1L;
+        if (pageNoStr != null && pageNoStr.trim().length() > 0 && !"0".equals(pageNoStr)){
+            pageNo = Long.parseLong(pageNoStr);
+        }
+        int pageSize = 10;
+        if (pageSizeStr != null && pageSizeStr.trim().length() > 0 && !"0".equals(pageSizeStr)){
+            pageSize = Integer.parseInt(pageSizeStr);
+        }
+        Long beginNo = (pageNo - 1) * pageSize;
+        paramMap.put("pageSize",pageSize);
+        paramMap.put("beginNo",beginNo);
+
+        //调用service方法
+        PaginationVO<Clue> vo = clueService.queryClueForPageByCondition(paramMap);
+        return vo;
     }
 }
