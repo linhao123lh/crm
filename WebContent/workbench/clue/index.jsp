@@ -198,9 +198,153 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		});
 		
 		//给"修改"按钮添加点击事件
-		/*$("#editClueBtn").click(function () {
-			//
-		});*/
+		$("#editClueBtn").click(function () {
+			//收集参数
+			var ckdId = $("#clueTBody input[type='checkbox']:checked");
+			if (ckdId.length == 0){
+				alert("请选择要修改的线索");
+				return;
+			}
+			if (ckdId.length > 1){
+				alert("一次只能修改一条线索");
+				return;
+			}
+			var id = ckdId.val();
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/clue/editClue.do",
+				data:{
+					id:id
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					var htmlStr = "";
+					$.each(data.userList,function (index,obj) {
+						if (obj.id == data.clue.owner){
+							htmlStr += "<option value='"+obj.id+"' selected>"+obj.name+"</option>";
+						} else {
+							htmlStr += "<option value='"+obj.id+"'>"+obj.name+"</option>";
+						}
+					});
+					//线索信息
+					$("#edit-owner").html(htmlStr);
+					$("#edit-id").val(data.clue.id);
+					$("#edit-company").val(data.clue.company);
+					$("#edit-appellation").val(data.clue.appellation);
+					$("#edit-fullName").val(data.clue.fullName);
+					$("#edit-job").val(data.clue.job);
+					$("#edit-email").val(data.clue.email);
+					$("#edit-phone").val(data.clue.phone);
+					$("#edit-website").val(data.clue.website);
+					$("#edit-mphone").val(data.clue.mphone);
+					$("#edit-state").val(data.clue.state);
+					$("#edit-source").val(data.clue.source);
+					$("#edit-empNums").val(data.clue.empNums);
+					$("#edit-industry").val(data.clue.industry);
+					$("#edit-grade").val(data.clue.grade);
+					$("#edit-annualIncome").val(data.clue.annualIncome);
+					$("#edit-description").val(data.clue.description);
+					$("#edit-nextContactTime").val(data.clue.nextContactTime);
+					$("#edit-country").val(data.clue.country);
+					$("#edit-province").val(data.clue.province);
+					$("#edit-city").val(data.clue.city);
+					$("#edit-street").val(data.clue.street);
+					$("#edit-zipcode").val(data.clue.zipcode);
+					//显示模态窗口
+					$("#editClueModal").modal("show");
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+
+		//给"更新"按钮添加点击事件
+		$("#saveEditClueBtn").click(function () {
+			//收集参数
+			var id = $("#edit-id").val();
+			var owner = $("#edit-owner").val();
+			var company = $.trim($("#edit-company").val());
+			var appellation = $("#edit-appellation").val();
+			var fullName = $.trim($("#edit-fullName").val());
+			var job = $.trim($("#edit-job").val());
+			var email = $.trim($("#edit-email").val());
+			var phone = $.trim($("#edit-phone").val());
+			var website = $.trim($("#edit-website").val());
+			var mphone = $.trim($("#edit-mphone").val());
+			var state = $("#edit-state").val();
+			var source = $("#edit-source").val();
+			var empNums = $.trim($("#edit-empNums").val());
+			var industry = $("#edit-industry").val();
+			var grade = $("#edit-grade").val();
+			var annualIncome = $.trim($("#edit-annualIncome").val());
+			var description = $.trim($("#edit-description").val());
+			var contactSummary = $.trim($("#edit-contactSummary").val());
+			var nextContactTime = $("#edit-nextContactTime").val();
+			var country = $.trim($("#edit-country").val());
+			var province = $.trim($("#edit-province").val());
+			var city = $.trim($("#edit-city").val());
+			var street = $.trim($("#edit-street").val());
+			var zipcode = $.trim($("#edit-zipcode").val());
+			//验证表单
+			if (company == null || company.length == 0){
+				alert("公司不能为空！");
+				return;
+			}
+			if (fullName == null || fullName.length == 0){
+				alert("姓名不能为空！");
+				return;
+			}
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/clue/saveEditClue.do",
+				data:{
+					id:id,
+					owner:owner,
+					company:company,
+					appellation:appellation,
+					fullName:fullName,
+					job:job,
+					email:email,
+					phone:phone,
+					website:website,
+					mphone:mphone,
+					state:state,
+					source:source,
+					empNums:empNums,
+					industry:industry,
+					grade:grade,
+					annualIncome:annualIncome,
+					description:description,
+					contactSummary:contactSummary,
+					nextContactTime:nextContactTime,
+					country:country,
+					province:province,
+					city:city,
+					street:street,
+					zipcode:zipcode
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//关闭模态窗口
+						$("#editClueModal").modal("hide");
+						//刷新列表,显示第一页
+						display(1,$("#pageNoDiv").bs_pagination('getOption','rowsPerPage'));
+					} else {
+						alert("修改线索失败！");
+						$("#editClueModal").modal("show");
+					}
+
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+
 
 		//分页列表
 		function display(pageNo,pageSize) {
@@ -519,14 +663,14 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form">
-					
+						<input type="hidden" id="edit-id">
 						<div class="form-group">
 							<label for="edit-clueOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-owner">
-								  <option>zhangsan</option>
+								  <%--<option>zhangsan</option>
 								  <option>lisi</option>
-								  <option>wangwu</option>
+								  <option>wangwu</option>--%>
 								</select>
 							</div>
 							<label for="edit-company" class="col-sm-2 control-label">公司<span style="font-size: 15px; color: red;">*</span></label>
@@ -661,7 +805,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<div class="form-group">
 								<label for="edit-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
 								<div class="col-sm-10" style="width: 300px;">
-									<input type="text" class="form-control" id="edit-nextContactTime" value="2017-05-01">
+									<input type="text" class="form-control mydate" id="edit-nextContactTime" value="2017-05-01">
 								</div>
 							</div>
 						</div>
@@ -703,7 +847,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+					<button id="saveEditClueBtn" type="button" class="btn btn-primary">更新</button>
 				</div>
 			</div>
 		</div>

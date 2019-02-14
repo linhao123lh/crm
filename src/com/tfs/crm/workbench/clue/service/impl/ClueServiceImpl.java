@@ -37,4 +37,14 @@ public class ClueServiceImpl implements ClueService {
     public int batchDeleteClueByIds(String[] ids) {
         return clueDao.deleteClueByIds(ids);
     }
+
+    @Override
+    public Clue queryClueById(String id) {
+        return clueDao.queryClueById(id);
+    }
+
+    @Override
+    public int saveEditClueByClue(Clue clue) {
+        return clueDao.saveEditClueByClue(clue);
+    }
 }

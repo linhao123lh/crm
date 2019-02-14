@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("workbench/clue")
@@ -199,6 +200,11 @@ public class ClueController {
         return vo;
     }
 
+    /**
+     * 批量删除线索
+     * @param ids
+     * @return
+     */
     @RequestMapping(value = "deleteClue.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> batchDeleteClueByIds(@RequestParam(value = "id",required = true) String[] ids){
@@ -206,6 +212,96 @@ public class ClueController {
         int ret = clueService.batchDeleteClueByIds(ids);
         Map<String,Object> retMap = new HashMap<String, Object>();
 
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
+    /**
+     * 修改线索
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "editClue.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> editClueById(@RequestParam(value = "id",required = true) String id){
+
+        //根据Id获取线索信息
+        Clue clue = clueService.queryClueById(id);
+        //获取所有用户
+        List<User> userList = userService.quertAllUsers();
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        retMap.put("clue",clue);
+        retMap.put("userList",userList);
+        return retMap;
+    }
+
+    @RequestMapping(value = "saveEditClue.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> saveEditClueByClue(HttpServletRequest request, @RequestParam(value = "owner",required = true) String owner,
+                                                  @RequestParam(value = "company",required = true) String company,
+                                                  @RequestParam(value = "appellation",required = false) String appellation,
+                                                  @RequestParam(value = "fullName",required = true) String fullName,
+                                                  @RequestParam(value = "job",required = false) String job,
+                                                  @RequestParam(value = "email",required = false) String email,
+                                                  @RequestParam(value = "phone",required = false) String phone,
+                                                  @RequestParam(value = "website",required = false) String website,
+                                                  @RequestParam(value = "mphone",required = false) String mphone,
+                                                  @RequestParam(value = "state",required = false) String state,
+                                                  @RequestParam(value = "source",required = false) String source,
+                                                  @RequestParam(value = "empNums",required = false) String empNumsStr,
+                                                  @RequestParam(value = "industry",required = false) String industry,
+                                                  @RequestParam(value = "grade",required = false) String grade,
+                                                  @RequestParam(value = "annualIncome",required = false) String annualIncomeStr,
+                                                  @RequestParam(value = "description",required = false) String description,
+                                                  @RequestParam(value = "contactSummary",required = false) String contactSummary,
+                                                  @RequestParam(value = "nextContactTime",required = false) String nextContactTime,
+                                                  @RequestParam(value = "country",required = false) String country,
+                                                  @RequestParam(value = "province",required = false) String province,
+                                                  @RequestParam(value = "city",required = false) String city,
+                                                  @RequestParam(value = "street",required = false) String street,
+                                                  @RequestParam(value = "zipcode",required = false) String zipcode,
+                                                  @RequestParam(value = "id",required = true) String id){
+        //封装参数
+        Clue clue = new Clue();
+        clue.setId(id);
+        clue.setOwner(owner);
+        clue.setCompany(company);
+        clue.setAppellation(appellation);
+        clue.setFullName(fullName);
+        clue.setJob(job);
+        clue.setEmail(email);
+        clue.setPhone(phone);
+        clue.setWebsite(website);
+        clue.setMphone(mphone);
+        clue.setState(state);
+        clue.setSource(source);
+        if (empNumsStr != null && empNumsStr.trim().length() > 0){
+            clue.setEmpNums(Integer.parseInt(empNumsStr));
+        }
+        clue.setIndustry(industry);
+        clue.setGrade(grade);
+        if (annualIncomeStr != null && empNumsStr.trim().length() > 0){
+            clue.setAnnualIncome(Long.parseLong(annualIncomeStr));
+        }
+        clue.setDescription(description);
+        clue.setContactSummary(contactSummary);
+        clue.setNextContactTime(nextContactTime);
+        clue.setCountry(country);
+        clue.setProvince(province);
+        clue.setCity(city);
+        clue.setStreet(street);
+        clue.setZipcode(zipcode);
+        clue.setEditTime(DateUtil.formateDateTime(new Date()));
+        User user = (User) request.getSession().getAttribute("user");
+        clue.setEditBy(user.getId());
+
+        //调用service方法
+        int ret = clueService.saveEditClueByClue(clue);
+        Map<String,Object> retMap = new HashMap<String, Object>();
         if (ret > 0){
             retMap.put("success",true);
         }else {

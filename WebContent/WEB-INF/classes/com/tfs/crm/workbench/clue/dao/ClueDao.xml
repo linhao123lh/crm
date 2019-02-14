@@ -108,4 +108,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</foreach>
 	</delete>
 
+	<!-- 根据Id查询线索信息 -->
+	<select id="queryClueById" parameterType="string" resultType="Clue">
+		select * from tbl_clue c
+		left join tbl_dictionary_value dv0 on c.appellation = dv0.id
+		left join tbl_dictionary_value dv1 on c.source = dv1.id
+		join tbl_user u1 on c.owner = u1.id
+		left join tbl_dictionary_value dv2 on c.state = dv2.id
+		left join tbl_dictionary_value dv3 on c.industry = dv3.id
+		left join tbl_dictionary_value dv4 on c.grade = dv4.id
+		join tbl_user u2 on c.createBy = u2.id
+		left join tbl_user u3 on c.editBy = u3.id
+		where c.id = #{id}
+	</select>
+
+	<!-- 根据Id修改线索 -->
+	<update id="saveEditClueByClue" parameterType="Clue">
+		update tbl_clue set owner=#{owner},company=#{company},phone=#{phone},website=#{website},grade=#{grade},industry=#{industry},
+			annualIncome=#{annualIncome},empNums=#{empNums},country=#{country},province=#{province},city=#{city},street=#{street},
+			zipcode=#{zipcode},description=#{description},fullName=#{fullName},appellation=#{appellation},source=#{source},nextContactTime=#{nextContactTime},
+			email=#{email},mphone=#{mphone},job=#{job},state=#{state},editBy=#{editBy},editTime=#{editTime},contactSummary=#{contactSummary}
+			where id=#{id}
+	</update>
+
 </mapper>

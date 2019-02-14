@@ -13,4 +13,8 @@ public interface ClueDao {
     Long selectCountByCondition(Map<String, Object> paramMap);
 
     int deleteClueByIds(String[] ids);
+
+    Clue queryClueById(String id);
+
+    int saveEditClueByClue(Clue clue);
 }
