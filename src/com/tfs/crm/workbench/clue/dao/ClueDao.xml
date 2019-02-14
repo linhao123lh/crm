@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 根据条件分页查询线索 -->
 	<select id="selectClueForPageByCondition" parameterType="hashmap" resultType="Clue">
-		select c.fullName,dv0.text as appellation,c.company,c.phone,c.mphone,c.email,dv1.text as source,u1.name as owner,c.job,c.website,dv2.text as state,dv3.text as industry,
+		select c.id,c.fullName,dv0.text as appellation,c.company,c.phone,c.mphone,c.email,dv1.text as source,u1.name as owner,c.job,c.website,dv2.text as state,dv3.text as industry,
 			c.empNums,c.annualIncome,dv4.text as grade,u2.name as createBy,c.createTime,u3.name as editBy,c.editTime,c.country,c.province,c.city,c.street,c.description,c.contactSummary,c.nextContactTime
 		from tbl_clue c
 		left join tbl_dictionary_value dv0 on c.appellation = dv0.id
@@ -99,5 +99,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</select>
+
+	<!-- 批量删除线索 -->
+	<delete id="deleteClueByIds" parameterType="arraylist">
+		delete from tbl_clue where id in
+		<foreach collection="array" open="(" close=")" separator="," item="id">
+			#{id}
+		</foreach>
+	</delete>
 
 </mapper>

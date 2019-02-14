@@ -32,4 +32,9 @@ public class ClueServiceImpl implements ClueService {
         vo.setCount(count);
         return vo;
     }
+
+    @Override
+    public int batchDeleteClueByIds(String[] ids) {
+        return clueDao.deleteClueByIds(ids);
+    }
 }

@@ -198,4 +198,19 @@ public class ClueController {
         PaginationVO<Clue> vo = clueService.queryClueForPageByCondition(paramMap);
         return vo;
     }
+
+    @RequestMapping(value = "deleteClue.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> batchDeleteClueByIds(@RequestParam(value = "id",required = true) String[] ids){
+
+        int ret = clueService.batchDeleteClueByIds(ids);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
 }

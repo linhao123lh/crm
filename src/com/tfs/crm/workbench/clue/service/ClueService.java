@@ -11,4 +11,6 @@ public interface ClueService {
     int saveCreateClueByClue(Clue clue);
 
     PaginationVO<Clue> queryClueForPageByCondition(Map<String, Object> paramMap);
+
+    int batchDeleteClueByIds(String[] ids);
 }

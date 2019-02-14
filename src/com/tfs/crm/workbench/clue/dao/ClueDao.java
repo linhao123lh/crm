@@ -11,4 +11,6 @@ public interface ClueDao {
     List<Clue> selectClueForPageByCondition(Map<String, Object> paramMap);
 
     Long selectCountByCondition(Map<String, Object> paramMap);
+
+    int deleteClueByIds(String[] ids);
 }

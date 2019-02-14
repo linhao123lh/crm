@@ -162,6 +162,46 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			display(1,$("#pageNoDiv").bs_pagination('getOption','rowsPerPage'));
 		});
 
+		//给"删除"按钮添加点击事件
+		$("#deleteClueBtn").click(function () {
+			//收集参数
+			var ckdIds = $("#clueTBody input[type='checkbox']:checked");
+			if (ckdIds.length == 0){
+				alert("请选择要删除的线索！");
+				return;
+			}
+			if (window.confirm("你确定要删除选中的线索吗？")){
+				var ids = "";
+				$.each(ckdIds,function (index,obj) {
+					ids += "id="+obj.value+"&";
+				});
+				ids = ids.substr(0,ids.length - 1);
+				//发起ajax请求
+				$.ajax({
+					url:"workbench/clue/deleteClue.do",
+					data:ids,
+					type:"post",
+					dataType:"json",
+					success:function (data) {
+						if(data.success){
+							//展示线索第一页
+							display(1,$("#pageNoDiv").bs_pagination('getOption','rowsPerPage'));
+						}else {
+							alert("删除线索失败！");
+						}
+					},
+					error:function () {
+						alert("请求失败！");
+					}
+				});
+			}
+		});
+		
+		//给"修改"按钮添加点击事件
+		/*$("#editClueBtn").click(function () {
+			//
+		});*/
+
 		//分页列表
 		function display(pageNo,pageSize) {
 			//收集参数
@@ -196,7 +236,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					var htmlStr = "";
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += "<tr>";
-						htmlStr += "<td><input type='checkbox' /></td>";
+						htmlStr += "<td><input value='"+obj.id+"' type='checkbox' /></td>";
 						htmlStr += "<td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.fullName+obj.appellation+"</a></td>";
 						htmlStr += "<td>"+obj.company+"</td>";
 						htmlStr += "<td>"+obj.phone+"</td>";
@@ -829,8 +869,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 40px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button id="createClueBtn" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editClueModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button id="editClueBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button id="deleteClueBtn" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#importClueModal"><span class="glyphicon glyphicon-import"></span> 导入</button>
