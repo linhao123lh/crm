@@ -422,12 +422,17 @@ public class ClueController {
         return retMap;
     }
 
+    /**
+     * 保存修改的线索备注
+     * @param request
+     * @param id
+     * @param noteContent
+     * @return
+     */
     @RequestMapping(value = "saveEditClueRemark.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> saveEditClueRemark(HttpServletRequest request, @RequestParam(value = "id",required = true) String id,
                                                  @RequestParam(value = "noteContent",required = true) String noteContent){
-        System.out.println("noteContent=============="+noteContent);
-        System.out.println("id=============="+id);
         ClueRemark remark = new ClueRemark();
         remark.setId(id);
         remark.setNoteContent(noteContent);
@@ -445,6 +450,21 @@ public class ClueController {
             retMap.put("success",false);
         }
         return retMap;
+    }
+
+    @RequestMapping(value = "bundMarketActivity.do",method = RequestMethod.POST)
+    @ResponseBody
+    public List<MarketActivity> bundMarketActivity(@RequestParam(value = "name",required = true) String name,
+                                                   @RequestParam(value = "clueId",required = true) String clueId){
+
+        //收集参数
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("name",name);
+        paramMap.put("clueId",clueId);
+
+        //调用service方法
+        List<MarketActivity> activityList = marketActivityService.queryActivityByNameClueId(paramMap);
+        return activityList;
     }
 
 }

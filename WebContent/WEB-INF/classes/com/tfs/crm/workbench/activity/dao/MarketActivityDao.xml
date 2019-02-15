@@ -119,4 +119,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where car.clueId = #{clueId}
         order by ma.startDate
     </select>
+
+	<!-- 根据名称和线索id模糊查询市场活动列表-->
+	<select id="queryActivityByNameClueId" parameterType="hashmap" resultType="MarketActivity">
+		select ma.id, u1.name as owner, dv1.text as type, dv2.text as state, ma.name, ma.startDate, ma.endDate
+		from tbl_marketing_activities ma
+		join tbl_user u1 on ma.owner = u1.id
+		left join tbl_dictionary_value dv1 on ma.type = dv1.id
+		left join tbl_dictionary_value dv2 on ma.state = dv2.id
+		where ma.name like '%' #{name} '%' and ma.id not in (
+			select activityId from tbl_clue_activity_relation  where clueId = #{clueId})
+	</select>
+
 </mapper>

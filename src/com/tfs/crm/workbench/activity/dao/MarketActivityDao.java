@@ -21,4 +21,6 @@ public interface MarketActivityDao {
     MarketActivity queryActivityDetailRemarkById(String activityId);
 
     List<MarketActivity> queryActivityByClueId(String ClueId);
+
+    List<MarketActivity> queryActivityByNameClueId(Map<String, Object> paramMap);
 }

@@ -187,6 +187,52 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				}
 			})
 		});
+
+		//给"关联市场活动"按钮添加点击事件
+		$("#bundActivityBtn").click(function () {
+			//清空列表和搜索框
+			$("#activityListTBody").html("");
+			$("#searchActivityText").val("");
+			//显示模态窗口
+			$("#bundModal").modal("show");
+		});
+		
+		//给"搜索框"添加键盘弹起事件
+		$("#searchActivityText").keyup(function () {
+			//收集参数
+			var name = this.value;
+			var clueId = "${clue.id}";
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/clue/bundMarketActivity.do",
+				data:{
+					name:name,
+					clueId:clueId
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					var htmlStr = "";
+					$.each(data,function (index,obj) {
+						htmlStr += "<tr>";
+						htmlStr += "<td><input value='"+obj.id+"' type='checkbox'/></td>";
+						htmlStr += "<td>"+obj.name+"</td>";
+						htmlStr += "<td>"+obj.type+"</td>";
+						htmlStr += "<td>"+obj.state+"</td>";
+						htmlStr += "<td>"+obj.startDate+"</td>";
+						htmlStr += "<td>"+obj.endDate+"</td>";
+						htmlStr += "<td>"+obj.owner+"</td>";
+						htmlStr += "</tr>";
+					})
+					$("#activityListTBody").html(htmlStr);
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+
+
 	});
 	
 </script>
@@ -258,7 +304,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<div class="btn-group" style="position: relative; top: 18%; left: 8px;">
 						<form class="form-inline" role="form">
 						  <div class="form-group has-feedback">
-						    <input type="text" class="form-control" style="width: 300px;" placeholder="请输入市场活动名称，支持模糊查询">
+						    <input id="searchActivityText" type="text" class="form-control" style="width: 300px;" placeholder="请输入市场活动名称，支持模糊查询">
 						    <span class="glyphicon glyphicon-search form-control-feedback"></span>
 						  </div>
 						</form>
@@ -276,8 +322,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 								<td></td>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
+						<tbody id="activityListTBody">
+							<%--<tr>
 								<td><input type="checkbox"/></td>
 								<td>发传单</td>
 								<td>广告</td>
@@ -294,7 +340,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 								<td>2020-10-10</td>
 								<td>2020-10-20</td>
 								<td>zhangsan</td>
-							</tr>
+							</tr>--%>
 						</tbody>
 					</table>
 				</div>
@@ -785,7 +831,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			</div>
 			
 			<div>
-				<a href="javascript:void(0);" data-toggle="modal" data-target="#bundModal" style="text-decoration: none;"><span class="glyphicon glyphicon-plus"></span>关联市场活动</a>
+				<a id="bundActivityBtn" href="javascript:void(0);" style="text-decoration: none;"><span class="glyphicon glyphicon-plus"></span>关联市场活动</a>
 			</div>
 		</div>
 	</div>

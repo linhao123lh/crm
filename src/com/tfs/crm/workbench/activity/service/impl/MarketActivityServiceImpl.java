@@ -85,6 +85,16 @@ public class MarketActivityServiceImpl implements MarketActivityService {
     }
 
     /**
+     * 根据名称和线索id模糊查询市场活动列表
+     * @param paramMap
+     * @return
+     */
+    @Override
+    public List<MarketActivity> queryActivityByNameClueId(Map<String, Object> paramMap) {
+        return marketActivityDao.queryActivityByNameClueId(paramMap);
+    }
+
+    /**
      * 保存更改的市场活动
      * @param activity
      * @return
