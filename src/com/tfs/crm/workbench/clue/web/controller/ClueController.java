@@ -5,7 +5,11 @@ import com.tfs.crm.commons.util.DateUtil;
 import com.tfs.crm.commons.util.UUIDUtil;
 import com.tfs.crm.settings.qx.user.domain.User;
 import com.tfs.crm.settings.qx.user.service.UserService;
+import com.tfs.crm.workbench.activity.domain.MarketActivity;
+import com.tfs.crm.workbench.activity.service.MarketActivityService;
 import com.tfs.crm.workbench.clue.domain.Clue;
+import com.tfs.crm.workbench.clue.domain.ClueRemark;
+import com.tfs.crm.workbench.clue.service.ClueRemarkService;
 import com.tfs.crm.workbench.clue.service.ClueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +33,10 @@ public class ClueController {
     private UserService userService;
     @Autowired
     private ClueService clueService;
+    @Autowired
+    private ClueRemarkService clueRemarkService;
+    @Autowired
+    private MarketActivityService marketActivityService;
 
     /**
      * 创建线索
@@ -337,5 +345,22 @@ public class ClueController {
             retMap.put("success",false);
         }
         return retMap;
+    }
+
+    @RequestMapping("queryDetailClueById.do")
+    public String queryDetailClueById(HttpServletRequest request,@RequestParam(value = "id",required = true) String ClueId){
+
+        //线索
+        Clue clue = clueService.queryDetailClueById(ClueId);
+        //线索备注
+        List<ClueRemark> remarkList = clueRemarkService.queryClueRemarkByClueId(ClueId);
+        //关联的市场活动
+        List<MarketActivity> activityList = marketActivityService.queryActivityByClueId(ClueId);
+
+        //保存到request域中
+        request.setAttribute("clue",clue);
+        request.setAttribute("remarkList",remarkList);
+        request.setAttribute("activityList",activityList);
+        return "forward:/workbench/clue/detail.jsp";
     }
 }

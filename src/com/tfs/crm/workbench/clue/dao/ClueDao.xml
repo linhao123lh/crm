@@ -131,4 +131,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where id=#{id}
 	</update>
 
+	<!-- 根据Id获取线索详情 -->
+	<select id="queryDetailClueById" parameterType="string" resultType="Clue">
+		select c.id,c.fullName,dv0.text as appellation,c.company,c.phone,c.mphone,c.email,dv1.text as source,u1.name as owner,c.job,c.website,dv2.text as state,dv3.text as industry,
+			c.empNums,c.annualIncome,dv4.text as grade,u2.name as createBy,c.createTime,u3.name as editBy,c.editTime,c.country,c.province,c.city,c.street,c.zipcode,c.description,c.contactSummary,c.nextContactTime
+		from tbl_clue c
+		left join tbl_dictionary_value dv0 on c.appellation = dv0.id
+		left join tbl_dictionary_value dv1 on c.source = dv1.id
+		join tbl_user u1 on c.owner = u1.id
+		left join tbl_dictionary_value dv2 on c.state = dv2.id
+		left join tbl_dictionary_value dv3 on c.industry = dv3.id
+		left join tbl_dictionary_value dv4 on c.grade = dv4.id
+		join tbl_user u2 on c.createBy = u2.id
+		left join tbl_user u3 on c.editBy = u3.id
+		where c.id = #{id}
+	</select>
 </mapper>

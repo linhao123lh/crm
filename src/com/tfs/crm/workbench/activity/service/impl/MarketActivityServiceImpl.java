@@ -64,11 +64,31 @@ public class MarketActivityServiceImpl implements MarketActivityService {
         return marketActivityDao.queryMarketActivityById(id);
     }
 
+    /**
+     * 查询市场活动明细
+     * @param activityId
+     * @return
+     */
     @Override
     public MarketActivity queryActivityDetailRemarkById(String activityId) {
         return marketActivityDao.queryActivityDetailRemarkById(activityId);
     }
 
+    /**
+     * 根据线索Id获取市场活动
+     * @param ClueId
+     * @return
+     */
+    @Override
+    public List<MarketActivity> queryActivityByClueId(String ClueId) {
+        return marketActivityDao.queryActivityByClueId(ClueId);
+    }
+
+    /**
+     * 保存更改的市场活动
+     * @param activity
+     * @return
+     */
     @Override
     public int saveEditMarketActivity(MarketActivity activity) {
         return marketActivityDao.saveEditMarketActivity(activity);

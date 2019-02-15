@@ -3,6 +3,7 @@ package com.tfs.crm.workbench.activity.service;
 import com.tfs.crm.commons.domain.PaginationVO;
 import com.tfs.crm.workbench.activity.domain.MarketActivity;
 
+import java.util.List;
 import java.util.Map;
 
 public interface MarketActivityService {
@@ -18,4 +19,6 @@ public interface MarketActivityService {
     int saveEditMarketActivity(MarketActivity activity);
 
     MarketActivity queryActivityDetailRemarkById(String activityId);
+
+    List<MarketActivity> queryActivityByClueId(String clueId);
 }

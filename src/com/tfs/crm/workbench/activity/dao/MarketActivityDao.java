@@ -19,4 +19,6 @@ public interface MarketActivityDao {
     int saveEditMarketActivity(MarketActivity activity);
 
     MarketActivity queryActivityDetailRemarkById(String activityId);
+
+    List<MarketActivity> queryActivityByClueId(String ClueId);
 }

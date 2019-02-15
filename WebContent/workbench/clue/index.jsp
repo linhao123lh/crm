@@ -406,7 +406,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += "<tr>";
 						htmlStr += "<td><input value='"+obj.id+"' type='checkbox' /></td>";
-						htmlStr += "<td name='fullName'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.fullName+obj.appellation+"</a></td>";
+						htmlStr += "<td name='fullName'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"workbench/clue/queryDetailClueById.do?id="+obj.id+"\";'>"+obj.fullName+obj.appellation+"</a></td>";
 						htmlStr += "<td name='company'>"+obj.company+"</td>";
 						htmlStr += "<td name='phone'>"+obj.phone+"</td>";
 						htmlStr += "<td name='mphone'>"+obj.mphone+"</td>";
@@ -1120,7 +1120,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<tbody id="clueTBody">
 						<%--<tr>
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">李四先生</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">李四先生</a></td>
 							<td>动力节点</td>
 							<td>010-84846003</td>
 							<td>12345678901</td>
@@ -1145,7 +1145,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</tr>
 						<tr class="active">
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">李四先生</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">李四先生</a></td>
 							<td>动力节点</td>
 							<td>010-84846003</td>
 							<td>12345678901</td>

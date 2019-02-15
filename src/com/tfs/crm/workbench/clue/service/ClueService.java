@@ -17,4 +17,6 @@ public interface ClueService {
     Clue queryClueById(String id);
 
     int saveEditClueByClue(Clue clue);
+
+    Clue queryDetailClueById(String id);
 }

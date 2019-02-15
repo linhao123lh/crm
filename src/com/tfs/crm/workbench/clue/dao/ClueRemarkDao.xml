@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tfs.crm.workbench.clue.dao.ClueRemarkDao">
+
+	<!-- 根据线索Id获取线索备注列表 -->
+	<select id="queryClueRemarkByClueId" parameterType="string" resultType="ClueRemark">
+		select cr.id, u1.name as notePerson, cr.noteContent, cr.noteTime, u2.name as editPerson, cr.editTime, cr.editFlag, cr.clueId
+		from tbl_clue_remark cr
+		join tbl_user u1 on cr.notePerson = u1.id
+		left join tbl_user u2 on cr.editPerson = u2.id
+		where cr.clueId = #{clueId}
+		order by cr.noteTime
+	</select>
+
+</mapper>

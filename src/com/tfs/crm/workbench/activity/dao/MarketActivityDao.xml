@@ -107,4 +107,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		left join tbl_user u3 on ma.editBy = u3.id
 		where ma.id=#{id}
 	</select>
+
+    <!-- 根据线索Id查询相关的市场活动 -->
+    <select id="queryActivityByClueId" parameterType="string" resultType="MarketActivity">
+        select ma.id, ma.name, dv1.text as type, dv2.text as state, ma.startDate,ma.endDate, u1.name as owner
+        from tbl_marketing_activities ma
+        left join tbl_dictionary_value dv1 on ma.type = dv1.id
+        left join tbl_dictionary_value dv2 on ma.state  = dv2.id
+		join tbl_user u1 on ma.owner = u1.id
+		join tbl_clue_activity_relation car on ma.id = car.activityId
+		where car.clueId = #{clueId}
+        order by ma.startDate
+    </select>
 </mapper>

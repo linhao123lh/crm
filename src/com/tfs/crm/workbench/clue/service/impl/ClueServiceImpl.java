@@ -47,4 +47,9 @@ public class ClueServiceImpl implements ClueService {
     public int saveEditClueByClue(Clue clue) {
         return clueDao.saveEditClueByClue(clue);
     }
+
+    @Override
+    public Clue queryDetailClueById(String id) {
+        return clueDao.queryDetailClueById(id);
+    }
 }
