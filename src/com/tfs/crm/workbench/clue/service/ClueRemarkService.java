@@ -8,4 +8,8 @@ public interface ClueRemarkService {
     List<ClueRemark> queryClueRemarkByClueId(String clueId);
 
     int saveCreateClueRemark(ClueRemark remark);
+
+    int deleteClueRemarkById(String id);
+
+    int saveEditClueRemark(ClueRemark remark);
 }

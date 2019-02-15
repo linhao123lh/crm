@@ -254,7 +254,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                 datatType:"json",
                 success:function (data) {
                     if (data.success){
-                        //移除一条市场活动备注,刷新类别
+                        //移除一条市场活动备注,刷新列表
                         $("#div_"+id).remove();
                     } else {
                         alert("删除市场活动备注失败");

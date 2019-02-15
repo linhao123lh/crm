@@ -33,4 +33,25 @@ public class ClueRemarkServiceImpl implements ClueRemarkService {
     public int saveCreateClueRemark(ClueRemark remark) {
         return clueRemarkDao.saveCreateClueRemark(remark);
     }
+
+    /**
+     * 根据id删除线索备注
+     * @param id
+     * @return
+     */
+    @Override
+    public int deleteClueRemarkById(String id) {
+        return clueRemarkDao.deleteClueRemarkById(id);
+    }
+
+    /**
+     * 保存修改的线索备注
+     * @param remark
+     * @return
+     */
+    @Override
+    public int saveEditClueRemark(ClueRemark remark) {
+        return clueRemarkDao.saveEditClueRemark(remark);
+    }
+
 }

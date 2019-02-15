@@ -370,6 +370,13 @@ public class ClueController {
         return "forward:/workbench/clue/detail.jsp";
     }
 
+    /**
+     * 保存创建的线索备注
+     * @param request
+     * @param noteContent
+     * @param clueId
+     * @return
+     */
     @RequestMapping(value = "saveCreateRemark.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> saveCreateRemark(HttpServletRequest request,
@@ -395,4 +402,49 @@ public class ClueController {
         }
         return retMap;
     }
+
+    /**
+     * 删除线索备注
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "deleteClueRemark.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> deleteClueRemark(@RequestParam(value = "id",required = true) String id){
+
+        int ret = clueRemarkService.deleteClueRemarkById(id);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
+    @RequestMapping(value = "saveEditClueRemark.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> saveEditClueRemark(HttpServletRequest request, @RequestParam(value = "id",required = true) String id,
+                                                 @RequestParam(value = "noteContent",required = true) String noteContent){
+        System.out.println("noteContent=============="+noteContent);
+        System.out.println("id=============="+id);
+        ClueRemark remark = new ClueRemark();
+        remark.setId(id);
+        remark.setNoteContent(noteContent);
+        remark.setEditFlag(1);
+        remark.setEditTime(DateUtil.formateDateTime(new Date()));
+        User user = (User) request.getSession().getAttribute("user");
+        remark.setEditPerson(user.getId());
+
+        int ret = clueRemarkService.saveEditClueRemark(remark);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+            retMap.put("remark",remark);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
 }

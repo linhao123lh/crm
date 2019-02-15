@@ -21,4 +21,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 values
 		 (#{id},#{notePerson},#{noteContent},#{noteTime},#{editFlag},#{clueId})
 	</insert>
+
+	<!-- 根据id删除线索备注 -->
+	<delete id="deleteClueRemarkById" parameterType="string">
+		delete from tbl_clue_remark where id = #{id}
+	</delete>
+
+	<!-- 保存修改的线索备注-->
+	<update id="saveEditClueRemark" parameterType="ClueRemark">
+		update tbl_clue_remark set noteContent=#{noteContent},editFlag=#{editFlag},editTime=#{editTime},
+			editPerson=#{editPerson} where id=#{id}
+	</update>
 </mapper>
