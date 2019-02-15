@@ -347,6 +347,12 @@ public class ClueController {
         return retMap;
     }
 
+    /**
+     * 获取线索详情
+     * @param request
+     * @param ClueId
+     * @return
+     */
     @RequestMapping("queryDetailClueById.do")
     public String queryDetailClueById(HttpServletRequest request,@RequestParam(value = "id",required = true) String ClueId){
 
@@ -362,5 +368,31 @@ public class ClueController {
         request.setAttribute("remarkList",remarkList);
         request.setAttribute("activityList",activityList);
         return "forward:/workbench/clue/detail.jsp";
+    }
+
+    @RequestMapping(value = "saveCreateRemark.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> saveCreateRemark(HttpServletRequest request,
+                                               @RequestParam(value = "noteContent",required = true) String noteContent,
+                                               @RequestParam(value = "clueId",required = true) String clueId){
+
+        ClueRemark remark = new ClueRemark();
+        remark.setId(UUIDUtil.getUuid());
+        remark.setEditFlag(0);
+        remark.setNoteContent(noteContent);
+        remark.setNoteTime(DateUtil.formateDateTime(new Date()));
+        User user = (User) request.getSession().getAttribute("user");
+        remark.setNotePerson(user.getId());
+        remark.setClueId(clueId);
+
+        int ret = clueRemarkService.saveCreateClueRemark(remark);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+            retMap.put("remark",remark);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
     }
 }

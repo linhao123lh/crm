@@ -23,4 +23,14 @@ public class ClueRemarkServiceImpl implements ClueRemarkService {
     public List<ClueRemark> queryClueRemarkByClueId(String clueId) {
         return clueRemarkDao.queryClueRemarkByClueId(clueId);
     }
+
+    /**
+     * 保存创建的线索备注
+     * @param remark
+     * @return
+     */
+    @Override
+    public int saveCreateClueRemark(ClueRemark remark) {
+        return clueRemarkDao.saveCreateClueRemark(remark);
+    }
 }

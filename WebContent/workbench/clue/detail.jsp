@@ -53,6 +53,55 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		$(".myHref").mouseout(function(){
 			$(this).children("span").css("color","#E6E6E6");
 		});
+
+		//给"保存"按钮添加点击事件
+		$("#saveCreateBtn").click(function () {
+			//收集参数
+			var noteContent = $.trim($("#remark").val());
+			var clueId = '${clue.id}';
+			//验证表单
+			if (noteContent == null || noteContent.length == 0){
+				alert("备注不能为空！");
+				return;
+			}
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/clue/saveCreateRemark.do",
+				data:{
+					noteContent:noteContent,
+					clueId:clueId
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//清空输入框
+						$("#remark").val("");
+						var htmlStr = "";
+						htmlStr += "";
+						htmlStr += " <div class='remarkDiv' style='height: 60px;'>";
+						htmlStr += " <img title='${user.name}' src='image/user-thumbnail.png' style='width: 30px; height:30px;'>";
+						htmlStr += " <div style='position: relative; top: -40px; left: 40px;' >";
+						htmlStr += " <h5>"+data.remark.noteContent+"</h5>";
+						htmlStr += " <font color='gray'>线索</font> <font color='gray'>-</font> <b>${clue.fullName}${clue.appellation}-${clue.company}</b> <small style='color: gray;'> "+data.remark.noteTime+" 由${user.name}创建</small>";
+						htmlStr += " <div style='position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;'>";
+						htmlStr += " <a class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-edit' style='font-size: 20px; color: #E6E6E6;'></span></a>";
+						htmlStr += " &nbsp;&nbsp;&nbsp;&nbsp;";
+						htmlStr += " <a class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-remove' style='font-size: 20px; color: #E6E6E6;'></span></a>";
+						htmlStr += " </div>";
+						htmlStr += " </div>";
+						htmlStr += " </div>";
+						$("#remarkDiv").before(htmlStr);
+					}else {
+						alert("创建线索备注失败！");
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+
 	});
 	
 </script>
@@ -560,7 +609,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<textarea id="remark" class="form-control" style="width: 850px; resize : none;" rows="2"  placeholder="添加备注..."></textarea>
 				<p id="cancelAndSaveBtn" style="position: relative;left: 737px; top: 10px; display: none;">
 					<button id="cancelBtn" type="button" class="btn btn-default">取消</button>
-					<button type="button" class="btn btn-primary">保存</button>
+					<button id="saveCreateBtn" type="button" class="btn btn-primary">保存</button>
 				</p>
 			</form>
 		</div>

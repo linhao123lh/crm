@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ClueRemarkDao {
     List<ClueRemark> queryClueRemarkByClueId(String clueId);
+
+    int saveCreateClueRemark(ClueRemark remark);
 }

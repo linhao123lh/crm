@@ -14,4 +14,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by cr.noteTime
 	</select>
 
+	<!-- 保存创建的线索备注 -->
+	<insert id="saveCreateClueRemark" parameterType="ClueRemark">
+		insert into tbl_clue_remark
+		 (id, notePerson, noteContent, noteTime, editFlag, clueId)
+		 values
+		 (#{id},#{notePerson},#{noteContent},#{noteTime},#{editFlag},#{clueId})
+	</insert>
 </mapper>
