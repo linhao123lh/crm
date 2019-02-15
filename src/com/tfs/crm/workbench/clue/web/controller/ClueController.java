@@ -239,6 +239,35 @@ public class ClueController {
         return retMap;
     }
 
+    /**
+     * 保存并更新线索信息
+     * @param request
+     * @param owner
+     * @param company
+     * @param appellation
+     * @param fullName
+     * @param job
+     * @param email
+     * @param phone
+     * @param website
+     * @param mphone
+     * @param state
+     * @param source
+     * @param empNumsStr
+     * @param industry
+     * @param grade
+     * @param annualIncomeStr
+     * @param description
+     * @param contactSummary
+     * @param nextContactTime
+     * @param country
+     * @param province
+     * @param city
+     * @param street
+     * @param zipcode
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "saveEditClue.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> saveEditClueByClue(HttpServletRequest request, @RequestParam(value = "owner",required = true) String owner,

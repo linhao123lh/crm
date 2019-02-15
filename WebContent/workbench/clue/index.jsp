@@ -345,6 +345,31 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			});
 		});
 
+		//当页面加载完成之后,默认选中"添加字段"下的所有复选框
+		$("#definedColumns input[type='checkbox']").prop("checked",true);
+
+		//给"添加字段"下所有的复选框添加单击事件
+		$("#definedColumns input[type='checkbox']").click(function () {
+			if (this.checked){
+				$("td[name='"+this.name+"']").show();
+			} else {
+				$("td[name='"+this.name+"']").hide();
+			}
+		});
+
+		//给"全选"复选框添加单击事件
+		$("#ckd_all").click(function () {
+			$("#clueTBody input[type='checkbox']").prop("checked",this.checked);
+		});
+
+		//给列表中所有的复选框添加单击事件
+		$("#clueTBody").on("click","input[type='checkbox']",function () {
+			if ($("#clueTBody input[type='checkbox']:checked").length == $("#clueTBody input[type='checkbox']").length){
+				$("#ckd_all").prop("checked",true);
+			} else {
+				$("#ckd_all").prop("checked",false);
+			}
+		})
 
 		//分页列表
 		function display(pageNo,pageSize) {
@@ -381,28 +406,29 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += "<tr>";
 						htmlStr += "<td><input value='"+obj.id+"' type='checkbox' /></td>";
-						htmlStr += "<td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.fullName+obj.appellation+"</a></td>";
-						htmlStr += "<td>"+obj.company+"</td>";
-						htmlStr += "<td>"+obj.phone+"</td>";
-						htmlStr += "<td>"+obj.mphone+"</td>";
-						htmlStr += "<td>"+obj.email+"</td>";
-						htmlStr += "<td>"+obj.source+"</td>";
-						htmlStr += "<td>"+obj.owner+"</td>";
-						htmlStr += "<td>"+obj.job+"</td>";
-						htmlStr += "<td>"+obj.website+"</td>";
-						htmlStr += "<td>"+obj.state+"</td>";
-						htmlStr += "<td>"+obj.industry+"</td>";
-						htmlStr += "<td>"+obj.empNums+"</td>";
-						htmlStr += "<td>"+obj.annualIncome+"</td>";
-						htmlStr += "<td>"+obj.grade+"</td>";
-						htmlStr += "<td>"+obj.createBy+"</td>";
-						htmlStr += "<td>"+obj.createTime+"</td>";
-						htmlStr += "<td>"+(obj.editBy==null?'':obj.editBy)+"</td>";
-						htmlStr += "<td>"+(obj.editTime==null?'':obj.editTime)+"</td>";
-						htmlStr += "<td>"+obj.country+obj.province+obj.city+obj.street+"</td>";
-						htmlStr += "<td>"+obj.description+"</td>";
-						htmlStr += "<td>"+obj.contactSummary+"</td>";
-						htmlStr += "<td>"+obj.nextContactTime+"</td>";
+						htmlStr += "<td name='fullName'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.fullName+obj.appellation+"</a></td>";
+						htmlStr += "<td name='company'>"+obj.company+"</td>";
+						htmlStr += "<td name='phone'>"+obj.phone+"</td>";
+						htmlStr += "<td name='mphone'>"+obj.mphone+"</td>";
+						htmlStr += "<td name='email'>"+obj.email+"</td>";
+						htmlStr += "<td name='source'>"+obj.source+"</td>";
+						htmlStr += "<td name='owner'>"+obj.owner+"</td>";
+						htmlStr += "<td name='job'>"+obj.job+"</td>";
+						htmlStr += "<td name='website'>"+obj.website+"</td>";
+						htmlStr += "<td name='state'>"+obj.state+"</td>";
+						htmlStr += "<td name='industry'>"+obj.industry+"</td>";
+						htmlStr += "<td name='empNums'>"+obj.empNums+"</td>";
+						htmlStr += "<td name='annualIncome'>"+obj.annualIncome+"</td>";
+						htmlStr += "<td name='grade'>"+obj.grade+"</td>";
+						htmlStr += "<td name='createBy'>"+obj.createBy+"</td>";
+						htmlStr += "<td name='createTime'>"+obj.createTime+"</td>";
+						htmlStr += "<td name='editBy'>"+(obj.editBy==null?'':obj.editBy)+"</td>";
+						htmlStr += "<td name='editTime'>"+(obj.editTime==null?'':obj.editTime)+"</td>";
+						htmlStr += "<td name='address'>"+obj.country+obj.province+obj.city+obj.street+"</td>";
+						htmlStr += "<td name='description'>"+obj.description+"</td>";
+						htmlStr += "<td name='contactSummary'>"+obj.contactSummary+"</td>";
+						htmlStr += "<td name='nextContactTime'>"+obj.nextContactTime+"</td>";
+
 						htmlStr += "</tr>";
 					});
 					$("#clueTBody").html(htmlStr);
@@ -1028,28 +1054,28 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<ul id="definedColumns" class="dropdown-menu" role="menu"> 
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 名称</a></li><!-- 线索名称=姓名+称呼 -->
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 公司</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 电话</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 手机</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 邮箱</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 来源</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 所有者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 职位</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 网站</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 状态</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 行业</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 员工数</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 年收入</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 等级</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 创建者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 创建时间</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 修改者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 修改时间</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 地址</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 描述</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 联系纪要</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 下次联系时间</a></li>
+						<li><a href="javascript:void(0);"><input name="fullName" type="checkbox"/> 名称</a></li><!-- 线索名称=姓名+称呼 -->
+						<li><a href="javascript:void(0);"><input name="company" type="checkbox"/> 公司</a></li>
+						<li><a href="javascript:void(0);"><input name="phone" type="checkbox"/> 电话</a></li>
+						<li><a href="javascript:void(0);"><input name="mphone" type="checkbox"/> 手机</a></li>
+						<li><a href="javascript:void(0);"><input name="email" type="checkbox"/> 邮箱</a></li>
+						<li><a href="javascript:void(0);"><input name="source" type="checkbox"/> 来源</a></li>
+						<li><a href="javascript:void(0);"><input name="owner" type="checkbox"/> 所有者</a></li>
+						<li><a href="javascript:void(0);"><input name="job" type="checkbox"/> 职位</a></li>
+						<li><a href="javascript:void(0);"><input name="website" type="checkbox"/> 网站</a></li>
+						<li><a href="javascript:void(0);"><input name="state" type="checkbox"/> 状态</a></li>
+						<li><a href="javascript:void(0);"><input name="industry" type="checkbox"/> 行业</a></li>
+						<li><a href="javascript:void(0);"><input name="empNums" type="checkbox"/> 员工数</a></li>
+						<li><a href="javascript:void(0);"><input name="annualIncome" type="checkbox"/> 年收入</a></li>
+						<li><a href="javascript:void(0);"><input name="grade" type="checkbox"/> 等级</a></li>
+						<li><a href="javascript:void(0);"><input name="createBy" type="checkbox"/> 创建者</a></li>
+						<li><a href="javascript:void(0);"><input name="createTime" type="checkbox"/> 创建时间</a></li>
+						<li><a href="javascript:void(0);"><input name="editBy" type="checkbox"/> 修改者</a></li>
+						<li><a href="javascript:void(0);"><input name="editTime" type="checkbox"/> 修改时间</a></li>
+						<li><a href="javascript:void(0);"><input name="address" type="checkbox"/> 地址</a></li>
+						<li><a href="javascript:void(0);"><input name="description" type="checkbox"/> 描述</a></li>
+						<li><a href="javascript:void(0);"><input name="contactSummary" type="checkbox"/> 联系纪要</a></li>
+						<li><a href="javascript:void(0);"><input name="nextContactTime" type="checkbox"/> 下次联系时间</a></li>
 					</ul>
 				</div>
 
@@ -1066,29 +1092,29 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<table class="table table-hover">
 					<thead>
 						<tr style="color: #B3B3B3;">
-							<td><input type="checkbox" /></td>
-							<td width="80px">名称</td>
-							<td width="100px">公司</td>
-							<td width="80px">电话</td>
-							<td>手机</td>
-							<td>邮箱</td>
-							<td width="80px">来源</td>
-							<td>所有者</td>
-							<td width="50px">职位</td>
-							<td>网站</td>
-							<td width="70px">状态</td>
-							<td width="120px">行业</td>
-							<td>员工数</td>
-							<td>年收入</td>
-							<td width="70px">等级</td>
-							<td width="50px">创建者</td>
-							<td width="150px">创建时间</td>
-							<td width="50px">修改者</td>
-							<td width="150px">修改时间</td>
-							<td width="150px">地址</td>
-							<td width="100px">描述</td>
-							<td width="80px">联系纪要</td>
-							<td>下次联系时间</td>
+							<td><input id="ckd_all" type="checkbox" /></td>
+							<td name="fullName" width="80px">名称</td>
+							<td name="company" width="100px">公司</td>
+							<td name="phone" width="80px">电话</td>
+							<td name="mphone">手机</td>
+							<td name="email">邮箱</td>
+							<td name="source" width="80px">来源</td>
+							<td name="owner">所有者</td>
+							<td name="job" width="50px">职位</td>
+							<td name="website">网站</td>
+							<td name="state" width="70px">状态</td>
+							<td name="industry" width="120px">行业</td>
+							<td name="empNums">员工数</td>
+							<td name="annualIncome">年收入</td>
+							<td name="grade" width="70px">等级</td>
+							<td name="createBy" width="50px">创建者</td>
+							<td name="createTime" width="150px">创建时间</td>
+							<td name="editBy" width="50px">修改者</td>
+							<td name="editTime" width="150px">修改时间</td>
+							<td name="address" width="150px">地址</td>
+							<td name="description" width="100px">描述</td>
+							<td name="contactSummary" width="80px">联系纪要</td>
+							<td name="nextContactTime">下次联系时间</td>
 						</tr>
 					</thead>
 					<tbody id="clueTBody">
