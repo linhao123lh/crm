@@ -8,7 +8,9 @@ import com.tfs.crm.settings.qx.user.service.UserService;
 import com.tfs.crm.workbench.activity.domain.MarketActivity;
 import com.tfs.crm.workbench.activity.service.MarketActivityService;
 import com.tfs.crm.workbench.clue.domain.Clue;
+import com.tfs.crm.workbench.clue.domain.ClueActivityRelation;
 import com.tfs.crm.workbench.clue.domain.ClueRemark;
+import com.tfs.crm.workbench.clue.service.ClueActivityRelationService;
 import com.tfs.crm.workbench.clue.service.ClueRemarkService;
 import com.tfs.crm.workbench.clue.service.ClueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
+import java.util.*;
 
 @Controller
 @RequestMapping("workbench/clue")
@@ -37,6 +35,8 @@ public class ClueController {
     private ClueRemarkService clueRemarkService;
     @Autowired
     private MarketActivityService marketActivityService;
+    @Autowired
+    private ClueActivityRelationService clueActivityRelationService;
 
     /**
      * 创建线索
@@ -452,6 +452,12 @@ public class ClueController {
         return retMap;
     }
 
+    /**
+     * 查询要关联的市场活动
+     * @param name
+     * @param clueId
+     * @return
+     */
     @RequestMapping(value = "bundMarketActivity.do",method = RequestMethod.POST)
     @ResponseBody
     public List<MarketActivity> bundMarketActivity(@RequestParam(value = "name",required = true) String name,
@@ -467,4 +473,58 @@ public class ClueController {
         return activityList;
     }
 
+    /**
+     * 关联市场活动
+     * @param activityIds
+     * @param clueId
+     * @return
+     */
+    @RequestMapping(value = "relationActivityByActivityIdClueId.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> relationActivity(@RequestParam(value = "activityId",required = true) String[] activityIds,
+                                               @RequestParam(value = "clueId",required = true) String clueId){
+
+        //封装参数
+        List<ClueActivityRelation> relationList = new ArrayList<ClueActivityRelation>();
+        ClueActivityRelation relation = null;
+        for (String activityId : activityIds) {
+            relation = new ClueActivityRelation();
+            relation.setActivityId(activityId);
+            relation.setClueId(clueId);
+            relation.setId(UUIDUtil.getUuid());
+            relationList.add(relation);
+        }
+        //调用service方法
+        int ret = clueActivityRelationService.relationActivityByActivityIdClueId(relationList);
+
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+            List<MarketActivity> activityList = marketActivityService.queryMarketActivityByIds(activityIds);
+            retMap.put("activityList",activityList);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
+    @RequestMapping(value = "saveUnbundActivity.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> saveUnbundActivity(@RequestParam(value = "activityId",required = true) String activityId,
+                                                 @RequestParam(value = "clueId",required = true) String clueId){
+
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("activityId",activityId);
+        paramMap.put("clueId",clueId);
+        int ret = clueActivityRelationService.saveUnbundActivityByActivityIdClueId(paramMap);
+
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+
+    }
 }

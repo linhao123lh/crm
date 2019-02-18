@@ -131,4 +131,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			select activityId from tbl_clue_activity_relation  where clueId = #{clueId})
 	</select>
 
+	<!-- 根据ids批量查询市场活动-->
+	<select id="queryMarketActivityByIds" parameterType="string" resultType="MarketActivity">
+		select ma.id, ma.name, dv1.text as type, dv2.text as state, ma.startDate,ma.endDate, u1.name as owner
+        from tbl_marketing_activities ma
+        left join tbl_dictionary_value dv1 on ma.type = dv1.id
+        left join tbl_dictionary_value dv2 on ma.state  = dv2.id
+		join tbl_user u1 on ma.owner = u1.id
+		where ma.id in 
+		<foreach collection="array" item="id" separator="," open="(" close=")">
+			#{id}
+		</foreach>
+	</select>
+
 </mapper>

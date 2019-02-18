@@ -95,6 +95,16 @@ public class MarketActivityServiceImpl implements MarketActivityService {
     }
 
     /**
+     * 根据ids批量查询市场活动
+     * @param ids
+     * @return
+     */
+    @Override
+    public List<MarketActivity> queryMarketActivityByIds(String[] ids) {
+        return marketActivityDao.queryMarketActivityByIds(ids);
+    }
+
+    /**
      * 保存更改的市场活动
      * @param activity
      * @return

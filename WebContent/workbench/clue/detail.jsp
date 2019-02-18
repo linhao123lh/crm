@@ -232,7 +232,96 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			});
 		});
 
+		//给"关联"按钮添加点击事件
+        $("#relationActivityBtn").click(function () {
+            //收集参数
+            var ckdActivityIds = $("#activityListTBody input[type='checkbox']:checked");
+            var clueId = "${clue.id}";
+            //验证参数
+            if (ckdActivityIds == null || ckdActivityIds.length == 0){
+                alert("请选择要关联的市场活动！");
+                return;
+            }
+            //优化参数
+			var ids = "";
+			$.each(ckdActivityIds,function (index,obj) {
+				ids += "activityId="+obj.value+"&"
+			});
+			ids += "clueId="+clueId;
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/clue/relationActivityByActivityIdClueId.do",
+				data:ids,
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//关闭模态窗口
+						$("#bundModal").modal("hide");
+						//刷新列表
+						var htmlStr = "";
+						$.each(data.activityList,function (index,obj) {
+							htmlStr += "<tr id='tr_"+obj.id+"'>";
+							htmlStr += "<td>"+obj.name+"</td>";
+							htmlStr += "<td>"+obj.type+"</td>";
+							htmlStr += "<td>"+obj.state+"</td>";
+							htmlStr += "<td>"+obj.startDate+"</td>";
+							htmlStr += "<td>"+obj.endDate+"</td>";
+							htmlStr += "<td>"+obj.owner+"</td>";
+							htmlStr += "<td><a activity-id="+obj.id+" href='javascript:void(0);' style='text-decoration: none;'><span class='glyphicon glyphicon-remove'></span>解除关联</a></td>";
+							htmlStr += "</tr>";
+						});
+						$("#activityTableTBody").append(htmlStr);
+					} else {
+						alert("关联失败！");
+						$("#bundModal").modal("show");
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
 
+        });
+
+        //给"解除关联按钮"添加点击事件
+		$("#activityTableTBody").on("click","a",function () {
+			var id = $(this).attr("activity-id");
+			$("#unbundActivityText").val(id);
+			$("#unbundModal").modal("show");
+		})
+
+		//给"确定"按钮添加点击事件
+		$("#saveUnbundActivityBtn").click(function () {
+			//收集参数
+			var activityId = $("#unbundActivityText").val();
+			var clueId = "${clue.id}";
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/clue/saveUnbundActivity.do",
+				data:{
+					activityId:activityId,
+					clueId:clueId
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//关闭模态窗口
+						$("#unbundModal").modal("hide");
+						//移除关联关系
+						$("#tr_"+activityId).remove();
+					} else {
+						alert("解除关联失败！");
+						$("#unbundModal").modal("show");
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+
+			});
+		});
 	});
 	
 </script>
@@ -279,12 +368,13 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					</button>
 					<h4 class="modal-title">解除关联</h4>
 				</div>
+				<input id="unbundActivityText" type="hidden">
 				<div class="modal-body">
 					<p>您确定要解除该关联关系吗？</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-danger" data-dismiss="modal">确定</button>
+					<button id="saveUnbundActivityBtn" type="button" class="btn btn-danger">确定</button>
 				</div>
 			</div>
 		</div>
@@ -346,7 +436,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">关联</button>
+					<button id="relationActivityBtn" type="button" class="btn btn-primary">关联</button>
 				</div>
 			</div>
 		</div>
@@ -794,17 +884,17 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<td></td>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="activityTableTBody">
 						<c:if test="${not empty activityList}">
 							<c:forEach var="activity" items="${activityList}">
-								<tr>
+								<tr id="tr_${activity.id}">
 									<td>${activity.name}</td>
 									<td>${activity.type}</td>
 									<td>${activity.state}</td>
 									<td>${activity.startDate}</td>
 									<td>${activity.endDate}</td>
 									<td>${activity.owner}</td>
-									<td><a href="javascript:void(0);" data-toggle="modal" data-target="#unbundModal" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>
+									<td><a activity-id="${activity.id}" href="javascript:void(0);" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>
 								</tr>
 							</c:forEach>
 						</c:if>

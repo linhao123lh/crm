@@ -23,4 +23,6 @@ public interface MarketActivityService {
     List<MarketActivity> queryActivityByClueId(String clueId);
 
     List<MarketActivity> queryActivityByNameClueId(Map<String, Object> paramMap);
+
+    List<MarketActivity> queryMarketActivityByIds(String[] ids);
 }
