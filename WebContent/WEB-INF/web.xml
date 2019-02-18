@@ -47,6 +47,10 @@
 	<listener>
 		<listener-class>com.tfs.crm.commons.web.listener.QueryGradeContextListener</listener-class>
 	</listener>
+	<!-- 注册阶段的监听器-->
+	<listener>
+		<listener-class>com.tfs.crm.commons.web.listener.QueryStageContextListener</listener-class>
+	</listener>
 
   <!-- 登录过滤器 -->
   <filter>

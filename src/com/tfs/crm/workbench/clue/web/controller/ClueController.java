@@ -508,11 +508,16 @@ public class ClueController {
         return retMap;
     }
 
+    /**
+     * 解除关联
+     * @param activityId
+     * @param clueId
+     * @return
+     */
     @RequestMapping(value = "saveUnbundActivity.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> saveUnbundActivity(@RequestParam(value = "activityId",required = true) String activityId,
                                                  @RequestParam(value = "clueId",required = true) String clueId){
-
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("activityId",activityId);
         paramMap.put("clueId",clueId);
@@ -525,6 +530,18 @@ public class ClueController {
             retMap.put("success",false);
         }
         return retMap;
+    }
 
+    /**
+     * 根据姓名模糊查询市场活动
+     * @param name
+     * @return
+     */
+    @RequestMapping(value = "queryMarketActivityByName.do",method = RequestMethod.POST)
+    @ResponseBody
+    public List<MarketActivity> queryMarketActivityByName(@RequestParam(value = "name",required = false) String name){
+
+        List<MarketActivity> activityList = marketActivityService.queryActivityByName(name);
+        return activityList;
     }
 }

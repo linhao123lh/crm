@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tfs.crm.workbench.clue.dao.ClueActivityRelationDao">
+
+	<!-- 批量保存线索关联的市场活动-->
+	<insert id="insertBatchRelationActivityClue" parameterType="ClueActivityRelation">
+		insert into tbl_clue_activity_relation (id, clueId, activityId) values
+		<foreach collection="list" separator="," item="item">
+			(#{item.id},#{item.clueId},#{item.activityId})
+		</foreach>
+	</insert>
+
+	<!-- 删除线索和市场活动关联关系-->
+	<delete id="deleteRelationByActivityIdClueId" parameterType="hashmap">
+		delete from tbl_clue_activity_relation where activityId=#{activityId} and clueId=#{clueId}
+	</delete>
+</mapper>

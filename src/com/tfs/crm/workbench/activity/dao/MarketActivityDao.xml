@@ -144,4 +144,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</foreach>
 	</select>
 
+	<!-- 根据姓名模糊查询市场活动-->
+	<select id="queryActivityByName" parameterType="string" resultType="MarketActivity">
+		select ma.id, u1.name as owner, dv1.text as type, dv2.text as state, ma.name, ma.startDate, ma.endDate
+		from tbl_marketing_activities ma
+		join tbl_user u1 on ma.owner = u1.id
+		left join tbl_dictionary_value dv1 on ma.type = dv1.id
+		left join tbl_dictionary_value dv2 on ma.state = dv2.id
+		where ma.name like '%' #{name} '%'
+		order by ma.startDate
+	</select>
 </mapper>

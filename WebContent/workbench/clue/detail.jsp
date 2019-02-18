@@ -322,6 +322,18 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 
 			});
 		});
+
+		//给"转换"按钮添加点击事件
+		$("#convertBtn").click(function () {
+			var id = "${clue.id}";
+			var fullName = "${clue.fullName}";
+			var appellation = "${clue.appellation}";
+			var owner = "${clue.owner}";
+			var company = "${clue.company}";
+			//发生请求
+			window.location.href = "workbench/clue/convert.jsp?id="+id+"&fullName="+fullName+"&appellation="+appellation+"&owner="+owner+"&company="+company;
+		});
+
 	});
 	
 </script>
@@ -678,7 +690,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		</div>
 		<div style="position: relative; height: 50px; width: 500px;  top: -72px; left: 700px;">
 			<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> 发送邮件</button>
-			<button type="button" class="btn btn-default" onclick="window.location.href='convert.html';"><span class="glyphicon glyphicon-retweet"></span> 转换</button>
+			<button id="convertBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-retweet"></span> 转换</button>
 			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editClueModal"><span class="glyphicon glyphicon-edit"></span> 编辑</button>
 			<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 		</div>
