@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tfs.crm.workbench.contacts.dao.ContactsDao">
+
+	<!-- 保存创建的联系人-->
+	<insert id="saveCreateContacts" parameterType="Contacts">
+		insert into tbl_contacts
+		(id, owner, source, appellation, fullName, email, job, mphone, description, country, province, city, street, zipcode, birth, customerId, createBy, createTime, contactSummary)
+		values
+		(#{id},#{owner},#{source},#{appellation},#{fullName},#{email},#{job},#{mphone},#{description},#{country},#{province},#{city},#{street},#{zipcode},#{birth},#{customerId},#{createBy},#{createTime},#{contactSummary})
+	</insert>
+
+</mapper>

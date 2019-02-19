@@ -42,4 +42,14 @@ public class CustomerServiceImpl implements CustomerService {
         vo.setCount(count);
         return vo;
     }
+
+    /**
+     * 根据客户名称模糊查询客户列表
+     * @param name
+     * @return
+     */
+    @Override
+    public List<Customer> queryCustomerByName(String name) {
+        return customerDao.queryCustomerByName(name);
+    }
 }

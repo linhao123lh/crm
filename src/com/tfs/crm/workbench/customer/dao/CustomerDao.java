@@ -12,4 +12,6 @@ public interface CustomerDao {
     List<Customer> queryCustomerForPageByCondition(Map<String, Object> paramMap);
 
     Long queryCountByCondition(Map<String, Object> paramMap);
+
+    List<Customer> queryCustomerByName(String name);
 }

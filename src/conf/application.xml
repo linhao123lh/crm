@@ -27,6 +27,8 @@
 		<context:component-scan base-package="com.tfs.crm.workbench.clue.service"/>
 		<!-- 客户 -->
 		<context:component-scan base-package="com.tfs.crm.workbench.customer.serivce"/>
+		<!-- 联系人-->
+		<context:component-scan base-package="com.tfs.crm.workbench.contacts.serivice"/>
 
         <!-- 加载数据库配置文件 -->
         <context:property-placeholder location="classpath:conf/db.properties"/>
@@ -51,7 +53,7 @@
         	<property name="basePackage"
 					  value="com.tfs.crm.settings.qx.user.dao,com.tfs.crm.settings.dictionary.value.dao
 					  com.tfs.crm.workbench.activity.dao,com.tfs.crm.workbench.clue.dao,
-					  com.tfs.crm.workbench.customer.dao"></property>
+					  com.tfs.crm.workbench.customer.dao,com.tfs.crm.workbench.contacts.dao"></property>
 
         </bean>
 </beans>

@@ -74,4 +74,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</select>
+
+	<!-- 根据客户名称模糊查询客户列表-->
+	<select id="queryCustomerByName" parameterType="string" resultType="Customer">
+		select * from tbl_customer where name like '%' #{name} '%'
+	</select>
+
 </mapper>
