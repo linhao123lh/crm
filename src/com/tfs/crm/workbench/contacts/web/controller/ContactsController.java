@@ -1,5 +1,6 @@
 package com.tfs.crm.workbench.contacts.web.controller;
 
+import com.tfs.crm.commons.domain.PaginationVO;
 import com.tfs.crm.commons.util.DateUtil;
 import com.tfs.crm.commons.util.UUIDUtil;
 import com.tfs.crm.settings.qx.user.domain.User;
@@ -10,10 +11,7 @@ import com.tfs.crm.workbench.customer.domain.Customer;
 import com.tfs.crm.workbench.customer.serivce.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -127,5 +125,37 @@ public class ContactsController {
             retMap.put("success",false);
         }
         return retMap;
+    }
+
+    @PostMapping("queryContactsForPageByCondition.do")
+    @ResponseBody
+    public PaginationVO<Contacts> queryContactsForPageByCondition(@RequestParam(value = "pageNo",required = true) String pageNoStr,
+                                                                  @RequestParam(value = "pageSize",required = true) String pageSizeStr,
+                                                                  @RequestParam(value = "owner",required = false) String owner,
+                                                                  @RequestParam(value = "fullName",required = false) String fullName,
+                                                                  @RequestParam(value = "customerName",required = false) String customerName,
+                                                                  @RequestParam(value = "source",required = false) String source,
+                                                                  @RequestParam(value = "birth",required = false) String birth){
+        //封装参数
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("owner",owner);
+        paramMap.put("fullName",fullName);
+        paramMap.put("customerName",customerName);
+        paramMap.put("source",source);
+        paramMap.put("birth",birth);
+        int pageNo = 1;
+        if (pageNoStr != null && pageNoStr.length() > 0 && !"0".equals(pageNoStr) ){
+            pageNo = Integer.parseInt(pageNoStr);
+        }
+        int pageSize = 10;
+        if (pageSizeStr != null && pageSizeStr.length() > 0 && !"0".equals(pageSizeStr) ){
+            pageSize = Integer.parseInt(pageSizeStr);
+        }
+        int beginNo = (pageNo-1) * pageSize;
+        paramMap.put("pageSize",pageSize);
+        paramMap.put("beginNo",beginNo);
+        //调用service方法
+        PaginationVO<Contacts> vo = contactsService.queryContactsForPageByCondition(paramMap);
+        return vo;
     }
 }
