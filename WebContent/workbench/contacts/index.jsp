@@ -152,8 +152,9 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				dataType:"json",
 				success:function (data) {
 					if (data.success){
-						alert("创建成功！")
 						$("#createContactsModal").modal("hide");
+						//显示列表第一页
+						display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
 					} else {
 						alert("创建联系人失败！");
 						$("#createContactsModal").modal("show");
@@ -170,7 +171,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 
 		//给"查询"按钮添加点击事件
 		$("#queryContactsBtn").click(function () {
-			display(1,10);
+			display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
 		});
 
 		//分页查询
@@ -221,6 +222,34 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					});
 					$("#contactsListTBody").html(htmlStr);
 					$("#contactsListTBody tr:even").addClass("active");
+
+					var totalPages = 10;
+					if (data.count % pageSize == 0){
+						totalPages = Math.floor(data.count / pageSize);
+					} else {
+						totalPages = Math.floor(data.count / pageSize) + 1;
+					}
+
+					//分页
+					$("#pageNoDiv").bs_pagination({
+						currentPage:pageNo,//当前页号
+						rowsPerPage:pageSize,//每页显示条数
+						totalRows:data.count,//总条数
+						totalPages: totalPages, //总页数. 必须根据总条数和每页显示条数手动计算总页数.
+
+						visiblePageLinks:5,//最多可以显示的卡片数
+
+						showGoToPage:true,//是否显示跳转到第几页
+						showRowsPerPage:true,//是否显示每页显示条数
+						showRowsInfo:true,//是否显示记录信息
+						/**
+						 用来监听页号切换的事件.
+						 event就代表这个事件;pageObj就代表翻页信息.
+						 */
+						onChangePage: function(event,pageObj) { // returns page_num and rows_per_page after a link has clicked
+							display(pageObj.currentPage,pageObj.rowsPerPage);
+						}
+					});
 				},
 				error:function () {
 					alert("请求失败！");
@@ -733,9 +762,10 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</tr>--%>
 					</tbody>
 				</table>
+				<div id="pageNoDiv"></div>
 			</div>
 			
-			<div style="height: 50px; position: relative;top: 10px;">
+			<%--<div style="height: 50px; position: relative;top: 10px;">
 				<div>
 					<button type="button" class="btn btn-default" style="cursor: default;">共<b>50</b>条记录</button>
 				</div>
@@ -768,7 +798,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</ul>
 					</nav>
 				</div>
-			</div>
+			</div>--%>
 			
 		</div>
 		
