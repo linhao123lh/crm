@@ -15,10 +15,7 @@ import com.tfs.crm.workbench.clue.service.ClueRemarkService;
 import com.tfs.crm.workbench.clue.service.ClueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -543,5 +540,34 @@ public class ClueController {
 
         List<MarketActivity> activityList = marketActivityService.queryActivityByName(name);
         return activityList;
+    }
+
+    @PostMapping("saveClueConvert.do")
+    @ResponseBody
+    public Map<String,Object> saveClueConvert(HttpServletRequest request,String clueId, String isCreateTransaction,String amountOfMoney,
+                                              String tradeName, String expectedClosingDate, String stage, String activityId){
+
+        //封装参数
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("clueId",clueId);
+        User user = (User) request.getSession().getAttribute("user");
+        paramMap.put("user",user);
+        paramMap.put("isCreateTransaction",isCreateTransaction);
+        if ("true".equals(isCreateTransaction)){
+            paramMap.put("amountOfMoney",amountOfMoney);
+            paramMap.put("tradeName",tradeName);
+            paramMap.put("expectedClosingDate",expectedClosingDate);
+            paramMap.put("stage",stage);
+            paramMap.put("activityId",activityId);
+        }
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        try {
+            clueService.saveClueConvert(paramMap);
+            retMap.put("success",true);
+        }catch (Exception e){
+            e.printStackTrace();
+            retMap.put("success",false);
+        }
+        return retMap;
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tfs.crm.workbench.contacts.dao.ContactsRemarkDao">
+
+    <!-- 批量创建联系人备注-->
+    <insert id="saveContactsRemarkByList" parameterType="ContactsRemark">
+        insert into tbl_contacts_remark (id, notePerson, noteContent, noteTime, editPerson, editTime, editFlag, contactsId)
+        values
+        <foreach collection="list" item="obj" separator=",">
+            (#{obj.id},#{obj.notePerson},#{obj.noteContent},#{obj.noteTime},#{obj.editPerson},#{obj.editTime},#{obj.editFlag},#{obj.contactsId})
+        </foreach>
+    </insert>
+
+</mapper>

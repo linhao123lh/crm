@@ -146,4 +146,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		left join tbl_user u3 on c.editBy = u3.id
 		where c.id = #{id}
 	</select>
+
+	<!-- 根据Id删除线索-->
+	<delete id="deleteClueById" parameterType="string">
+		delete from tbl_clue where id = #{clueId}
+	</delete>
 </mapper>

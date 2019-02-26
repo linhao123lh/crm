@@ -11,4 +11,6 @@ public interface ContactsDao {
     List<Contacts> queryContactsForPageByCondition(Map<String, Object> paramMap);
 
     Long queryCountByCondition(Map<String, Object> paramMap);
+
+    Contacts queryContactsByClueFullName(String fullName);
 }

@@ -32,4 +32,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update tbl_clue_remark set noteContent=#{noteContent},editFlag=#{editFlag},editTime=#{editTime},
 			editPerson=#{editPerson} where id=#{id}
 	</update>
+
+	<!-- 根据线索Id获取线索备注List-->
+	<select id="queryClueRemarkListByClueId" parameterType="string" resultType="ClueRemark">
+		select * from tbl_clue_remark where clueId = #{clueId}
+	</select>
+
+	<!-- 根据线索Id批量删除线索备注-->
+	<delete id="deleteClueRemarkByClueId" parameterType="string">
+		delete from tbl_clue_remark where clueId = #{clueId}
+	</delete>
 </mapper>

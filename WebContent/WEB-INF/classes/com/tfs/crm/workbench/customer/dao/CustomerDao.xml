@@ -80,4 +80,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from tbl_customer where name like '%' #{name} '%'
 	</select>
 
+	<!-- 根据线索的公司名称精准查询客户信息-->
+	<select id="queryCustomerByClueCompany" parameterType="string" resultType="Customer">
+		select * from tbl_customer where name = #{name}
+	</select>
+
 </mapper>

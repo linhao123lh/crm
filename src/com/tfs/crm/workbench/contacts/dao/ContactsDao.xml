@@ -72,4 +72,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</select>
+
+	<!-- 根据线索的名称精准查询联系人信息-->
+	<select id="queryContactsByClueFullName" parameterType="string" resultType="Contacts">
+		select * from tbl_contacts where fullName = #{fullName}
+	</select>
 </mapper>

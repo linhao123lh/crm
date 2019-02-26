@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<package name="com.tfs.crm.workbench.clue.domain"/>
 		<package name="com.tfs.crm.workbench.customer.domain"/>
 		<package name="com.tfs.crm.workbench.contacts.domain"/>
+		<package name="com.tfs.crm.workbench.transaction.domain"/>
 	</typeAliases>
 	
 	<!-- sql映射文件 -->
@@ -21,5 +22,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<package name="com.tfs.crm.workbench.clue.dao"/>
 		<package name="com.tfs.crm.workbench.customer.dao"/>
 		<package name="com.tfs.crm.workbench.contacts.dao"/>
+		<package name="com.tfs.crm.workbench.transaction.dao"/>
 	</mappers>
 </configuration>

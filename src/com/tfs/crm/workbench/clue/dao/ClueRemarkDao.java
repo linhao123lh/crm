@@ -12,4 +12,8 @@ public interface ClueRemarkDao {
     int deleteClueRemarkById(String id);
 
     int saveEditClueRemark(ClueRemark remark);
+
+    List<ClueRemark> queryClueRemarkListByClueId(String clueId);
+
+    int deleteClueRemarkByClueId(String clueId);
 }

@@ -29,6 +29,8 @@
 		<context:component-scan base-package="com.tfs.crm.workbench.customer.serivce"/>
 		<!-- 联系人-->
 		<context:component-scan base-package="com.tfs.crm.workbench.contacts.serivice"/>
+		<!-- 交易-->
+		<context:component-scan base-package="com.tfs.crm.workbench.transaction.service"/>
 
         <!-- 加载数据库配置文件 -->
         <context:property-placeholder location="classpath:conf/db.properties"/>
@@ -53,7 +55,32 @@
         	<property name="basePackage"
 					  value="com.tfs.crm.settings.qx.user.dao,com.tfs.crm.settings.dictionary.value.dao
 					  com.tfs.crm.workbench.activity.dao,com.tfs.crm.workbench.clue.dao,
-					  com.tfs.crm.workbench.customer.dao,com.tfs.crm.workbench.contacts.dao"></property>
+					  com.tfs.crm.workbench.customer.dao,com.tfs.crm.workbench.contacts.dao,
+					  com.tfs.crm.workbench.transaction.dao"></property>
 
         </bean>
+
+	<!-- 事务相关控制 -->
+	<bean id="transactionManager"
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<!--<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			&lt;!&ndash; 对业务层所有方法添加事务，除了以get、find、select开始的 &ndash;&gt;
+			<tx:method name="*" isolation="DEFAULT" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			&lt;!&ndash; 查询操作没有必要开启事务，给只读事务添加一个属性read-only &ndash;&gt;
+			<tx:method name="query*" read-only="true"></tx:method>
+		</tx:attributes>
+	</tx:advice>
+
+	&lt;!&ndash; Service层事务控制 &ndash;&gt;
+	<aop:config>
+		<aop:pointcut id="pointCut" expression="execution( * com.tfs.crm.workbench.clue.service.impl.*.*(..))"></aop:pointcut>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointCut"></aop:advisor>
+	</aop:config>-->
+
 </beans>

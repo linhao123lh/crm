@@ -81,6 +81,42 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			$("#searchActivityModal").modal("hide");
 			$("#activity").val(name);
 		})
+
+		//给"转换"按钮添加单击事件
+		$("#saveClueConvertBtn").click(function () {
+			//收集参数
+			var clueId = "${param.id}";
+			var isCreateTransaction = $("#isCreateTransaction").prop("checked");
+			var amountOfMoney = $.trim($("#amountOfMoney").val());
+			var tradeName = $("#tradeName").val();
+			var expectedClosingDate = $.trim($("#expectedClosingDate").val());
+			var stage = $("#stage").val();
+			var activityId = $("#searchActivityId").val();
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/clue/saveClueConvert.do",
+				data:{
+					clueId:clueId,
+					isCreateTransaction:isCreateTransaction,
+					amountOfMoney:amountOfMoney,
+					tradeName:tradeName,
+					expectedClosingDate:expectedClosingDate,
+					stage:stage,
+					activityId:activityId
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					alert("转换成功，跳转到线索首页")
+					//跳到线索首页
+					window.location.href = "workbench/clue/index.jsp";
+				},
+				error:function () {
+					alert("请求失败！")
+				}
+			});
+		});
+
 	});
 </script>
 
@@ -198,7 +234,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		<b>${param.owner}</b>
 	</div>
 	<div id="operation" style="position: relative; left: 40px; height: 35px; top: 100px;">
-		<input class="btn btn-primary" type="button" value="转换">
+		<input id="saveClueConvertBtn" class="btn btn-primary" type="button" value="转换">
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<input class="btn btn-default" type="button" value="取消">
 	</div>

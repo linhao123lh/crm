@@ -16,4 +16,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteRelationByActivityIdClueId" parameterType="hashmap">
 		delete from tbl_clue_activity_relation where activityId=#{activityId} and clueId=#{clueId}
 	</delete>
+
+	<!-- 查询和线索有关的市场活动-->
+	<select id="queryRelationByClueId" parameterType="string" resultType="ClueActivityRelation">
+		select * from tbl_clue_activity_relation where clueId = #{clueId}
+	</select>
+
+	<!-- 根据线索Id删除与其有关的市场活动-->
+	<delete id="deleteRelationByClueId" parameterType="string">
+		delete from tbl_clue_activity_relation where clueId = #{clueId}
+	</delete>
 </mapper>
