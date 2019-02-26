@@ -55,8 +55,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					var htmlStr = "";
 					$.each(data,function (index,obj) {
 						htmlStr += "<tr>";
-						htmlStr += "<td><input value='"+obj.id+"' type='radio' name='activity'/></td>";
-						htmlStr += "<td name='activityName'>"+obj.name+"</td>";
+						htmlStr += "<td><input value='"+obj.id+"' type='radio' name='"+obj.name+"'/></td>";
+						htmlStr += "<td>"+obj.name+"</td>";
 						htmlStr += "<td>"+obj.type+"</td>";
 						htmlStr += "<td>"+obj.state+"</td>";
 						htmlStr += "<td>"+obj.startDate+"</td>";
@@ -73,14 +73,14 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		});
 
 		//给"单选框"添加选中事件
-		$("#activityListTBody").on("click","input[type='radio']:checked",function () {
-			var id = $(this).val();
-			$("#searchActivityId").val(id);
-			var name = $("td[name='activityName']").html();
-			//关闭模态窗口
-			$("#searchActivityModal").modal("hide");
-			$("#activity").val(name);
-		})
+        $("#activityListTBody").on("click","input[type='radio']:checked",function () {
+            var id = $(this).val();
+            $("#searchActivityId").val(id);
+            var name = $(this).prop("name");
+            //关闭模态窗口
+            $("#searchActivityModal").modal("hide");
+            $("#activity").val(name);
+        })
 
 		//给"转换"按钮添加单击事件
 		$("#saveClueConvertBtn").click(function () {

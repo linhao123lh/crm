@@ -77,4 +77,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="queryContactsByClueFullName" parameterType="string" resultType="Contacts">
 		select * from tbl_contacts where fullName = #{fullName}
 	</select>
+
+	<!-- 根据联系人名称模糊查询联系人列表-->
+    <select id="queryContactsByLikeName" parameterType="string" resultType="Contacts">
+        select id,fullName,email,mphone from tbl_contacts where fullName like '%' #{name} '%'
+    </select>
 </mapper>

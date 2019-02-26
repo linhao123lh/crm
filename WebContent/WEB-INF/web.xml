@@ -52,6 +52,10 @@
 	<listener>
 		<listener-class>com.tfs.crm.commons.web.listener.QuerySourceContextListener</listener-class>
 	</listener>
+	<!-- 注册交易类型的监听器-->
+	<listener>
+		<listener-class>com.tfs.crm.commons.web.listener.QueryTransactionTypeContextListener</listener-class>
+	</listener>
 
   <!-- 登录过滤器 -->
   <filter>

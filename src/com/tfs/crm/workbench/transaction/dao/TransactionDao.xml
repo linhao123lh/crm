@@ -12,4 +12,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          (#{id},#{owner},#{amountOfMoney},#{name},#{expectedClosingDate},#{customerId},#{stage},#{activityId},#{contactsId},#{createBy},#{createTime})
     </insert>
 
+    <!-- 保存创建的交易-->
+    <insert id="saveCreateTransaction" parameterType="Transaction">
+        insert into tbl_transaction
+        (id,owner,amountOfMoney,name,expectedClosingDate,customerId,stage,type,source,activityId,
+            contactsId,description,createBy,createTime,contactSummary,nextContactTime)
+        values
+        (#{id},#{owner},#{amountOfMoney},#{name},#{expectedClosingDate},#{customerId},#{stage},#{type},#{source},
+          #{activityId},#{contactsId},#{description},#{createBy},#{createTime},#{contactSummary},#{nextContactTime})
+    </insert>
+
 </mapper>

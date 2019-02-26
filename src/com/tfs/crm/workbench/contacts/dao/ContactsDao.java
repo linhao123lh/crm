@@ -13,4 +13,6 @@ public interface ContactsDao {
     Long queryCountByCondition(Map<String, Object> paramMap);
 
     Contacts queryContactsByClueFullName(String fullName);
+
+    List<Contacts> queryContactsByLikeName(String name);
 }

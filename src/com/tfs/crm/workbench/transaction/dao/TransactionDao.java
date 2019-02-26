@@ -6,4 +6,6 @@ public interface TransactionDao {
 
 
     int saveTransaction(Transaction transaction);
+
+    int saveCreateTransaction(Transaction transaction);
 }

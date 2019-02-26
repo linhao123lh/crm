@@ -42,4 +42,14 @@ public class ContactsServiceImpl implements ContactsService {
         vo.setDataList(dataList);
         return vo;
     }
+
+    /**
+     * 根据名称模糊查询客户信息
+     * @param name
+     * @return
+     */
+    @Override
+    public List<Contacts> queryContactsByLikeName(String name) {
+        return contactsDao.queryContactsByLikeName(name);
+    }
 }
