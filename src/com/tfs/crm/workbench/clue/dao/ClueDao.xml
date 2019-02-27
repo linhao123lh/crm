@@ -86,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				and u1.name like '%' #{owner} '%'
 			</if>
 			<if test="mphone != null and mphone != ''">
-				and c.source = #{source}
+				and c.mphone = #{mphone}
 			</if>
 			<if test="state != null and state != ''">
 				and c.state = #{state}

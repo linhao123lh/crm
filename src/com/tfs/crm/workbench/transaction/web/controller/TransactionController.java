@@ -1,5 +1,6 @@
 package com.tfs.crm.workbench.transaction.web.controller;
 
+import com.tfs.crm.commons.domain.PaginationVO;
 import com.tfs.crm.commons.util.DateUtil;
 import com.tfs.crm.commons.util.UUIDUtil;
 import com.tfs.crm.settings.qx.user.domain.User;
@@ -10,6 +11,7 @@ import com.tfs.crm.workbench.transaction.domain.Transaction;
 import com.tfs.crm.workbench.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -84,5 +86,38 @@ public class TransactionController {
             retMap.put("success",false);
         }
         return retMap;
+    }
+
+    @PostMapping("queryTransactionForPageByCondition.do")
+    @ResponseBody
+    public PaginationVO<Transaction> queryTransactionForPageByCondition(String pageNoStr,String pageSizeStr,String owner,String name,String
+            amountOfMoneyStr,String contactsName,String stage,String type,String source,String customerName){
+
+        //封装参数
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("owner",owner);
+        paramMap.put("name",name);
+        paramMap.put("contactsName",contactsName);
+        paramMap.put("stage",stage);
+        paramMap.put("type",type);
+        paramMap.put("source",source);
+        paramMap.put("customerName",customerName);
+        if (amountOfMoneyStr != null && amountOfMoneyStr.trim().length()>0){
+            paramMap.put("amountOfMoney",Long.parseLong(amountOfMoneyStr));
+        }
+        int pageNo = 1;
+        if (pageNoStr != null && pageNoStr.trim().length()>0 && !"0".equals(pageNoStr)){
+            pageNo = Integer.parseInt(pageNoStr);
+        }
+        int pageSize = 10;
+        if (pageSizeStr != null && pageSizeStr.trim().length()>0 && !"0".equals(pageSizeStr)){
+            pageSize = Integer.parseInt(pageSizeStr);
+        }
+        int beginNo = (pageNo - 1) * pageSize;
+        paramMap.put("beginNo",beginNo);
+        paramMap.put("pageSize",pageSize);
+        //调用service方法
+        PaginationVO<Transaction> vo = transactionService.queryTransactionForPageByCondition(paramMap);
+        return vo;
     }
 }

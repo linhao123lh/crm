@@ -207,7 +207,8 @@ $(function () {
 			dataType:"json",
 			success:function (data) {
 				if (data.success){
-					alert("创建成功！");
+					//跳转到交易首页
+					window.location.href = "workbench/transaction/index.jsp";
 				} else {
 					alert("创建失败！");
 				}

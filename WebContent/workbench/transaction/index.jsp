@@ -18,6 +18,13 @@
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 
+<%-- 分页插件引入--%>
+	<link href="jquery/bs_pagination/css/jquery.bs_pagination.min.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="jquery/bs_pagination/js/jquery.bs_pagination.min.js"></script>
+	<script type="text/javascript" src="jquery/bs_pagination/js/localization/en.js"></script>
+<%-- 自动补全插件引入--%>
+	<script type="text/javascript" src="jquery/bs_typeahead/js/bootstrap3-typeahead.js"></script>
+
 <script type="text/javascript">
 
 	$(function(){
@@ -32,6 +39,102 @@
 		$("#createTransactionBtn").click(function () {
 			window.location.href = "workbench/transaction/createTransaction.do";
 		});
+
+		//页面加载完，显示交易列表第一页
+		display(1,10);
+
+		//给"查询"按钮添加点击事件
+		$("#queryTransactionBtn").click(function () {
+			display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
+		});
+		
+		function display(pageNo,pageSize) {
+			//收集参数
+			var owner = $.trim($("#query-owner").val());
+			var name = $.trim($("#query-name").val());
+			var amountOfMoney = $.trim($("#query-amountOfMoney").val());
+			var customerName = $.trim($("#query-customerName").val());
+			var stage = $("#query-stage").val();
+			var type = $("#query-type").val();
+			var source = $("#query-source").val();
+			var contactsName = $.trim($("#query-contactsName").val());
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/transaction/queryTransactionForPageByCondition.do",
+				data:{
+					pageNoStr:pageNo,
+					pageSizeStr:pageSize,
+					owner:owner,
+					name:name,
+					amountOfMoneyStr:amountOfMoney,
+					contactsName:contactsName,
+					stage:stage,
+					type:type,
+					source:source,
+					customerName:customerName
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					var htmlStr = "";
+					$.each(data.dataList,function (index,obj) {
+						htmlStr += " <tr>";
+						htmlStr += " <td><input type='checkbox' /></td>";
+						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.name+"</a></td>";
+						htmlStr += " <td>"+obj.customerId+"</td>";
+						htmlStr += " <td>"+obj.amountOfMoney+"</td>";
+						htmlStr += " <td>"+obj.expectedClosingDate+"</td>";
+						htmlStr += " <td>"+obj.stage+"</td>";
+						htmlStr += " <td>"+obj.type+"</td>";
+						htmlStr += " <td>"+obj.owner+"</td>";
+						htmlStr += " <td>"+obj.source+"</td>";
+						htmlStr += " <td>"+obj.activityId+"</td>";
+						htmlStr += " <td>"+obj.contactsId+"</td>";
+						htmlStr += " <td>"+obj.createBy+"</td>";
+						htmlStr += " <td>"+obj.createTime+"</td>";
+						htmlStr += " <td>"+(obj.editBy==null?'':obj.editBy)+"</td>";
+						htmlStr += " <td>"+(obj.editTime==null?'':obj.editTime)+"</td>";
+						htmlStr += " <td>"+obj.description+"</td>";
+						htmlStr += " <td>"+obj.contactSummary+"</td>";
+						htmlStr += " <td>"+obj.nextContactTime+"</td>";
+						htmlStr += " </tr>";
+					});
+					$("#transactionListTBody").html(htmlStr);
+					$("#transactionListTBody td:even").addClass("active");
+
+					var totalPages = 10;
+					if (data.count % pageSize == 0){
+						totalPages = Math.floor(data.count / pageSize);
+					} else {
+						totalPages = Math.floor(data.count / pageSize) + 1;
+					}
+
+					//分页
+					$("#pageNoDiv").bs_pagination({
+						currentPage:pageNo,//当前页号
+						rowsPerPage:pageSize,//每页显示条数
+						totalRows:data.count,//总条数
+						totalPages: totalPages, //总页数. 必须根据总条数和每页显示条数手动计算总页数.
+
+						visiblePageLinks:5,//最多可以显示的卡片数
+
+						showGoToPage:true,//是否显示跳转到第几页
+						showRowsPerPage:true,//是否显示每页显示条数
+						showRowsInfo:true,//是否显示记录信息
+						/**
+						 用来监听页号切换的事件.
+						 event就代表这个事件;pageObj就代表翻页信息.
+						 */
+						onChangePage: function(event,pageObj) { // returns page_num and rows_per_page after a link has clicked
+							display(pageObj.currentPage,pageObj.rowsPerPage);
+						}
+					});
+				},
+				error:function () {
+					alert("请求失败！")
+				}
+			});
+		}
 
 	});
 	
@@ -96,28 +199,28 @@
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">所有者</div>
-				      <input class="form-control" type="text">
+				      <input id="query-owner" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">名称</div>
-				      <input class="form-control" type="text">
+				      <input id="query-name" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">金额</div>
-				      <input class="form-control" type="text">
+				      <input id="query-amountOfMoney" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">客户名称</div>
-				      <input class="form-control" type="text">
+				      <input id="query-customerName" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
@@ -126,17 +229,13 @@
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">阶段</div>
-					  <select class="form-control">
+					  <select id="query-stage" class="form-control">
 					  	<option></option>
-					  	<option>资质审查</option>
-					  	<option>需求分析</option>
-					  	<option>价值建议</option>
-					  	<option>确定决策者</option>
-					  	<option>提案/报价</option>
-					  	<option>谈判/复审</option>
-					  	<option>成交</option>
-					  	<option>丢失的线索</option>
-					  	<option>因竞争丢失关闭</option>
+					  	<c:if test="${not empty stageList}">
+							<c:forEach items="${stageList}" var="sl">
+								<option value="${sl.id}">${sl.text}</option>
+							</c:forEach>
+						</c:if>
 					  </select>
 				    </div>
 				  </div>
@@ -144,10 +243,13 @@
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">类型</div>
-					  <select class="form-control">
+					  <select id="query-type" class="form-control">
 					  	<option></option>
-					  	<option>已有业务</option>
-					  	<option>新业务</option>
+					  	<c:if test="${not empty transactionTypeList}">
+							<c:forEach items="${transactionTypeList}" var="ttl">
+								<option value="${ttl.id}">${ttl.text}</option>
+							</c:forEach>
+						</c:if>
 					  </select>
 				    </div>
 				  </div>
@@ -155,22 +257,13 @@
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">来源</div>
-				      <select class="form-control" id="create-clueSource">
+				      <select id="query-source" class="form-control" id="create-source">
 						  <option></option>
-						  <option>广告</option>
-						  <option>推销电话</option>
-						  <option>员工介绍</option>
-						  <option>外部介绍</option>
-						  <option>在线商场</option>
-						  <option>合作伙伴</option>
-						  <option>公开媒介</option>
-						  <option>销售邮件</option>
-						  <option>合作伙伴研讨会</option>
-						  <option>内部研讨会</option>
-						  <option>交易会</option>
-						  <option>web下载</option>
-						  <option>web调研</option>
-						  <option>聊天</option>
+						  <c:if test="${not empty sourceList}">
+							  <c:forEach items="${sourceList}" var="sl">
+								  <option value="${sl.id}">${sl.text}</option>
+							  </c:forEach>
+						  </c:if>
 						</select>
 				    </div>
 				  </div>
@@ -178,11 +271,11 @@
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">联系人名称</div>
-				      <input class="form-control" type="text">
+				      <input id="query-contactsName" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
-				  <button type="submit" class="btn btn-default">查询</button>
+				  <button id="queryTransactionBtn" type="button" class="btn btn-default">查询</button>
 				  
 				</form>
 			</div>
@@ -245,7 +338,6 @@
 							<td>预计成交日期</td>
 							<td>阶段</td>
 							<td>类型</td>
-							<td>可能性</td>
 							<td>所有者</td>
 							<td>来源</td>
 							<td>市场活动源</td>
@@ -259,8 +351,8 @@
 							<td>下次联系时间</td>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
+					<tbody id="transactionListTBody">
+						<%--<tr>
 							<td><input type="checkbox" /></td>
 							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">动力节点-交易01</a></td>
 							<td>动力节点</td>
@@ -301,12 +393,13 @@
 							<td>这是一条线索的描述信息 （线索转换之后会将线索的描述转换到交易的描述中）</td>
 							<td></td>
 							<td></td>
-						</tr>
+						</tr>--%>
 					</tbody>
 				</table>
+				<div id="pageNoDiv"></div>
 			</div>
 			
-			<div style="height: 50px; position: relative;top: 20px;">
+			<%--<div style="height: 50px; position: relative;top: 20px;">
 				<div>
 					<button type="button" class="btn btn-default" style="cursor: default;">共<b>50</b>条记录</button>
 				</div>
@@ -339,7 +432,7 @@
 						</ul>
 					</nav>
 				</div>
-			</div>
+			</div>--%>
 			
 		</div>
 		
