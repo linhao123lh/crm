@@ -832,393 +832,388 @@
     <table id="219" parent="2" name="tbl_role_permission_relation"/>
     <table id="220" parent="2" name="tbl_task"/>
     <table id="221" parent="2" name="tbl_task_remark"/>
-    <table id="222" parent="2" name="tbl_transaction"/>
-    <table id="223" parent="2" name="tbl_transaction_remark"/>
-    <table id="224" parent="2" name="tbl_user"/>
-    <column id="225" parent="204" name="id">
+    <table id="222" parent="2" name="tbl_test"/>
+    <table id="223" parent="2" name="tbl_transaction"/>
+    <table id="224" parent="2" name="tbl_transaction_remark"/>
+    <table id="225" parent="2" name="tbl_user"/>
+    <column id="226" parent="204" name="id">
       <Position>1</Position>
       <Comment>uuid</Comment>
       <DataType>char(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="226" parent="204" name="owner">
+    <column id="227" parent="204" name="owner">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="227" parent="204" name="company">
+    <column id="228" parent="204" name="company">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="228" parent="204" name="phone">
+    <column id="229" parent="204" name="phone">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="229" parent="204" name="website">
+    <column id="230" parent="204" name="website">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="230" parent="204" name="grade">
+    <column id="231" parent="204" name="grade">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="231" parent="204" name="industry">
+    <column id="232" parent="204" name="industry">
       <Position>7</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="232" parent="204" name="annualIncome">
+    <column id="233" parent="204" name="annualIncome">
       <Position>8</Position>
       <DataType>bigint(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="233" parent="204" name="empNums">
+    <column id="234" parent="204" name="empNums">
       <Position>9</Position>
       <Comment>Ա</Comment>
       <DataType>int(7)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="234" parent="204" name="country">
+    <column id="235" parent="204" name="country">
       <Position>10</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="235" parent="204" name="province">
+    <column id="236" parent="204" name="province">
       <Position>11</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="236" parent="204" name="city">
+    <column id="237" parent="204" name="city">
       <Position>12</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="237" parent="204" name="street">
+    <column id="238" parent="204" name="street">
       <Position>13</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="238" parent="204" name="zipcode">
+    <column id="239" parent="204" name="zipcode">
       <Position>14</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="239" parent="204" name="description">
+    <column id="240" parent="204" name="description">
       <Position>15</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="240" parent="204" name="fullName">
+    <column id="241" parent="204" name="fullName">
       <Position>16</Position>
       <Comment>ת</Comment>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="241" parent="204" name="appellation">
+    <column id="242" parent="204" name="appellation">
       <Position>17</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="242" parent="204" name="source">
+    <column id="243" parent="204" name="source">
       <Position>18</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="243" parent="204" name="email">
+    <column id="244" parent="204" name="email">
       <Position>19</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="244" parent="204" name="mphone">
+    <column id="245" parent="204" name="mphone">
       <Position>20</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="245" parent="204" name="job">
+    <column id="246" parent="204" name="job">
       <Position>21</Position>
       <Comment>ְλת</Comment>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="246" parent="204" name="state">
+    <column id="247" parent="204" name="state">
       <Position>22</Position>
       <Comment>״̬ת</Comment>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="247" parent="204" name="createBy">
+    <column id="248" parent="204" name="createBy">
       <Position>23</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="248" parent="204" name="createTime">
+    <column id="249" parent="204" name="createTime">
       <Position>24</Position>
       <Comment>19</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="249" parent="204" name="editBy">
+    <column id="250" parent="204" name="editBy">
       <Position>25</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="250" parent="204" name="editTime">
+    <column id="251" parent="204" name="editTime">
       <Position>26</Position>
       <Comment>19</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="251" parent="204" name="contactSummary">
+    <column id="252" parent="204" name="contactSummary">
       <Position>27</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="252" parent="204" name="nextContactTime">
+    <column id="253" parent="204" name="nextContactTime">
       <Position>28</Position>
       <DataType>char(10)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="253" parent="204" name="PRIMARY">
+    <key id="254" parent="204" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="254" parent="205" name="id">
+    <column id="255" parent="205" name="id">
       <Position>1</Position>
       <Comment>uuid</Comment>
       <DataType>char(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="255" parent="205" name="clueId">
+    <column id="256" parent="205" name="clueId">
       <Position>2</Position>
       <DataType>char(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="256" parent="205" name="activityId">
+    <column id="257" parent="205" name="activityId">
       <Position>3</Position>
       <DataType>char(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="257" parent="205" name="FK_Reference_3">
+    <index id="258" parent="205" name="FK_Reference_3">
       <ColNames>clueId</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="258" parent="205" name="FK_Reference_2">
+    <index id="259" parent="205" name="FK_Reference_2">
       <ColNames>activityId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="259" parent="205" name="PRIMARY">
+    <key id="260" parent="205" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="260" parent="205" name="FK_Reference_3">
+    <foreign-key id="261" parent="205" name="FK_Reference_3">
       <ColNames>clueId</ColNames>
       <RefSchemaName>crm</RefSchemaName>
       <RefTableName>tbl_clue</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="261" parent="205" name="FK_Reference_2">
+    <foreign-key id="262" parent="205" name="FK_Reference_2">
       <ColNames>activityId</ColNames>
       <RefSchemaName>crm</RefSchemaName>
       <RefTableName>tbl_marketing_activities</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="262" parent="206" name="id">
+    <column id="263" parent="206" name="id">
       <Position>1</Position>
       <DataType>char(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="263" parent="206" name="notePerson">
+    <column id="264" parent="206" name="notePerson">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="264" parent="206" name="noteContent">
+    <column id="265" parent="206" name="noteContent">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="265" parent="206" name="noteTime">
+    <column id="266" parent="206" name="noteTime">
       <Position>4</Position>
       <Comment>19</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="266" parent="206" name="editPerson">
+    <column id="267" parent="206" name="editPerson">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="267" parent="206" name="editTime">
+    <column id="268" parent="206" name="editTime">
       <Position>6</Position>
       <Comment>19</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="268" parent="206" name="editFlag">
+    <column id="269" parent="206" name="editFlag">
       <Position>7</Position>
       <Comment>0</Comment>
       <DataType>int(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="269" parent="206" name="clueId">
+    <column id="270" parent="206" name="clueId">
       <Position>8</Position>
       <Comment>һ</Comment>
       <DataType>char(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="270" parent="206" name="FK_Reference_4">
+    <index id="271" parent="206" name="FK_Reference_4">
       <ColNames>clueId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="271" parent="206" name="PRIMARY">
+    <key id="272" parent="206" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="272" parent="206" name="FK_Reference_4">
+    <foreign-key id="273" parent="206" name="FK_Reference_4">
       <ColNames>clueId</ColNames>
       <RefSchemaName>crm</RefSchemaName>
       <RefTableName>tbl_clue</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="273" parent="207" name="id">
+    <column id="274" parent="207" name="id">
       <Position>1</Position>
       <DataType>char(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="274" parent="207" name="owner">
+    <column id="275" parent="207" name="owner">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="275" parent="207" name="source">
+    <column id="276" parent="207" name="source">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="276" parent="207" name="appellation">
+    <column id="277" parent="207" name="appellation">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="277" parent="207" name="fullName">
+    <column id="278" parent="207" name="fullName">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="278" parent="207" name="email">
+    <column id="279" parent="207" name="email">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="279" parent="207" name="job">
+    <column id="280" parent="207" name="job">
       <Position>7</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="280" parent="207" name="mphone">
+    <column id="281" parent="207" name="mphone">
       <Position>8</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="281" parent="207" name="description">
+    <column id="282" parent="207" name="description">
       <Position>9</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="282" parent="207" name="country">
+    <column id="283" parent="207" name="country">
       <Position>10</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="283" parent="207" name="province">
+    <column id="284" parent="207" name="province">
       <Position>11</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="284" parent="207" name="city">
+    <column id="285" parent="207" name="city">
       <Position>12</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="285" parent="207" name="street">
+    <column id="286" parent="207" name="street">
       <Position>13</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="286" parent="207" name="zipcode">
+    <column id="287" parent="207" name="zipcode">
       <Position>14</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="287" parent="207" name="birth">
+    <column id="288" parent="207" name="birth">
       <Position>15</Position>
       <DataType>char(10)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="288" parent="207" name="customerId">
+    <column id="289" parent="207" name="customerId">
       <Position>16</Position>
       <Comment>һ</Comment>
       <DataType>char(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="289" parent="207" name="createBy">
+    <column id="290" parent="207" name="createBy">
       <Position>17</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="290" parent="207" name="createTime">
+    <column id="291" parent="207" name="createTime">
       <Position>18</Position>
       <Comment>19</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="291" parent="207" name="editBy">
+    <column id="292" parent="207" name="editBy">
       <Position>19</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="292" parent="207" name="editTime">
+    <column id="293" parent="207" name="editTime">
       <Position>20</Position>
       <Comment>19</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="293" parent="207" name="contactSummary">
+    <column id="294" parent="207" name="contactSummary">
       <Position>21</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="294" parent="207" name="FK_Reference_5">
+    <index id="295" parent="207" name="FK_Reference_5">
       <ColNames>customerId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="295" parent="207" name="PRIMARY">
+    <key id="296" parent="207" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="296" parent="207" name="FK_Reference_5">
-      <ColNames>customerId</ColNames>
-      <RefSchemaName>crm</RefSchemaName>
-      <RefTableName>tbl_customer</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
     <column id="297" parent="208" name="id">
       <Position>1</Position>
       <Comment>uuid</Comment>
@@ -2004,284 +1999,276 @@
     </foreign-key>
     <column id="444" parent="222" name="id">
       <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="445" parent="222" name="name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="446" parent="223" name="id">
+      <Position>1</Position>
       <DataType>char(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="445" parent="222" name="owner">
+    <column id="447" parent="223" name="owner">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="446" parent="222" name="amountOfMoney">
+    <column id="448" parent="223" name="amountOfMoney">
       <Position>3</Position>
       <DataType>bigint(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="447" parent="222" name="name">
+    <column id="449" parent="223" name="name">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="448" parent="222" name="expectedClosingDate">
+    <column id="450" parent="223" name="expectedClosingDate">
       <Position>5</Position>
       <DataType>char(10)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="449" parent="222" name="customerId">
+    <column id="451" parent="223" name="customerId">
       <Position>6</Position>
       <Comment>һ</Comment>
       <DataType>char(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="450" parent="222" name="stage">
+    <column id="452" parent="223" name="stage">
       <Position>7</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="451" parent="222" name="type">
+    <column id="453" parent="223" name="type">
       <Position>8</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="452" parent="222" name="possibility">
+    <column id="454" parent="223" name="possibility">
       <Position>9</Position>
       <DataType>int(3)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="453" parent="222" name="source">
+    <column id="455" parent="223" name="source">
       <Position>10</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="454" parent="222" name="activityId">
+    <column id="456" parent="223" name="activityId">
       <Position>11</Position>
       <Comment>һ</Comment>
       <DataType>char(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="455" parent="222" name="contactsId">
+    <column id="457" parent="223" name="contactsId">
       <Position>12</Position>
       <Comment>һ</Comment>
       <DataType>char(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="456" parent="222" name="description">
+    <column id="458" parent="223" name="description">
       <Position>13</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="457" parent="222" name="createBy">
+    <column id="459" parent="223" name="createBy">
       <Position>14</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="458" parent="222" name="createTime">
+    <column id="460" parent="223" name="createTime">
       <Position>15</Position>
       <Comment>19</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="459" parent="222" name="editBy">
+    <column id="461" parent="223" name="editBy">
       <Position>16</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="460" parent="222" name="editTime">
+    <column id="462" parent="223" name="editTime">
       <Position>17</Position>
       <Comment>19</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="461" parent="222" name="contactSummary">
+    <column id="463" parent="223" name="contactSummary">
       <Position>18</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="462" parent="222" name="nextContactTime">
+    <column id="464" parent="223" name="nextContactTime">
       <Position>19</Position>
       <DataType>char(10)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="463" parent="222" name="FK_Reference_6">
+    <index id="465" parent="223" name="FK_Reference_6">
       <ColNames>customerId</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="464" parent="222" name="FK_Reference_8">
+    <index id="466" parent="223" name="FK_Reference_8">
       <ColNames>activityId</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="465" parent="222" name="FK_Reference_7">
+    <index id="467" parent="223" name="FK_Reference_7">
       <ColNames>contactsId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="466" parent="222" name="PRIMARY">
+    <key id="468" parent="223" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="467" parent="222" name="FK_Reference_6">
-      <ColNames>customerId</ColNames>
-      <RefSchemaName>crm</RefSchemaName>
-      <RefTableName>tbl_customer</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <foreign-key id="468" parent="222" name="FK_Reference_8">
-      <ColNames>activityId</ColNames>
-      <RefSchemaName>crm</RefSchemaName>
-      <RefTableName>tbl_marketing_activities</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <foreign-key id="469" parent="222" name="FK_Reference_7">
-      <ColNames>contactsId</ColNames>
-      <RefSchemaName>crm</RefSchemaName>
-      <RefTableName>tbl_contacts</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <column id="470" parent="223" name="id">
+    <column id="469" parent="224" name="id">
       <Position>1</Position>
       <DataType>char(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="471" parent="223" name="notePerson">
+    <column id="470" parent="224" name="notePerson">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="472" parent="223" name="noteContent">
+    <column id="471" parent="224" name="noteContent">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="473" parent="223" name="noteTime">
+    <column id="472" parent="224" name="noteTime">
       <Position>4</Position>
       <Comment>19</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="474" parent="223" name="editPerson">
+    <column id="473" parent="224" name="editPerson">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="475" parent="223" name="editTime">
+    <column id="474" parent="224" name="editTime">
       <Position>6</Position>
       <Comment>19</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="476" parent="223" name="editFlag">
+    <column id="475" parent="224" name="editFlag">
       <Position>7</Position>
       <Comment>0</Comment>
       <DataType>int(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="477" parent="223" name="transactionId">
+    <column id="476" parent="224" name="transactionId">
       <Position>8</Position>
       <Comment>һ</Comment>
       <DataType>char(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="478" parent="223" name="FK_Reference_12">
+    <index id="477" parent="224" name="FK_Reference_12">
       <ColNames>transactionId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="479" parent="223" name="PRIMARY">
+    <key id="478" parent="224" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="480" parent="223" name="FK_Reference_12">
+    <foreign-key id="479" parent="224" name="FK_Reference_12">
       <ColNames>transactionId</ColNames>
       <RefSchemaName>crm</RefSchemaName>
       <RefTableName>tbl_transaction</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="481" parent="224" name="id">
+    <column id="480" parent="225" name="id">
       <Position>1</Position>
       <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="482" parent="224" name="deptId">
+    <column id="481" parent="225" name="deptId">
       <Position>2</Position>
       <DataType>varchar(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="483" parent="224" name="loginAct">
+    <column id="482" parent="225" name="loginAct">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="484" parent="224" name="name">
+    <column id="483" parent="225" name="name">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="485" parent="224" name="loginPwd">
+    <column id="484" parent="225" name="loginPwd">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="486" parent="224" name="email">
+    <column id="485" parent="225" name="email">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="487" parent="224" name="expireTime">
+    <column id="486" parent="225" name="expireTime">
       <Position>7</Position>
       <Comment>ʧЧʱ</Comment>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="488" parent="224" name="lockStatus">
+    <column id="487" parent="225" name="lockStatus">
       <Position>8</Position>
       <Comment>0</Comment>
       <DataType>char(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="489" parent="224" name="allowIps">
+    <column id="488" parent="225" name="allowIps">
       <Position>9</Position>
       <Comment>Ϊ</Comment>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="490" parent="224" name="createBy">
+    <column id="489" parent="225" name="createBy">
       <Position>10</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="491" parent="224" name="createTime">
+    <column id="490" parent="225" name="createTime">
       <Position>11</Position>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="492" parent="224" name="editBy">
+    <column id="491" parent="225" name="editBy">
       <Position>12</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="493" parent="224" name="editTime">
+    <column id="492" parent="225" name="editTime">
       <Position>13</Position>
       <DataType>char(19)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="494" parent="224" name="FK_Reference_23">
+    <index id="493" parent="225" name="FK_Reference_23">
       <ColNames>deptId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="495" parent="224" name="PRIMARY">
+    <key id="494" parent="225" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="496" parent="224" name="FK_Reference_23">
+    <foreign-key id="495" parent="225" name="FK_Reference_23">
       <ColNames>deptId</ColNames>
       <RefSchemaName>crm</RefSchemaName>
       <RefTableName>tbl_dept</RefTableName>

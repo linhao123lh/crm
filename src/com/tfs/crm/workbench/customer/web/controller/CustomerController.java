@@ -5,6 +5,7 @@ import com.tfs.crm.commons.util.DateUtil;
 import com.tfs.crm.commons.util.UUIDUtil;
 import com.tfs.crm.settings.qx.user.domain.User;
 import com.tfs.crm.settings.qx.user.service.UserService;
+import com.tfs.crm.workbench.clue.domain.Clue;
 import com.tfs.crm.workbench.customer.domain.Customer;
 import com.tfs.crm.workbench.customer.serivce.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.ValidationEvent;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -159,5 +161,101 @@ public class CustomerController {
         //调用service方法
         PaginationVO<Customer> vo = customerService.queryCustomerForPageByCondition(paramMap);
         return vo;
+    }
+
+
+    /**
+     * 根据id查询客户
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "beforeEditQueryCustomer.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> beforeEditQueryCustomer(String id){
+
+        //查询所有用户
+        List<User> userList = userService.quertAllUsers();
+        //调用service方法
+        Customer customer = customerService.queryCustomerById(id);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        retMap.put("userList",userList);
+        retMap.put("customer",customer);
+
+        return retMap;
+    }
+
+
+    /**
+     * 更新客户信息
+     * @param request
+     * @param id
+     * @param owner
+     * @param name
+     * @param grade
+     * @param phone
+     * @param website
+     * @param street
+     * @param annualIncomeStr
+     * @param empnumsStr
+     * @param industry
+     * @param description
+     * @param country
+     * @param province
+     * @param city
+     * @param zipcode
+     * @return
+     */
+    @RequestMapping(value = "saveEditCustomer.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> saveEditCustomer(HttpServletRequest request,String id,String owner,String name,String grade,String phone,String website,String street,
+           String annualIncomeStr,String empnumsStr,String industry,String description,String country,String province,String city,String zipcode){
+        //封装参数
+        Customer customer = new Customer();
+        customer.setId(id);
+        customer.setZipcode(zipcode);
+        customer.setOwner(owner);
+        customer.setName(name);
+        customer.setGrade(grade);
+        customer.setWebsite(website);
+        if (annualIncomeStr != null && annualIncomeStr.trim().length()>0){
+            customer.setAnnualIncome(Long.parseLong(annualIncomeStr));
+        }
+        if (empnumsStr != null && empnumsStr.trim().length() > 0){
+            customer.setEmpNums(Integer.parseInt(empnumsStr));
+        }
+        customer.setIndustry(industry);
+        customer.setDescription(description);
+        customer.setCountry(country);
+        customer.setCity(city);
+        customer.setProvince(province);
+        customer.setStreet(street);
+        customer.setPhone(phone);
+        User user = (User) request.getSession().getAttribute("user");
+        customer.setEditBy(user.getId());
+        customer.setEditTime(DateUtil.formateDateTime(new Date()));
+
+        //调用方法
+        int ret = customerService.saveEditCustomerByCustomer(customer);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
+    @RequestMapping(value = "deleteCustomer.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> deleteCustomer(String[] id){
+
+        int ret = customerService.deleteCustomerByIds(id);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
     }
 }

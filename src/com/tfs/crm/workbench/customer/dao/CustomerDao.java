@@ -16,4 +16,10 @@ public interface CustomerDao {
     List<Customer> queryCustomerByName(String name);
 
     Customer queryCustomerByClueCompany(String name);
+
+    Customer queryCustomerById(String id);
+
+    int saveEditCustomerByCustomer(Customer customer);
+
+    int deleteCustomerByIds(String[] ids);
 }

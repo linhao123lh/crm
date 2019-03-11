@@ -13,4 +13,10 @@ public interface CustomerService {
     PaginationVO<Customer> queryCustomerForPageByCondition(Map<String, Object> paramMap);
 
     List<Customer> queryCustomerByName(String name);
+
+    Customer queryCustomerById(String id);
+
+    int saveEditCustomerByCustomer(Customer customer);
+
+    int deleteCustomerByIds(String[] ids);
 }

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,8 @@ import com.tfs.crm.settings.qx.user.service.UserService;
 @Controller
 @RequestMapping("settings/qx/user")
 public class UserController {
+
+	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
@@ -44,6 +48,7 @@ public class UserController {
 								@RequestParam("loginPwd") String loginPwd,
 								@RequestParam("isRemUser") String isRemUser) {
 		//System.out.println("============"+isRemUser);
+
 		System.out.println("+++++++++++" + request.getRemoteAddr());
 		//获取结果
 		User user = userService.queryUserByLoginActAndLoginPwd(loginAct,loginPwd);

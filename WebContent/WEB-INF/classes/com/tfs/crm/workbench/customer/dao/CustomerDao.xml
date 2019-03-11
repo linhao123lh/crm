@@ -85,4 +85,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from tbl_customer where name = #{name}
 	</select>
 
+	<!-- 根据id查询客户信息-->
+	<select id="queryCustomerById" parameterType="string" resultType="Customer">
+		select * from tbl_customer where id = #{id}
+	</select>
+
+	<!-- 保存修改的客户-->
+	<update id="saveEditCustomerByCustomer" parameterType="Customer">
+		update tbl_customer set owner=#{owner}, name=#{name}, grade=#{grade}, phone=#{phone}, website=#{website},
+		 	annualIncome=#{annualIncome}, empNums=#{empNums}, industry=#{industry}, description=#{description}, country=#{country},
+		  	province=#{province}, city=#{city}, street=#{street}, zipcode=#{zipcode}, editBy=#{editBy}, editTime=#{editTime}
+		where id = #{id}
+	</update>
+
+	<!-- 批量删除用户-->
+	<delete id="deleteCustomerByIds" parameterType="string">
+		delete from tbl_customer where id in
+		<foreach collection="array" item="id" separator="," open="(" close=")">
+			#{id}
+		</foreach>
+	</delete>
+
 </mapper>

@@ -128,6 +128,155 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
 		});
 
+		//给"修改"按钮添加点击事件
+		$("#editQueryCustomerBtn").click(function () {
+			//收集参数
+			var ckdId = $("#customerTBody input[type='checkbox']:checked");
+			if (ckdId.length == 0){
+				alert("请选择要修改的客户！");
+				return;
+			}
+			if (ckdId.length > 1){
+				alert("只能选择一条客户信息进行修改");
+				return;
+			}
+			var id = ckdId.val();
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/customer/beforeEditQueryCustomer.do",
+				data:{
+					id:id
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					var htmlStr = "";
+					$.each(data.userList,function (index,obj) {
+						if (obj.id == data.customer.owner){
+							htmlStr += "<option value='"+obj.id+"' selected>"+obj.name+"</option>"
+						}else {
+							htmlStr += "<option value='"+obj.id+"'>"+obj.name+"</option>"
+						}
+					});
+					//修改
+					$("#edit-customerOwner").html(htmlStr);
+					$("#edit-id").val(data.customer.id);
+					$("#edit-customerName").val(data.customer.name);
+					$("#edit-grade").val(data.customer.grade);
+					$("#edit-phone").val(data.customer.phone);
+					$("#edit-website").val(data.customer.website);
+					$("#edit-annualIncome").val(data.customer.annualIncome);
+					$("#edit-empnums").val(data.customer.empNums);
+					$("#edit-industry").val(data.customer.industry);
+					$("#edit-describe").val(data.customer.description);
+					$("#edit-country").val(data.customer.country);
+					$("#edit-province").val(data.customer.province);
+					$("#edit-city").val(data.customer.city);
+					$("#edit-street").val(data.customer.street);
+					$("#edit-zipcode").val(data.customer.zipcode);
+					//显示模态窗口
+					$("#editCustomerModal").modal("show");
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+
+		//给"更新"按钮添加点击事件
+		$("#saveEditCustomerBtn").click(function () {
+			//收集参数
+			var id = $("#edit-id").val();
+			var owner = $("#edit-customerOwner").val();
+			var name = $.trim($("#edit-customerName").val());
+			var grade = $("#edit-grade").val();
+			var phone = $.trim($("#edit-phone").val());
+			var website = $.trim($("#edit-website").val());
+			var annualIncome = $.trim($("#edit-annualIncome").val());
+			var empnums = $.trim($("#edit-empnums").val());
+			var industry = $("#edit-industry").val();
+			var description = $.trim($("#edit-describe").val());
+			var country = $.trim($("#edit-country").val());
+			var province = $.trim($("#edit-province").val());
+			var city = $.trim($("#edit-city").val());
+			var street = $.trim($("#edit-street").val());
+			var zipcode = $.trim($("#edit-zipcode").val());
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/customer/saveEditCustomer.do",
+				data:{
+					id:id,
+					owner:owner,
+					name:name,
+					grade:grade,
+					phone:phone,
+					website:website,
+					annualIncomeStr:annualIncome,
+					empnumsStr:empnums,
+					industry:industry,
+					description:description,
+					country:country,
+					province:province,
+					city:city,
+					street:street,
+					zipcode:zipcode
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//关闭模态窗口
+						$("#editCustomerModal").modal("hide");
+						//显示客户列表第一页
+						display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
+					} else {
+						alert("修改失败！");
+						$("#editCustomerModal").modal("show");
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+
+		});
+
+		//给"删除"按钮添加点击事件
+		$("#deleteCustomerBtn").click(function () {
+			var ckdIds = $("#customerTBody input[type='checkbox']:checked");
+			if (ckdIds.length == 0){
+				alert("请选择要修改的客户！");
+				return;
+			}
+			if (confirm("你确定要删除选中的客户吗？")){
+				var ids = "";
+				$.each(ckdIds,function (index,obj) {
+					ids += "id="+obj.value+"&";
+				});
+				ids = ids.substr(0,ids.length - 1);
+			}
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/customer/deleteCustomer.do",
+				data:ids,
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//显示客户列表第一页
+						display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
+					} else {
+						alert("删除失败！");
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+
+
+
 		//根据条件分页查询客户
 		function display(pageNo,pageSize) {
 			//收集参数
@@ -158,7 +307,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					htmlStr += " ";
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += " <tr>";
-						htmlStr += " <td><input type='checkbox' /></td>";
+						htmlStr += " <td><input value='"+obj.id+"' type='checkbox' /></td>";
 						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.name+"</a></td>";
 						htmlStr += " <td>"+obj.owner+"</td>";
 						htmlStr += " <td>"+obj.grade+"</td>";
@@ -362,7 +511,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form">
-					
+						<input type="hidden" id="edit-id">
 						<div class="form-group">
 							<label for="edit-customerOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
@@ -383,11 +532,11 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-grade">
 								  <option></option>
-								  <option selected>已获得</option>
-								  <option>激活的</option>
-								  <option>市场失败</option>
-								  <option>项目取消</option>
-								  <option>关闭</option>
+									<c:if test="${not empty gradeList}">
+										<c:forEach var="gl" items="${gradeList}">
+											<option value="${gl.id}">${gl.text}</option>
+										</c:forEach>
+									</c:if>
 								</select>
 							</div>
 							<label for="edit-phone" class="col-sm-2 control-label">电话</label>
@@ -474,7 +623,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+					<button id="saveEditCustomerBtn" type="button" class="btn btn-primary">更新</button>
 				</div>
 			</div>
 		</div>
@@ -601,8 +750,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 5px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button id="createCustomerBtn" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editCustomerModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button id="editQueryCustomerBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button id="deleteCustomerBtn" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#importActivityModal"><span class="glyphicon glyphicon-import"></span> 导入</button>

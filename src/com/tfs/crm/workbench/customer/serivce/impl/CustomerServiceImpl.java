@@ -52,4 +52,29 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> queryCustomerByName(String name) {
         return customerDao.queryCustomerByName(name);
     }
+
+    /**
+     * 根据Id查询客户
+     * @param id
+     * @return
+     */
+    @Override
+    public Customer queryCustomerById(String id) {
+        return customerDao.queryCustomerById(id);
+    }
+
+    /**
+     * 保存修改的客户
+     * @param customer
+     * @return
+     */
+    @Override
+    public int saveEditCustomerByCustomer(Customer customer) {
+        return customerDao.saveEditCustomerByCustomer(customer);
+    }
+
+    @Override
+    public int deleteCustomerByIds(String[] ids) {
+        return customerDao.deleteCustomerByIds(ids);
+    }
 }
