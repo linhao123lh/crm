@@ -22,4 +22,6 @@ public interface ContactsDao {
     String queryCustomerNameById(String id);
 
     int saveEditContactsByContacts(Contacts contacts);
+
+    int deleteContactsById(String[] id);
 }

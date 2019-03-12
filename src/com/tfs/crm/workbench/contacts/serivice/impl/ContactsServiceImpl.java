@@ -78,4 +78,14 @@ public class ContactsServiceImpl implements ContactsService {
     public int saveEditContactsByContacts(Contacts contacts) {
         return contactsDao.saveEditContactsByContacts(contacts);
     }
+
+    /**
+     * 批量删除联系人
+     * @param id
+     * @return
+     */
+    @Override
+    public int deleteContactsById(String[] id) {
+        return contactsDao.deleteContactsById(id);
+    }
 }

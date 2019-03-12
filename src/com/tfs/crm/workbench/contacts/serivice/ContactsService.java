@@ -18,4 +18,6 @@ public interface ContactsService {
     ContactsVO queryContactsById(String id);
 
     int saveEditContactsByContacts(Contacts contacts);
+
+    int deleteContactsById(String[] id);
 }

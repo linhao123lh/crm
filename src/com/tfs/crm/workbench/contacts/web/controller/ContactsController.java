@@ -177,6 +177,28 @@ public class ContactsController {
         return retMap;
     }
 
+    /**
+     * 保存更新的联系人
+     * @param request
+     * @param id
+     * @param owner
+     * @param source
+     * @param fullName
+     * @param appellation
+     * @param job
+     * @param mphone
+     * @param email
+     * @param birth
+     * @param customerId
+     * @param description
+     * @param contactSummary
+     * @param country
+     * @param province
+     * @param city
+     * @param street
+     * @param zipcode
+     * @return
+     */
     @RequestMapping(value = "saveEditContacts.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> saveEditContacts(HttpServletRequest request,String id,String owner,String source,String fullName,
@@ -208,6 +230,20 @@ public class ContactsController {
         //调用service方法
         int ret = contactsService.saveEditContactsByContacts(contacts);
 
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
+
+    @RequestMapping(value = "deleteContacts.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> deleteContacts(String[] id){
+        int ret = contactsService.deleteContactsById(id);
         Map<String,Object> retMap = new HashMap<String, Object>();
         if (ret > 0){
             retMap.put("success",true);

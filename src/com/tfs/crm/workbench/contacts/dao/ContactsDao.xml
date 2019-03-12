@@ -105,4 +105,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			birth=#{birth},customerId=#{customerId},editBy=#{editBy},editTime=#{editTime},contactSummary=#{contactSummary}
 			where id=#{id}
 	</update>
+
+	<!-- 批量删除联系人-->
+	<delete id="deleteContactsById" parameterType="string">
+		delete from tbl_contacts where id in
+		<foreach collection="array" open="(" close=")" separator="," item="id">
+			#{id}
+		</foreach>
+	</delete>
+
 </mapper>

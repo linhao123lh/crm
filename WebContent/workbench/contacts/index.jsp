@@ -324,6 +324,42 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			});
 		});
 
+		//给"删除"按钮添加点击事件
+		$("#deleteContactsBtn").click(function () {
+			//收集参数
+			var ckdIds = $("#contactsListTBody input[type='checkbox']:checked");
+			if (ckdIds.length == 0){
+				alert("请选择要删除的联系人！");
+				return;
+			}
+			var ids = "";
+			if (confirm("你确定要选中删除的联系人？")){
+				$.each(ckdIds,function (index,obj) {
+					 ids += "id="+obj.value+"&";
+				});
+				ids = ids.substr(0,ids.length - 1);
+				alert(ids);
+				//发起ajax请求
+				$.ajax({
+					url:"workbench/contacts/deleteContacts.do",
+					data:ids,
+					type:"post",
+					dataType:"json",
+					success:function (data) {
+						if (data.success){
+							//刷新列表
+							display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
+						} else {
+							alert("删除失败！");
+						}
+					},
+					error:function () {
+						alert("请求失败！");
+					}
+				});
+			}
+		});
+
 		//分页查询
 		function display(pageNo,pageSize) {
 			//收集参数
@@ -807,7 +843,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button id="createContactsBtn" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button id="editQueryContactsBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button id="deleteContactsBtn" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#importContactsModal"><span class="glyphicon glyphicon-import"></span> 导入</button>
