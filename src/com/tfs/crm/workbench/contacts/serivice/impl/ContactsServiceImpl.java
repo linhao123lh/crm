@@ -1,5 +1,6 @@
 package com.tfs.crm.workbench.contacts.serivice.impl;
 
+import com.tfs.crm.commons.domain.ContactsVO;
 import com.tfs.crm.commons.domain.PaginationVO;
 import com.tfs.crm.workbench.contacts.dao.ContactsDao;
 import com.tfs.crm.workbench.contacts.domain.Contacts;
@@ -51,5 +52,20 @@ public class ContactsServiceImpl implements ContactsService {
     @Override
     public List<Contacts> queryContactsByLikeName(String name) {
         return contactsDao.queryContactsByLikeName(name);
+    }
+
+    /**
+     * 根据id获取联系人信息
+     * @param id
+     * @return
+     */
+    @Override
+    public ContactsVO queryContactsById(String id) {
+        ContactsVO vo = new ContactsVO();
+        Contacts contacts = contactsDao.queryContactsById(id);
+        String name = contactsDao.queryCustomerNameById(id);
+        vo.setContacts(contacts);
+        vo.setName(name);
+        return vo;
     }
 }

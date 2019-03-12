@@ -173,6 +173,65 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		$("#queryContactsBtn").click(function () {
 			display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
 		});
+		
+		//给"修改"添加点击事件
+		$("#editQueryContactsBtn").click(function () {
+			//收集参数
+			var ckdId = $("#contactsListTBody input[type='checkbox']:checked");
+			if (ckdId.length == 0){
+				alert("请选择要修改的联系人");
+				return;
+			}
+			if (ckdId.length > 1){
+				alert("一次只能修改一个联系人！");
+				return;
+			}
+			id = ckdId.val();
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/contacts/queryContactsBeforeEdit.do",
+				data:{
+					id:id
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					var htmlStr = "";
+					$.each(data.userList,function (index,obj) {
+						if (obj.id == data.vo.contacts.owner){
+							htmlStr += "<option value='"+obj.id+"' selected>"+obj.name+"</option>"
+						} else {
+							htmlStr += "<option value='"+obj.id+"'>"+obj.name+"</option>";
+						}
+					});
+					//联系人信息
+					$("#edit-id").val(data.vo.contacts.id);
+					$("#edit-contactsOwner").html(htmlStr);
+					$("#edit-clueSource").val(data.vo.contacts.source);
+					$("#edit-ContactsName").val(data.vo.contacts.fullName);
+					$("#edit-appellation").val(data.vo.contacts.appellation);
+					$("#edit-job").val(data.vo.contacts.job);
+					$("#edit-mphone").val(data.vo.contacts.mphone);
+					$("#edit-email").val(data.vo.contacts.email);
+					$("#edit-birth").val(data.vo.contacts.birth);
+					$("#edit-customerName").val(data.vo.name);
+					$("#edit-customerId").val(data.vo.contacts.customerId);
+					$("#edit-describtion").val(data.vo.contacts.description);
+					$("#edit-contactSummary").val(data.vo.contacts.contactSummary);
+					$("#edit-country").val(data.vo.contacts.country);
+					$("#edit-province").val(data.vo.contacts.province);
+					$("#edit-city").val(data.vo.contacts.city);
+					$("#edit-street").val(data.vo.contacts.street);
+					$("#edit-zipcode").val(data.vo.contacts.zipcode);
+
+					//显示模态窗口
+					$("#editContactsModal").modal("show");
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
 
 		//分页查询
 		function display(pageNo,pageSize) {
@@ -201,7 +260,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					htmlStr += " ";
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += " <tr>";
-						htmlStr += " <td><input type='checkbox' /></td>";
+						htmlStr += " <td><input value='"+obj.id+"' type='checkbox' /></td>";
 						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href='detail.html';'>"+obj.fullName+"</a></td>";
 						htmlStr += " <td>"+obj.appellation+"</td>";
 						htmlStr += " <td>"+obj.customerId+"</td>";
@@ -419,7 +478,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form">
-					
+						<input type="hidden" id="edit-id">
 						<div class="form-group">
 							<label for="edit-contactsOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
@@ -481,11 +540,12 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 								<input type="text" class="form-control mydate" id="edit-birth">
 							</div>
 						</div>
-						
+
 						<div class="form-group">
 							<label for="edit-customerName" class="col-sm-2 control-label">客户名称</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<input type="text" class="form-control" id="edit-customerName" placeholder="支持自动补全，输入客户不存在则新建">
+								<input type="hidden" id="edit-customerId">
 							</div>
 						</div>
 						
@@ -655,7 +715,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 10px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button id="createContactsBtn" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editContactsModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button id="editQueryContactsBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				<div class="btn-group" style="position: relative; top: 18%;">

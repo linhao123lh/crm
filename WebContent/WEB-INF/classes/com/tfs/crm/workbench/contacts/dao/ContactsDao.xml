@@ -82,4 +82,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="queryContactsByLikeName" parameterType="string" resultType="Contacts">
         select id,fullName,email,mphone from tbl_contacts where fullName like '%' #{name} '%'
     </select>
+
+	<!-- 根据id获取联系人信息-->
+	<select id="queryContactsById" parameterType="string" resultType="Contacts">
+		select * from tbl_contacts where id = #{id}
+	</select>
+
+	<!-- 根据id获取客户名称-->
+	<select id="queryCustomerNameById" parameterType="string" resultType="string">
+		select cusr.name as  name from
+		tbl_contacts cons
+		left join tbl_customer cusr on cons.customerId = cusr.id
+		where cons.id = #{id};
+
+	</select>
 </mapper>

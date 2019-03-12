@@ -1,5 +1,6 @@
 package com.tfs.crm.workbench.contacts.web.controller;
 
+import com.tfs.crm.commons.domain.ContactsVO;
 import com.tfs.crm.commons.domain.PaginationVO;
 import com.tfs.crm.commons.util.DateUtil;
 import com.tfs.crm.commons.util.UUIDUtil;
@@ -157,5 +158,17 @@ public class ContactsController {
         //调用service方法
         PaginationVO<Contacts> vo = contactsService.queryContactsForPageByCondition(paramMap);
         return vo;
+    }
+
+    @RequestMapping(value = "queryContactsBeforeEdit.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> queryContactsBeforeEdit(String id){
+
+        List<User> userList = userService.quertAllUsers();
+        ContactsVO vo = contactsService.queryContactsById(id);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        retMap.put("userList",userList);
+        retMap.put("vo",vo);
+        return retMap;
     }
 }

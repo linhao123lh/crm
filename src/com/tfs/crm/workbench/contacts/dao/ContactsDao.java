@@ -1,5 +1,6 @@
 package com.tfs.crm.workbench.contacts.dao;
 
+import com.tfs.crm.commons.domain.ContactsVO;
 import com.tfs.crm.workbench.contacts.domain.Contacts;
 
 import java.util.List;
@@ -15,4 +16,8 @@ public interface ContactsDao {
     Contacts queryContactsByClueFullName(String fullName);
 
     List<Contacts> queryContactsByLikeName(String name);
+
+    Contacts queryContactsById(String id);
+
+    String queryCustomerNameById(String id);
 }

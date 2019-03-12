@@ -1,5 +1,6 @@
 package com.tfs.crm.workbench.contacts.serivice;
 
+import com.tfs.crm.commons.domain.ContactsVO;
 import com.tfs.crm.commons.domain.PaginationVO;
 import com.tfs.crm.workbench.contacts.domain.Contacts;
 
@@ -13,4 +14,6 @@ public interface ContactsService {
     PaginationVO<Contacts> queryContactsForPageByCondition(Map<String, Object> paramMap);
 
     List<Contacts> queryContactsByLikeName(String name);
+
+    ContactsVO queryContactsById(String id);
 }
