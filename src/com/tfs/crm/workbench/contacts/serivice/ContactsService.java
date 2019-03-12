@@ -16,4 +16,6 @@ public interface ContactsService {
     List<Contacts> queryContactsByLikeName(String name);
 
     ContactsVO queryContactsById(String id);
+
+    int saveEditContactsByContacts(Contacts contacts);
 }

@@ -96,4 +96,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where cons.id = #{id};
 
 	</select>
+
+	<!-- 保存创建的联系人-->
+	<update id="saveEditContactsByContacts" parameterType="Contacts">
+		update tbl_contacts set id=#{id},owner=#{owner},source=#{source},appellation=#{appellation},
+			fullName=#{fullName},email=#{email},job=#{job},mphone=#{mphone},description=#{description},
+			country=#{country},province=#{province},city=#{city},street=#{street},zipcode=#{zipcode},
+			birth=#{birth},customerId=#{customerId},editBy=#{editBy},editTime=#{editTime},contactSummary=#{contactSummary}
+			where id=#{id}
+	</update>
 </mapper>

@@ -73,7 +73,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			});
 		});
 
-		//自动补全客户姓名
+		//创建联系人自动补全客户姓名
 		var name2Id = {};//姓名对应的id
 		//typeahead只能处理简单的列表，所以要构造一个array string。名称对应的id放到objMap里面；
 		$("#create-customerName").typeahead({
@@ -226,6 +226,97 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 
 					//显示模态窗口
 					$("#editContactsModal").modal("show");
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+
+		//修改联系人自动补全客户姓名
+		var name2Id = {};//姓名对应的id
+		//typeahead只能处理简单的列表，所以要构造一个array string。名称对应的id放到objMap里面；
+		$("#edit-customerName").typeahead({
+			source: function (query, process) {
+				//query是输入的值
+				$.post("workbench/contacts/queryCustomerByName.do", { name: query }, function (e) {
+					//if (e.success) {
+					/*if (e.length == 0) {
+                        alert("没有查到对应的人");
+                        return;
+                    }*/
+					var array = [];
+					$.each(e, function (index, ele) {
+						name2Id[ele.name] = ele.id;//键值对保存下来。
+						array.push(ele.name);
+					});
+					process(array);
+					//}
+				});
+			},
+			items: 8,
+			afterSelect: function (item) {
+				//console.log(name2Id[item]);//打印对应的id
+				//alert(name2Id[item]);
+				$("#edit-customerId").val(name2Id[item]);
+				//alert($("#edit-customerId").val());
+			},
+			delay: 500
+		});
+
+		//给"更新"添加点击事件
+		$("#saveEditContactsBtn").click(function () {
+			//收集参数
+			var id = $("#edit-id").val();
+			var owner = $("#edit-contactsOwner").val();
+			var source = $("#edit-clueSource").val();
+			var fullName = $.trim($("#edit-ContactsName").val());
+			var appellation = $("#edit-appellation").val();
+			var job = $.trim($("#edit-job").val());
+			var mphone = $.trim($("#edit-mphone").val());
+			var email = $.trim($("#edit-email").val());
+			var birth = $.trim($("#edit-birth").val());
+			var customerId = $("#edit-customerId").val();
+			var description = $.trim($("#edit-describtion").val());
+			var contactSummary = $.trim($("#edit-contactSummary").val());
+			var country = $.trim($("#edit-country").val());
+			var province = $.trim($("#edit-province").val());
+			var city = $.trim($("#edit-city").val());
+			var street = $.trim($("#edit-street").val());
+			var zipcode = $.trim($("#edit-zipcode").val());
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/contacts/saveEditContacts.do",
+				data:{
+					id:id,
+					owner:owner,
+					source:source,
+					fullName:fullName,
+					appellation:appellation,
+					job:job,
+					mphone:mphone,
+					email:email,
+					birth:birth,
+					customerId:customerId,
+					description:description,
+					contactSummary:contactSummary,
+					country:country,
+					province:province,
+					city:city,
+					street:street,
+					zipcode:zipcode
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//关闭模态窗口
+						$("#editContactsModal").modal("hide");
+						//刷新列表
+						display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
+					} else {
+
+					}
 				},
 				error:function () {
 					alert("请求失败！");
@@ -602,7 +693,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+					<button id="saveEditContactsBtn" type="button" class="btn btn-primary">更新</button>
 				</div>
 			</div>
 		</div>

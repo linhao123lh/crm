@@ -68,4 +68,14 @@ public class ContactsServiceImpl implements ContactsService {
         vo.setName(name);
         return vo;
     }
+
+    /**
+     * 保存创建的联系人
+     * @param contacts
+     * @return
+     */
+    @Override
+    public int saveEditContactsByContacts(Contacts contacts) {
+        return contactsDao.saveEditContactsByContacts(contacts);
+    }
 }

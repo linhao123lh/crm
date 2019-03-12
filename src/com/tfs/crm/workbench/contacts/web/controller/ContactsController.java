@@ -160,6 +160,11 @@ public class ContactsController {
         return vo;
     }
 
+    /**
+     * 修改前查询联系人
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "queryContactsBeforeEdit.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> queryContactsBeforeEdit(String id){
@@ -169,6 +174,46 @@ public class ContactsController {
         Map<String,Object> retMap = new HashMap<String, Object>();
         retMap.put("userList",userList);
         retMap.put("vo",vo);
+        return retMap;
+    }
+
+    @RequestMapping(value = "saveEditContacts.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> saveEditContacts(HttpServletRequest request,String id,String owner,String source,String fullName,
+             String appellation,String job,String mphone,String email,String birth,String customerId,String description,
+             String contactSummary,String country,String province,String city,String street,String zipcode){
+        //封装参数
+        Contacts contacts = new Contacts();
+        contacts.setId(id);
+        contacts.setFullName(fullName);
+        contacts.setOwner(owner);
+        contacts.setSource(source);
+        contacts.setAppellation(appellation);
+        contacts.setJob(job);
+        contacts.setMphone(mphone);
+        contacts.setEmail(email);
+        contacts.setBirth(birth);
+        contacts.setCustomerId(customerId);
+        contacts.setDescription(description);
+        contacts.setContactSummary(contactSummary);
+        contacts.setCountry(country);
+        contacts.setProvince(province);
+        contacts.setCity(city);
+        contacts.setStreet(street);
+        contacts.setZipcode(zipcode);
+        User user = (User) request.getSession().getAttribute("user");
+        contacts.setEditBy(user.getId());
+        contacts.setEditTime(DateUtil.formateDateTime(new Date()));
+
+        //调用service方法
+        int ret = contactsService.saveEditContactsByContacts(contacts);
+
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
         return retMap;
     }
 }

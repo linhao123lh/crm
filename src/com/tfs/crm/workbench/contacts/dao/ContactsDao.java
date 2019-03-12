@@ -20,4 +20,6 @@ public interface ContactsDao {
     Contacts queryContactsById(String id);
 
     String queryCustomerNameById(String id);
+
+    int saveEditContactsByContacts(Contacts contacts);
 }
