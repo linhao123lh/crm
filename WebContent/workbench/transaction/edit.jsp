@@ -1,4 +1,4 @@
-<<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
@@ -23,7 +23,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 	<script type="text/javascript" src="jquery/bs_pagination/js/localization/en.js"></script>
 <%-- 自动补全插件引入--%>
 	<script type="text/javascript" src="jquery/bs_typeahead/js/bootstrap3-typeahead.js"></script>
-
 <script type="text/javascript">
 $(function () {
 
@@ -41,7 +40,7 @@ $(function () {
 	//自动补全客户姓名
 	var name2Id = {};//姓名对应的id
 	//typeahead只能处理简单的列表，所以要构造一个array string。名称对应的id放到objMap里面；
-	$("#create-customerName").typeahead({
+	$("#edit-customerName").typeahead({
 		source: function (query, process) {
 			//query是输入的值
 			$.post("workbench/contacts/queryCustomerByName.do", { name: query }, function (e) {
@@ -63,7 +62,7 @@ $(function () {
 		afterSelect: function (item) {
 			//console.log(name2Id[item]);//打印对应的id
 			//alert(name2Id[item]);
-			$("#create-customerId").val(name2Id[item]);
+			$("#edit-customerId").val(name2Id[item]);
 		},
 		delay: 500
 	});
@@ -108,7 +107,7 @@ $(function () {
 		var name = $(this).prop("name");
 		//关闭模态窗口
 		$("#findMarketActivity").modal("hide");
-		$("#create-activityName").val(name);
+		$("#edit-activityName").val(name);
 	});
 
 	//查找联系人"搜索框"键盘弹起事件事件
@@ -147,49 +146,38 @@ $(function () {
 		var name = $(this).prop("name");
 		//关闭模态窗口
 		$("#findContacts").modal("hide");
-		$("#create-contactsName").val(name);
+		$("#edit-contactsName").val(name);
 	});
 
-	//给"保存"按钮添加点击事件
-	$("#saveCreateTransactionBtn").click(function () {
+	//给"取消"按钮添加点击事件
+	$("#cancelEditTransactionBtn").click(function () {
+		//跳转到交易首页
+		window.location.href = "workbench/transaction/index.jsp";
+	});
+
+	//给"更新"按钮添加点击事件
+	$("#saveEditTransactionBtn").click(function () {
 		//收集参数
-		var owner = $("#create-owner").val();
-		var amountOfMoney = $.trim($("#create-amountOfMoney").val());
-		var name = $.trim($("#create-name").val());
-		var expectedClosingDate = $("#create-expectedClosingDate").val();
-		var customerId = $("#create-customerId").val();
-		var stage = $("#create-stage").val();
-		var type = $("#create-type").val();
-		var source = $("#create-source").val();
+		var owner = $("#edit-owner").val();
+		var id = $("#edit-id").val();
+		var amountOfMoney = $.trim($("#edit-amountOfMoney").val());
+		var name = $.trim($("#edit-name").val());
+		var expectedClosingDate = $("#edit-expectedClosingDate").val();
+		var customerId = $("#edit-customerId").val();
+		var stage = $("#edit-stage").val();
+		var type = $("#edit-type").val();
+		var source = $("#edit-source").val();
 		var activityId = $("#findActivityId").val();
 		var contactsId = $("#findContactsId").val();
-		var description = $.trim($("#create-description").val());
-		var contactSummary = $.trim($("#create-contactSummary").val());
-		var nextContactTime = $("#create-nextContactTime").val();
-		alert("customerId===="+customerId);
-
-		//表单验证
-		if (name == null || name.length ==0){
-			alert("名称不能为空！");
-			return;
-		}
-		if (expectedClosingDate == null || expectedClosingDate.length ==0){
-			alert("预计成交日期不能为空！");
-			return;
-		}
-		if (customerId == null || customerId.length ==0){
-			alert("客户名称不能为空！");
-			return;
-		}
-		if (stage == null || stage.length ==0){
-			alert("阶段不能为空！");
-			return;
-		}
+		var description = $.trim($("#edit-description").val());
+		var contactSummary = $.trim($("#edit-contactSummary").val());
+		var nextContactTime = $("#edit-nextContactTime").val();
 		//发起ajax请求
 		$.ajax({
-			url:"workbench/transaction/saveCreateContacts.do",
+			url:"workbench/transaction/saveEditTransaction.do",
 			data:{
 				owner:owner,
+				id:id,
 				amountOfMoneyStr:amountOfMoney,
 				name:name,
 				expectedClosingDate:expectedClosingDate,
@@ -207,27 +195,20 @@ $(function () {
 			dataType:"json",
 			success:function (data) {
 				if (data.success){
-					//跳转到交易首页
+					//返回交易首页
 					window.location.href = "workbench/transaction/index.jsp";
 				} else {
-					alert("创建失败！");
+					alert("修改失败！");
 				}
 			},
 			error:function () {
 				alert("请求失败！");
 			}
 		});
+
 	});
 
-	//给"取消"按钮添加点击事件
-	$("#cancelEditTransactionBtn").click(function () {
-		//跳转到交易首页
-		window.location.href = "workbench/transaction/index.jsp";
-	});
-
-})
-
-
+})	
 </script>
 </head>
 <body>
@@ -291,7 +272,7 @@ $(function () {
 						  </div>
 						</form>
 					</div>
-					<table id="activityTable" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
+					<table id="contactsTable" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
 						<thead>
 							<tr style="color: #B3B3B3;">
 								<td></td>
@@ -311,129 +292,147 @@ $(function () {
 	
 	
 	<div style="position:  relative; left: 30px;">
-		<h3>创建交易</h3>
+		<h3>更新交易</h3>
 	  	<div style="position: relative; top: -40px; left: 70%;">
-			<button id="saveCreateTransactionBtn" type="button" class="btn btn-primary">保存</button>
+			<button id="saveEditTransactionBtn" type="button" class="btn btn-primary">更新</button>
 			<button id="cancelEditTransactionBtn" type="button" class="btn btn-default">取消</button>
 		</div>
 		<hr style="position: relative; top: -40px;">
 	</div>
 	<form class="form-horizontal" role="form" style="position: relative; top: -30px;">
+		<input type="hidden" id="edit-id" value="${sessionScope.transaction.id}">
 		<div class="form-group">
-			<label for="create-transactionOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
+			<label for="edit-owner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 			<div class="col-sm-10" style="width: 300px;">
-				<select class="form-control" id="create-owner">
-				  <c:if test="${not empty userList}">
-					  <c:forEach items="${userList}" var="u">
-						  <c:if test="${u.id == user.id}">
-							  <option value="${u.id}" selected>${u.name}</option>
+				<select class="form-control" id="edit-owner">
+					<c:if test="${not empty userList}">
+						<c:forEach items="${userList}" var="u">
+							<c:if test="${u.id == user.id}">
+								<option value="${u.id}" selected>${u.name}</option>
+							</c:if>
+							<c:if test="${u.id != user.id}">
+								<option value="${u.id}">${u.name}</option>
+							</c:if>
+						</c:forEach>
+					</c:if>
+				</select>
+			</div>
+			<label for="edit-amountOfMoney" class="col-sm-2 control-label">金额</label>
+			<div class="col-sm-10" style="width: 300px;">
+				<input type="text" class="form-control" id="edit-amountOfMoney" value="${sessionScope.transaction.amountOfMoney}">
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="edit-expectedClosingDate" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
+			<div class="col-sm-10" style="width: 300px;">
+				<input type="text" class="form-control" id="edit-name" value="${sessionScope.transaction.name}">
+			</div>
+			<label for="edit-expectedClosingDate" class="col-sm-2 control-label">预计成交日期<span style="font-size: 15px; color: red;">*</span></label>
+			<div class="col-sm-10" style="width: 300px;">
+				<input type="text" class="form-control mydate" id="edit-expectedClosingDate" value="${sessionScope.transaction.expectedClosingDate}">
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="edit-customerName" class="col-sm-2 control-label">客户名称<span style="font-size: 15px; color: red;">*</span></label>
+			<div class="col-sm-10" style="width: 300px;">
+				<input type="text" class="form-control" id="edit-customerName" value="${sessionScope.transaction.customerId}" placeholder="支持自动补全，输入客户不存在则新建">
+				<input type="hidden" id="edit-customerId">
+			</div>
+			<label for="edit-stage" class="col-sm-2 control-label">阶段<span style="font-size: 15px; color: red;">*</span></label>
+			<div class="col-sm-10" style="width: 300px;">
+			  <select class="form-control" id="edit-stage" value="${sessionScope.transaction.stage}">
+			  	<option></option>
+				  <c:if test="${not empty stageList}">
+					  <c:forEach var="sl" items="${stageList}">
+						  <c:if test="${sl.id == sessionScope.transaction.stage}">
+							  <option value="${sl.id}" selected>${sl.text}</option>
 						  </c:if>
-						  <c:if test="${u.id != user.id}">
-							  <option value="${u.id}">${u.name}</option>
+						  <c:if test="${sl.id != sessionScope.transaction.stage}">
+							  <option value="${sl.id}">${sl.text}</option>
 						  </c:if>
 					  </c:forEach>
 				  </c:if>
-				</select>
-			</div>
-			<label for="create-amountOfMoney" class="col-sm-2 control-label">金额</label>
-			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="create-amountOfMoney">
-			</div>
-		</div>
-		
-		<div class="form-group">
-			<label for="create-transactionName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
-			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="create-name">
-			</div>
-			<label for="create-expectedClosingDate" class="col-sm-2 control-label">预计成交日期<span style="font-size: 15px; color: red;">*</span></label>
-			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control mydate" id="create-expectedClosingDate">
-			</div>
-		</div>
-		
-		<div class="form-group">
-			<label for="create-accountName" class="col-sm-2 control-label">客户名称<span style="font-size: 15px; color: red;">*</span></label>
-			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="create-customerName" placeholder="支持自动补全，输入客户不存在则新建">
-				<input type="hidden" id="create-customerId">
-			</div>
-			<label for="create-transactionStage" class="col-sm-2 control-label">阶段<span style="font-size: 15px; color: red;">*</span></label>
-			<div class="col-sm-10" style="width: 300px;">
-			  <select class="form-control" id="create-stage">
-			  	<option></option>
-			  	<c:if test="${not empty stageList}">
-					<c:forEach var="sl" items="${stageList}">
-						<option value="${sl.id}">${sl.text}</option>
-					</c:forEach>
-				</c:if>
 			  </select>
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="create-transactionType" class="col-sm-2 control-label">类型</label>
+			<label for="edit-type" class="col-sm-2 control-label">类型</label>
 			<div class="col-sm-10" style="width: 300px;">
-				<select class="form-control" id="create-type">
+				<select class="form-control" id="edit-type">
 				  <option></option>
-				  <c:if test="${not empty transactionTypeList}">
-					  <c:forEach var="ttl" items="${transactionTypeList}">
-						  <option value="${ttl.id}">${ttl.text}</option>
-					  </c:forEach>
-				  </c:if>
+					<c:if test="${not empty transactionTypeList}">
+						<c:forEach var="ttl" items="${transactionTypeList}">
+							<c:if test="${ttl.id == sessionScope.transaction.type}">
+								<option value="${ttl.id}" selected>${ttl.text}</option>
+							</c:if>
+							<c:if test="${ttl.id != sessionScope.transaction.type}">
+								<option value="${ttl.id}">${ttl.text}</option>
+							</c:if>
+						</c:forEach>
+					</c:if>
 				</select>
 			</div>
-			<label for="create-possibility" class="col-sm-2 control-label">可能性</label>
+			<label for="edit-possibility" class="col-sm-2 control-label">可能性</label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="create-possibility" readonly="readonly">
+				<input type="text" class="form-control" id="edit-possibility" value="" readonly="readonly">
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="create-clueSource" class="col-sm-2 control-label">来源</label>
+			<label for="edit-source" class="col-sm-2 control-label">来源</label>
 			<div class="col-sm-10" style="width: 300px;">
-				<select class="form-control" id="create-source">
+				<select class="form-control" id="edit-source">
 				  <option></option>
-				  <c:if test="${not empty sourceList}">
-					  <c:forEach var="sl" items="${sourceList}">
-						  <option value="${sl.id}">${sl.text}</option>
-					  </c:forEach>
-				  </c:if>
+					<c:if test="${not empty sourceList}">
+						<c:forEach var="sl" items="${sourceList}">
+							<c:if test="${sl.id == sessionScope.transaction.source}">
+								<option value="${sl.id}" selected>${sl.text}</option>
+							</c:if>
+							<c:if test="${sl.id != sessionScope.transaction.source}">
+								<option value="${sl.id}">${sl.text}</option>
+							</c:if>
+						</c:forEach>
+					</c:if>
 				</select>
 			</div>
-			<label for="create-activitySrc" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findMarketActivity"><span class="glyphicon glyphicon-search"></span></a></label>
+			<label for="edit-activityName" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findMarketActivity"><span class="glyphicon glyphicon-search"></span></a></label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="create-activityName" value="点击左边搜索" readonly="readonly">
+				<input type="text" class="form-control" id="edit-activityName" value="${sessionScope.transaction.activityId}" readonly="readonly">
 				<input id="findActivityId" type="hidden">
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="create-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findContacts"><span class="glyphicon glyphicon-search"></span></a></label>
+			<label for="edit-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findContacts"><span class="glyphicon glyphicon-search"></span></a></label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="create-contactsName" value="点击左边搜索" readonly="readonly">
+				<input type="text" class="form-control" id="edit-contactsName" value="${sessionScope.transaction.contactsId}" readonly="readonly">
 				<input id="findContactsId" type="hidden">
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="create-describe" class="col-sm-2 control-label">描述</label>
+			<label for="edit-description" class="col-sm-2 control-label">描述</label>
 			<div class="col-sm-10" style="width: 70%;">
-				<textarea class="form-control" rows="3" id="create-description"></textarea>
+				<%--<textarea class="form-control" rows="3" id="edit-description" value="${sessionScope.transaction.description}"></textarea>--%>
+					<input type="text" class="form-control" rows="3" id="edit-description" value="${sessionScope.transaction.description}">
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="create-contactSummary" class="col-sm-2 control-label">联系纪要</label>
+			<label for="edit-contactSummary" class="col-sm-2 control-label">联系纪要</label>
 			<div class="col-sm-10" style="width: 70%;">
-				<textarea class="form-control" rows="3" id="create-contactSummary"></textarea>
+				<%--<textarea class="form-control" rows="3" id="edit-contactSummary" value="sessionScope."></textarea>--%>
+					<input type="text" class="form-control" rows="3" id="edit-contactSummary" value="${sessionScope.transaction.description}">
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="create-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
+			<label for="edit-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control mydate" id="create-nextContactTime">
+				<input type="text" class="form-control mydate" id="edit-nextContactTime" value="${sessionScope.transaction.nextContactTime}">
 			</div>
 		</div>
 		

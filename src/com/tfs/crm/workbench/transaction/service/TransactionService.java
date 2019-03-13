@@ -9,4 +9,10 @@ public interface TransactionService {
     int saveCreateTransaction(Transaction transaction);
 
     PaginationVO<Transaction> queryTransactionForPageByCondition(Map<String, Object> paramMap);
+
+    Transaction queryTransactionBeforeEditById(String id);
+
+    int saveEditTransaction(Transaction transaction);
+
+    int deleteTransactionByIds(String[] id);
 }

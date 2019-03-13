@@ -107,4 +107,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
+    <!-- 通过Id查询交易-->
+    <select id="queryTransactionById" parameterType="string" resultType="Transaction">
+        select tra.id,tra.owner,tra.amountOfMoney,tra.name,tra.expectedClosingDate,tra.stage,tra.type,
+               tra.source,tra.description,tra.contactSummary,tra.nextContactTime,mar.name as activityId,
+               cus.name as customerId, con.fullName as contactsId
+        from tbl_transaction tra
+        left join tbl_marketing_activities mar on tra.activityId = mar.id
+        left join tbl_customer cus on tra.customerId = cus.id
+        left join tbl_contacts con on tra.contactsId = con.id
+        where tra.id=#{id}
+    </select>
+
+    <!-- 保存修改的交易-->
+    <update id="saveEditTransaction" parameterType="Transaction">
+        update tbl_transaction set owner=#{owner},amountOfMoney=#{amountOfMoney},name=#{name},expectedClosingDate=#{expectedClosingDate},
+        customerId=#{customerId},stage=#{stage},type=#{type},source=#{source},activityId=#{activityId},contactsId=#{contactsId},
+        description=#{description},contactSummary=#{contactSummary},nextContactTime=#{nextContactTime},editBy=#{editBy},editTime=#{editTime}
+        where id=#{id}
+    </update>
+
+    <!-- 批量删除交易-->
+    <delete id="deleteTransactionByIds" parameterType="string">
+        delete from tbl_transaction where id in
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
 </mapper>

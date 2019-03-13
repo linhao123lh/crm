@@ -15,4 +15,10 @@ public interface TransactionDao {
     List<Transaction> queryTransactionForPageByCondition(Map<String, Object> paramMap);
 
     Long queryTransactionCountByCondition(Map<String, Object> paramMap);
+
+    Transaction queryTransactionById(String id);
+
+    int saveEditTransaction(Transaction transaction);
+
+    int deleteTransactionByIds(String[] id);
 }

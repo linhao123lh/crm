@@ -44,4 +44,34 @@ public class TransactionServiceImpl implements TransactionService {
         vo.setCount(count);
         return vo;
     }
+
+    /**
+     * 通过Id查询交易信息
+     * @param id
+     * @return
+     */
+    @Override
+    public Transaction queryTransactionBeforeEditById(String id) {
+        return transactionDao.queryTransactionById(id);
+    }
+
+    /**
+     * 保存修改的交易
+     * @param transaction
+     * @return
+     */
+    @Override
+    public int saveEditTransaction(Transaction transaction) {
+        return transactionDao.saveEditTransaction(transaction);
+    }
+
+    /**
+     * 批量删除交易
+     * @param id
+     * @return
+     */
+    @Override
+    public int deleteTransactionByIds(String[] id) {
+        return transactionDao.deleteTransactionByIds(id);
+    }
 }

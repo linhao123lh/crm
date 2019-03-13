@@ -40,6 +40,24 @@
 			window.location.href = "workbench/transaction/createTransaction.do";
 		});
 
+		//给"修改"按钮添加点击事件
+		$("#queryEditTransactionBtn").click(function () {
+			//收集参数
+			var ckdId = $("#transactionListTBody input[type='checkbox']:checked");
+			if (ckdId.length == 0){
+				alert("请选择要修改的交易!");
+				return;
+			}
+			if (ckdId.length > 1){
+				alert("只能选择一条交易进行修改!");
+				return;
+			}
+			var id = ckdId.val();
+			window.location.href = 'workbench/transaction/queryTransactionBeforeEdit.do?id='+id;
+		});
+
+
+
 		//页面加载完，显示交易列表第一页
 		display(1,10);
 
@@ -47,6 +65,42 @@
 		$("#queryTransactionBtn").click(function () {
 			display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
 		});
+
+		//给"删除"按钮添加点击事件
+		$("#deleteTransactionBtn").click(function () {
+			//收集参数
+			var ckdIds = $("#transactionListTBody input[type='checkbox']:checked");
+			if (ckdIds.length == 0){
+				alert("请选择要删除的交易！");
+				return;
+			}
+			if (confirm("你确定要删除选中的交易吗？")){
+				var ids = "";
+				$.each(ckdIds,function (index,obj) {
+					ids += "id="+obj.value+"&";
+				});
+				ids = ids.substr(0,ids.length - 1);
+				//发起ajax请求
+				$.ajax({
+					url:"workbench/transaction/deleteTransaction.do",
+					data:ids,
+					type:"post",
+					dataType:"json",
+					success:function (data) {
+						if (data.success){
+							//刷新列表第一页
+							display(1,$("#pageNoDiv").bs_pagination("getOption","rowsPerPage"));
+						} else {
+							alert("删除失败！");
+						}
+					},
+					error:function () {
+						alert("请求失败！");
+					}
+				});
+			}
+		});
+
 		
 		function display(pageNo,pageSize) {
 			//收集参数
@@ -79,8 +133,8 @@
 					var htmlStr = "";
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += " <tr>";
-						htmlStr += " <td><input type='checkbox' /></td>";
-						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"detail.html\";'>"+obj.name+"</a></td>";
+						htmlStr += " <td><input value='"+obj.id+"' type='checkbox' /></td>";
+						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=detail.jsp'</a>"+obj.name+"</td>";
 						htmlStr += " <td>"+obj.customerId+"</td>";
 						htmlStr += " <td>"+obj.amountOfMoney+"</td>";
 						htmlStr += " <td>"+obj.expectedClosingDate+"</td>";
@@ -282,8 +336,8 @@
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 10px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button id="createTransactionBtn" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" onclick="window.location.href='edit.html';"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button id="queryEditTransactionBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button id="deleteTransactionBtn" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#importClueModal"><span class="glyphicon glyphicon-import"></span> 导入</button>
@@ -354,7 +408,7 @@
 					<tbody id="transactionListTBody">
 						<%--<tr>
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">动力节点-交易01</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detaidetail.jsp力节点-交易01</a></td>
 							<td>动力节点</td>
 							<td>5,000</td>
 							<td>2017-02-07</td>
@@ -375,7 +429,7 @@
 						</tr>
 						<tr>
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">动力节点-交易01</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detaidetail.jsp力节点-交易01</a></td>
 							<td>动力节点</td>
 							<td>5,000</td>
 							<td>2017-02-07</td>

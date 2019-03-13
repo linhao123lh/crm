@@ -388,7 +388,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += " <tr>";
 						htmlStr += " <td><input value='"+obj.id+"' type='checkbox' /></td>";
-						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href='detail.html';'>"+obj.fullName+"</a></td>";
+						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href='detail.jsp';'>"+obj.fullName+"</a></td>";
 						htmlStr += " <td>"+obj.appellation+"</td>";
 						htmlStr += " <td>"+obj.customerId+"</td>";
 						htmlStr += " <td>"+obj.owner+"</td>";
@@ -911,7 +911,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<tbody id="contactsListTBody">
 						<%--<tr class="active">
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">李四</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">李四</a></td>
 							<td>先生</td>
 							<td>动力节点</td>
 							<td>zhangsan</td>
@@ -930,7 +930,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</tr>
 						<tr>
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">李四</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">李四</a></td>
 							<td>先生</td>
 							<td>动力节点</td>
 							<td>zhangsan</td>

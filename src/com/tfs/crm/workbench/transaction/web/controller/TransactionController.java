@@ -11,11 +11,7 @@ import com.tfs.crm.workbench.transaction.domain.Transaction;
 import com.tfs.crm.workbench.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -34,6 +30,11 @@ public class TransactionController {
     @Autowired
     private ContactsService contactsService;
 
+    /**
+     * 创建交易
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "createTransaction.do",method = RequestMethod.GET)
     public String createTransaction(HttpServletRequest request){
 
@@ -42,6 +43,11 @@ public class TransactionController {
         return "forward:/workbench/transaction/save.jsp";
     }
 
+    /**
+     * 根据交易名称模糊查询交易列表
+     * @param name
+     * @return
+     */
     @RequestMapping(value = "queryContactsByLikeName.do",method = RequestMethod.POST)
     @ResponseBody
     public List<Contacts> queryContactsByLikeName(String name){
@@ -50,6 +56,24 @@ public class TransactionController {
         return contactsList;
     }
 
+    /**
+     * 保存创建的交易
+     * @param request
+     * @param owner
+     * @param amountOfMoneyStr
+     * @param name
+     * @param expectedClosingDate
+     * @param customerId
+     * @param stage
+     * @param type
+     * @param source
+     * @param activityId
+     * @param contactsId
+     * @param description
+     * @param contactSummary
+     * @param nextContactTime
+     * @return
+     */
     @RequestMapping(value = "saveCreateContacts.do",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> saveCreateContacts(HttpServletRequest request,String owner,String amountOfMoneyStr,String name,String expectedClosingDate,String customerId,
@@ -88,6 +112,20 @@ public class TransactionController {
         return retMap;
     }
 
+    /**
+     * 分页查询交易
+     * @param pageNoStr
+     * @param pageSizeStr
+     * @param owner
+     * @param name
+     * @param amountOfMoneyStr
+     * @param contactsName
+     * @param stage
+     * @param type
+     * @param source
+     * @param customerName
+     * @return
+     */
     @PostMapping("queryTransactionForPageByCondition.do")
     @ResponseBody
     public PaginationVO<Transaction> queryTransactionForPageByCondition(String pageNoStr,String pageSizeStr,String owner,String name,String
@@ -120,4 +158,90 @@ public class TransactionController {
         PaginationVO<Transaction> vo = transactionService.queryTransactionForPageByCondition(paramMap);
         return vo;
     }
+
+    /**
+     * 修改前查询交易
+     * @param id
+     * @param request
+     * @return
+     */
+    @GetMapping(value = "queryTransactionBeforeEdit.do")
+    public String queryTransactionBeforeEdit(@RequestParam(value = "id",required = true) String id, HttpServletRequest request){
+
+        Transaction transaction = transactionService.queryTransactionBeforeEditById(id);
+        List<User> userList = userService.quertAllUsers();
+        request.setAttribute("userList",userList);
+        request.getSession().setAttribute("transaction",transaction);
+        return "forward:/workbench/transaction/edit.jsp";
+    }
+
+    /**
+     * 保存修改的交易
+     * @param request
+     * @param id
+     * @param amountOfMoneyStr
+     * @param name
+     * @param expectedClosingDate
+     * @param customerId
+     * @param stage
+     * @param type
+     * @param source
+     * @param activityId
+     * @param contactsId
+     * @param description
+     * @param contactSummary
+     * @param nextContactTime
+     * @return
+     */
+    @PostMapping(value = "saveEditTransaction.do")
+    @ResponseBody
+    public Map<String,Object> saveEditTransaction(HttpServletRequest request,String owner,String id,
+           String amountOfMoneyStr,String name,String expectedClosingDate,String customerId,String stage,String type,
+           String source,String activityId,String contactsId,String description,String contactSummary,String nextContactTime){
+
+        //封装参数
+        Transaction transaction = new Transaction();
+        transaction.setOwner(owner);
+        transaction.setId(id);
+        transaction.setType(type);
+        transaction.setSource(source);
+        transaction.setNextContactTime(nextContactTime);
+        transaction.setDescription(description);
+        transaction.setContactSummary(contactSummary);
+        transaction.setStage(stage);
+        transaction.setName(name);
+        transaction.setExpectedClosingDate(expectedClosingDate);
+        transaction.setCustomerId(customerId);
+        transaction.setContactsId(contactsId);
+        if (amountOfMoneyStr!= null && amountOfMoneyStr.trim().length()>0){
+            transaction.setAmountOfMoney(Long.parseLong(amountOfMoneyStr));
+        }
+        transaction.setActivityId(activityId);
+        transaction.setEditTime(DateUtil.formateDateTime(new Date()));
+        User user = (User) request.getSession().getAttribute("user");
+        transaction.setEditBy(user.getId());
+        //调用service方法
+        int ret = transactionService.saveEditTransaction(transaction);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
+    @PostMapping(value = "deleteTransaction.do")
+    @ResponseBody
+    public Map<String,Object> deleteTransaction(String[] id){
+        int ret = transactionService.deleteTransactionByIds(id);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
 }
