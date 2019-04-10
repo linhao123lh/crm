@@ -308,7 +308,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += " <tr>";
 						htmlStr += " <td><input value='"+obj.id+"' type='checkbox' /></td>";
-						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=dedetail.jsp"+obj.name+"</a></td>";
+						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=dedetail.jsp"+obj.name+"'</a></td>";
 						htmlStr += " <td>"+obj.owner+"</td>";
 						htmlStr += " <td>"+obj.grade+"</td>";
 						htmlStr += " <td>"+obj.phone+"</td>";
