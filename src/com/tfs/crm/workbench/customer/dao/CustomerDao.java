@@ -22,4 +22,6 @@ public interface CustomerDao {
     int saveEditCustomerByCustomer(Customer customer);
 
     int deleteCustomerByIds(String[] ids);
+
+    Customer selcectCustomerDetailById(String id);
 }

@@ -21,4 +21,8 @@ public interface TransactionDao {
     int saveEditTransaction(Transaction transaction);
 
     int deleteTransactionByIds(String[] id);
+
+    List<Transaction> selectTransactionListByCustomerId(String customerId);
+
+    Transaction selectCustomerIdContactsIdById(String id);
 }

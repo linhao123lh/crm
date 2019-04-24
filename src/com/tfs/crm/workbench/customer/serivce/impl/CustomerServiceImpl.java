@@ -77,4 +77,14 @@ public class CustomerServiceImpl implements CustomerService {
     public int deleteCustomerByIds(String[] ids) {
         return customerDao.deleteCustomerByIds(ids);
     }
+
+    /**
+     * 根据客户id查询客户详情
+     * @param id
+     * @return
+     */
+    @Override
+    public Customer queryCustomerDetailById(String id) {
+        return customerDao.selcectCustomerDetailById(id);
+    }
 }

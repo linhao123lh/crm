@@ -13,4 +13,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
+    <!-- 根据用户id查询用户备注List -->
+    <select id="selectCustomerRemarkByCustomerId" parameterType="string" resultType="CustomerRemark">
+        select cr.id, u1.name as notePerson, cr.noteContent, cr.noteTime, u2.name as editPerson, cr.editTime, cr.editFlag, cr.customerId
+        from tbl_customer_remark cr
+        join tbl_user u1 on cr.notePerson = u1.id
+        left join tbl_user u2 on cr.editPerson = u2.id
+        where customerId = #{id}
+        order by cr.noteTime
+    </select>
+
 </mapper>

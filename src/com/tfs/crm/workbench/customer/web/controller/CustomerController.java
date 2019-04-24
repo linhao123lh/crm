@@ -6,8 +6,14 @@ import com.tfs.crm.commons.util.UUIDUtil;
 import com.tfs.crm.settings.qx.user.domain.User;
 import com.tfs.crm.settings.qx.user.service.UserService;
 import com.tfs.crm.workbench.clue.domain.Clue;
+import com.tfs.crm.workbench.contacts.domain.Contacts;
+import com.tfs.crm.workbench.contacts.serivice.ContactsService;
 import com.tfs.crm.workbench.customer.domain.Customer;
+import com.tfs.crm.workbench.customer.domain.CustomerRemark;
+import com.tfs.crm.workbench.customer.serivce.CustomerRemarkService;
 import com.tfs.crm.workbench.customer.serivce.CustomerService;
+import com.tfs.crm.workbench.transaction.domain.Transaction;
+import com.tfs.crm.workbench.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +36,12 @@ public class CustomerController {
     private UserService userService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private CustomerRemarkService customerRemarkService;
+    @Autowired
+    private TransactionService transactionService;
+    @Autowired
+    private ContactsService contactsService;
 
     /**
      * 创建用户
@@ -257,5 +269,34 @@ public class CustomerController {
             retMap.put("success",false);
         }
         return retMap;
+    }
+
+
+    /**
+     * 获取客户明细信息
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "queryCustomerDetail.do",method = RequestMethod.GET)
+    //@ResponseBody
+    public String queryCustomerDetail(String id, HttpServletRequest request){
+
+        //客户
+        Customer customer = customerService.queryCustomerDetailById(id);
+        //备注
+        List<CustomerRemark> cusRList = customerRemarkService.queryCustomerRemarkByCustomerId(id);
+        //交易
+        List<Transaction> transactionList = transactionService.queryTransactionByCustomerId(id);
+        //联系人
+        List<Contacts> contactsList = contactsService.queryContactsByCustomerId(id);
+
+        //放到request域中
+        request.setAttribute("customer",customer);
+        request.setAttribute("cusRList",cusRList);
+        request.setAttribute("transactionList",transactionList);
+        request.setAttribute("contactsList",contactsList);
+
+        return "detail.jsp";
+
     }
 }

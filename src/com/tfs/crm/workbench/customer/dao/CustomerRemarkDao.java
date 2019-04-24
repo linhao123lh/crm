@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface CustomerRemarkDao {
     int saveCustomerRemarkByList(List<CustomerRemark> curList);
+
+    List<CustomerRemark> selectCustomerRemarkByCustomerId(String id);
 }

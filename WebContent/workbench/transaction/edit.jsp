@@ -163,12 +163,15 @@ $(function () {
 		var amountOfMoney = $.trim($("#edit-amountOfMoney").val());
 		var name = $.trim($("#edit-name").val());
 		var expectedClosingDate = $("#edit-expectedClosingDate").val();
+
 		var customerId = $("#edit-customerId").val();
+		alert("customerId====="+customerId);
 		var stage = $("#edit-stage").val();
 		var type = $("#edit-type").val();
 		var source = $("#edit-source").val();
 		var activityId = $("#findActivityId").val();
 		var contactsId = $("#findContactsId").val();
+		alert("contactsId====="+contactsId);
 		var description = $.trim($("#edit-description").val());
 		var contactSummary = $.trim($("#edit-contactSummary").val());
 		var nextContactTime = $("#edit-nextContactTime").val();
@@ -338,7 +341,7 @@ $(function () {
 			<label for="edit-customerName" class="col-sm-2 control-label">客户名称<span style="font-size: 15px; color: red;">*</span></label>
 			<div class="col-sm-10" style="width: 300px;">
 				<input type="text" class="form-control" id="edit-customerName" value="${sessionScope.transaction.customerId}" placeholder="支持自动补全，输入客户不存在则新建">
-				<input type="hidden" id="edit-customerId">
+				<input type="hidden" id="edit-customerId" value="${customerId}">
 			</div>
 			<label for="edit-stage" class="col-sm-2 control-label">阶段<span style="font-size: 15px; color: red;">*</span></label>
 			<div class="col-sm-10" style="width: 300px;">
@@ -409,7 +412,7 @@ $(function () {
 			<label for="edit-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findContacts"><span class="glyphicon glyphicon-search"></span></a></label>
 			<div class="col-sm-10" style="width: 300px;">
 				<input type="text" class="form-control" id="edit-contactsName" value="${sessionScope.transaction.contactsId}" readonly="readonly">
-				<input id="findContactsId" type="hidden">
+				<input id="findContactsId" type="hidden" value="${contactsId}">
 			</div>
 		</div>
 		

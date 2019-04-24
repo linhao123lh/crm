@@ -121,6 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 保存修改的交易-->
     <update id="saveEditTransaction" parameterType="Transaction">
+
         update tbl_transaction set owner=#{owner},amountOfMoney=#{amountOfMoney},name=#{name},expectedClosingDate=#{expectedClosingDate},
         customerId=#{customerId},stage=#{stage},type=#{type},source=#{source},activityId=#{activityId},contactsId=#{contactsId},
         description=#{description},contactSummary=#{contactSummary},nextContactTime=#{nextContactTime},editBy=#{editBy},editTime=#{editTime}
@@ -134,5 +135,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <!-- 查询用户下面的交易列表 -->
+    <select id="selectTransactionListByCustomerId" parameterType="string" resultType="Transaction">
+        select tra.id,tra.amountOfMoney,tra.name,tra.expectedClosingDate,tra.customerId,dv1.text as stage,dv2.text as type
+        from tbl_transaction tra
+        left join tbl_dictionary_value dv1 on tra.stage = dv1.id
+        left join tbl_dictionary_value dv2 on tra.type = dv2.id
+        where customerId = #{customerId}
+        order by tra.expectedClosingDate
+    </select>
+
+    <!-- 根据用户id查询 -->
+    <select id="selectCustomerIdContactsIdById" parameterType="string" resultType="Transaction">
+        select customerId,contactsId from tbl_transaction where id = #{id}
+    </select>
 
 </mapper>

@@ -24,4 +24,6 @@ public interface ContactsDao {
     int saveEditContactsByContacts(Contacts contacts);
 
     int deleteContactsById(String[] id);
+
+    List<Contacts> queryContactsByCustomerId(String customerId);
 }

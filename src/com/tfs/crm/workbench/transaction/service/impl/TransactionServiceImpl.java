@@ -74,4 +74,25 @@ public class TransactionServiceImpl implements TransactionService {
     public int deleteTransactionByIds(String[] id) {
         return transactionDao.deleteTransactionByIds(id);
     }
+
+    /**
+     * 查询用户下面的交易
+     * @param customerId
+     * @return
+     */
+    @Override
+    public List<Transaction> queryTransactionByCustomerId(String customerId) {
+        return transactionDao.selectTransactionListByCustomerId(customerId);
+    }
+
+
+    /**
+     * 根据交易Id查询客户id及联系人Id
+     * @param id
+     * @return
+     */
+    @Override
+    public Transaction queryTransactionById(String id) {
+        return transactionDao.selectCustomerIdContactsIdById(id);
+    }
 }

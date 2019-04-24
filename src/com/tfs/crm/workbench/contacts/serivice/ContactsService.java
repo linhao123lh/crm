@@ -20,4 +20,6 @@ public interface ContactsService {
     int saveEditContactsByContacts(Contacts contacts);
 
     int deleteContactsById(String[] id);
+
+    List<Contacts> queryContactsByCustomerId(String customerId);
 }

@@ -114,4 +114,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</foreach>
 	</delete>
 
+	<!-- 查询客户下面的联系人 -->
+	<select id="queryContactsByCustomerId" parameterType="string" resultType="Contacts">
+		select id, fullName, email, mphone
+		from tbl_contacts
+		where customerId = #{customerId}
+	</select>
+
 </mapper>

@@ -11,7 +11,9 @@ import com.tfs.crm.workbench.transaction.domain.Transaction;
 import com.tfs.crm.workbench.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -166,13 +168,22 @@ public class TransactionController {
      * @return
      */
     @GetMapping(value = "queryTransactionBeforeEdit.do")
-    public String queryTransactionBeforeEdit(@RequestParam(value = "id",required = true) String id, HttpServletRequest request){
+    public ModelAndView queryTransactionBeforeEdit(@RequestParam(value = "id",required = true) String id, HttpServletRequest request){
 
         Transaction transaction = transactionService.queryTransactionBeforeEditById(id);
         List<User> userList = userService.quertAllUsers();
         request.setAttribute("userList",userList);
+
+        Transaction transaction1 = transactionService.queryTransactionById(id);
+        String customerId = transaction1.getCustomerId();
+        String contactsId = transaction1.getContactsId();
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("customerId",customerId);
+        mv.addObject("contactsId",contactsId);
+        mv.setViewName("forward:/workbench/transaction/edit.jsp");
         request.getSession().setAttribute("transaction",transaction);
-        return "forward:/workbench/transaction/edit.jsp";
+        //return "forward:/workbench/transaction/edit.jsp";
+        return mv;
     }
 
     /**

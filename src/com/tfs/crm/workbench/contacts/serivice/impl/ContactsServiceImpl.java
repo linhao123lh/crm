@@ -88,4 +88,9 @@ public class ContactsServiceImpl implements ContactsService {
     public int deleteContactsById(String[] id) {
         return contactsDao.deleteContactsById(id);
     }
+
+    @Override
+    public List<Contacts> queryContactsByCustomerId(String customerId) {
+        return contactsDao.queryContactsByCustomerId(customerId);
+    }
 }

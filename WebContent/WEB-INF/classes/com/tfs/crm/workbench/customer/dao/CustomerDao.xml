@@ -106,4 +106,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</foreach>
 	</delete>
 
+	<!-- 根据id查询客户详情 -->
+	<select id="selcectCustomerDetailById" parameterType="string" resultType="Customer">
+		select c.id,c.name,u1.name as owner,dv1.text as grade,c.phone,c.website,dv2.text as industry,c.annualIncome,c.empNums,u2.name as createBy,c.createTime,u3.name as editBy,c.editTime,c.country,c.province,c.city,c.street,c.description,c.zipcode
+		from tbl_customer c
+		join tbl_user u1 on c.owner = u1.id
+		left join tbl_dictionary_value dv1 on c.grade = dv1.id
+		left join tbl_dictionary_value dv2 on c.industry = dv2.id
+		join tbl_user u2 on c.createBy = u2.id
+		left join tbl_user u3 on c.editBy = u3.id
+		where c.id = #{id}
+	</select>
+
 </mapper>
