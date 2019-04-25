@@ -325,4 +325,24 @@ public class CustomerController {
 
         return retMap;
     }
+
+    /**
+     * 根据id删除用户备注
+     * @param id
+     * @return
+     */
+    @PostMapping("removeCustomerRemark.do")
+    @ResponseBody
+    public Map<String,Object> removeCustomerRemark(String id){
+
+        int ret = customerRemarkService.removeCustomerRemarkById(id);
+
+        Map<String, Object> retMap = new HashMap<String, Object>();
+        if(ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
 }

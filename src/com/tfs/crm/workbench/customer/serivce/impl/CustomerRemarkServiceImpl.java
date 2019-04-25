@@ -40,4 +40,14 @@ public class CustomerRemarkServiceImpl implements CustomerRemarkService {
     public int saveCreateCustomerRemark(CustomerRemark remark) {
         return customerRemarkDao.insertCustomerRemark(remark);
     }
+
+    /**
+     * 根据Id删除客户备注
+     * @param id
+     * @return
+     */
+    @Override
+    public int removeCustomerRemarkById(String id) {
+        return customerRemarkDao.deleteCustomerRemarkById(id);
+    }
 }

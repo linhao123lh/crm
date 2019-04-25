@@ -16,4 +16,6 @@ public interface CustomerRemarkService {
     List<CustomerRemark> queryCustomerRemarkByCustomerId(String id);
 
     int saveCreateCustomerRemark(CustomerRemark remark);
+
+    int removeCustomerRemarkById(String id);
 }

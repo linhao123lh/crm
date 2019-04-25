@@ -30,5 +30,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         values
         (#{id},#{notePerson},#{noteContent},#{noteTime},#{editFlag},#{customerId})
     </insert>
+    
+    <!-- 根据id删除客户备注 -->
+    <delete id="deleteCustomerRemarkById" parameterType="string">
+        delete from tbl_customer_remark where id = #{id}
+    </delete>
 
 </mapper>
