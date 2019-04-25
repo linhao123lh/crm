@@ -30,4 +30,14 @@ public class CustomerRemarkServiceImpl implements CustomerRemarkService {
     public List<CustomerRemark> queryCustomerRemarkByCustomerId(String id) {
         return customerRemarkDao.selectCustomerRemarkByCustomerId(id);
     }
+
+    /**
+     * 保存创建的客户备注
+     * @param remark
+     * @return
+     */
+    @Override
+    public int saveCreateCustomerRemark(CustomerRemark remark) {
+        return customerRemarkDao.insertCustomerRemark(remark);
+    }
 }

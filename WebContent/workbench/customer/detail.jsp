@@ -38,23 +38,88 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			cancelAndSaveBtnDefault = true;
 		});
 		
-		$(".remarkDiv").mouseover(function(){
+		/*$(".remarkDiv").mouseover(function(){
+			$(this).children("div").children("div").show();
+		});*/
+		$("#remarkDivList").on("mouseover",".remarkDiv",function () {
 			$(this).children("div").children("div").show();
 		});
+
 		
-		$(".remarkDiv").mouseout(function(){
+		/*$(".remarkDiv").mouseout(function(){
+			$(this).children("div").children("div").hide();
+		});*/
+		$("#remarkDivList").on("mouseout",".remarkDiv",function () {
 			$(this).children("div").children("div").hide();
 		});
 		
-		$(".myHref").mouseover(function(){
+		/*$(".myHref").mouseover(function(){
+			$(this).children("span").css("color","red");
+		});*/
+		$("#remarkDivList").on("mouseover",".myHref",function () {
 			$(this).children("span").css("color","red");
 		});
 		
-		$(".myHref").mouseout(function(){
+		/*$(".myHref").mouseout(function(){
+			$(this).children("span").css("color","#E6E6E6");
+		});*/
+		$("#remarkDivList").on("mouseout",".myHref",function () {
 			$(this).children("span").css("color","#E6E6E6");
 		});
+
+		//给"保存"按钮添加点击事件
+		$("#saveCreateRemarkBtn").click(function () {
+			alert("aaa");
+			//收集参数
+			var noteContent = $("#remark").val();
+			var customerId = "${customer.id}";
+			//判断
+			if (noteContent == null || noteContent.length == 0){
+				alert("备注不能为空！");
+				return;
+			}
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/customer/saveCreateRemark.do",
+				data:{
+					noteContent:noteContent,
+					customerId:customerId
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+
+						var htmlStr = "";
+						htmlStr += " <div class='remarkDiv' style='height: 60px;'>";
+						htmlStr += " <img title='${user.name}' src='image/user-thumbnail.png' style='width: 30px; height:30px;'>";
+						htmlStr += " <div style='position: relative; top: -40px; left: 40px;' >";
+						htmlStr += " <h5>"+data.remark.noteContent+"</h5>";
+						htmlStr += " <font color='gray'>客户</font> <font color='gray'>-</font> <b>${customer.name}</b> <small style='color: gray;'> "+data.remark.noteTime+" 由${user.name}创建</small>";
+						htmlStr += " <div style='position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;'>";
+						htmlStr += " <a class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-edit' style='font-size: 20px; color: #E6E6E6;'></span></a>";
+						htmlStr += " &nbsp;&nbsp;&nbsp;&nbsp;";
+						htmlStr += " <a class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-remove' style='font-size: 20px; color: #E6E6E6;'></span></a>";
+						htmlStr += " </div>";
+						htmlStr += " </div>";
+						htmlStr += " </div>";
+						$("#remarkDiv").before(htmlStr);
+						//清空输入框
+						$("#remark").val("");
+
+					} else {
+						alert("创建客户备注失败！");
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+
+
+
 	});
-	
 </script>
 
 </head>
@@ -464,7 +529,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 	</div>
 	
 	<!-- 备注 -->
-	<div style="position: relative; top: 30px; left: 40px;">
+	<div id="remarkDivList" style="position: relative; top: 30px; left: 40px;">
 		<div class="page-header">
 			<h4>备注</h4>
 		</div>
@@ -517,7 +582,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<textarea id="remark" class="form-control" style="width: 850px; resize : none;" rows="2"  placeholder="添加备注..."></textarea>
 				<p id="cancelAndSaveBtn" style="position: relative;left: 737px; top: 10px; display: none;">
 					<button id="cancelBtn" type="button" class="btn btn-default">取消</button>
-					<button type="button" class="btn btn-primary">保存</button>
+					<button id="saveCreateRemarkBtn" type="button" class="btn btn-primary">保存</button>
 				</p>
 			</form>
 		</div>

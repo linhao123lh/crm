@@ -16,10 +16,7 @@ import com.tfs.crm.workbench.transaction.domain.Transaction;
 import com.tfs.crm.workbench.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.ValidationEvent;
@@ -297,6 +294,35 @@ public class CustomerController {
         request.setAttribute("contactsList",contactsList);
 
         return "detail.jsp";
+    }
 
+
+    @PostMapping("saveCreateRemark.do")
+    @ResponseBody
+    public Map<String,Object> saveCreateRemark(String noteContent, String customerId, HttpServletRequest request){
+
+        //封装参数
+        CustomerRemark remark = new CustomerRemark();
+        User user = (User) request.getSession().getAttribute("user");
+        remark.setNotePerson(user.getId());
+        remark.setNoteTime(DateUtil.formateDateTime(new Date()));
+        remark.setNoteContent(noteContent);
+        remark.setCustomerId(customerId);
+        remark.setEditFlag(0);
+        remark.setId(UUIDUtil.getUuid());
+
+        //调用service方法
+        int ret = customerRemarkService.saveCreateCustomerRemark(remark);
+
+        //处理返回的结果
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+            retMap.put("remark",remark);
+        }else {
+            retMap.put("success",false);
+        }
+
+        return retMap;
     }
 }

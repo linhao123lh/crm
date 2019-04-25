@@ -23,4 +23,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by cr.noteTime
     </select>
 
+    <!-- 保存创建的用户备注 -->
+    <insert id="insertCustomerRemark" parameterType="CustomerRemark">
+        insert into tbl_customer_remark
+        (id, notePerson, noteContent, noteTime, editFlag, customerId)
+        values
+        (#{id},#{notePerson},#{noteContent},#{noteTime},#{editFlag},#{customerId})
+    </insert>
+
 </mapper>
