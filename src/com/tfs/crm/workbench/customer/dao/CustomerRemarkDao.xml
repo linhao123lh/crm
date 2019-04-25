@@ -36,4 +36,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from tbl_customer_remark where id = #{id}
     </delete>
 
+    <!-- 更新客户备注 -->
+    <update id="updateCustomerRemark" parameterType="CustomerRemark">
+        update tbl_customer_remark set noteContent = #{noteContent},editFlag = #{editFlag},editTime = #{editTime},editPerson
+         = #{editPerson} where id = #{id}
+    </update>
+
 </mapper>

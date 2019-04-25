@@ -18,4 +18,6 @@ public interface CustomerRemarkService {
     int saveCreateCustomerRemark(CustomerRemark remark);
 
     int removeCustomerRemarkById(String id);
+
+    int saveEditCustomerRemark(CustomerRemark remark);
 }

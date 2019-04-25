@@ -345,4 +345,34 @@ public class CustomerController {
         }
         return retMap;
     }
+
+    /**
+     * 更新客户备注
+     * @param id
+     * @param noteContent
+     * @return
+     */
+    @PostMapping("saveEditCustomerRemark.do")
+    @ResponseBody
+    public Map<String,Object> saveEditCustomerRemark(String id, String noteContent, HttpServletRequest request){
+
+        CustomerRemark remark = new CustomerRemark();
+        remark.setId(id);
+        remark.setEditFlag(1);
+        remark.setNoteContent(noteContent);
+        remark.setEditTime(DateUtil.formateDateTime(new Date()));
+        User user = (User) request.getSession().getAttribute("user");
+        remark.setEditPerson(user.getId());
+
+        int ret = customerRemarkService.saveEditCustomerRemark(remark);
+        Map<String,Object> retmap = new HashMap<String,Object>();
+        if (ret > 0){
+            retmap.put("success",true);
+            retmap.put("remark",remark);
+        }else {
+            retmap.put("success",false);
+        }
+        return retmap;
+    }
+
 }

@@ -142,11 +142,89 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			});
 		});
 
+		//给"修改"图标添加点击事件
+		$("#remarkDivList").on("click","a[name='editA']",function () {
+			var id = $(this).attr("remark_id");
+			var noteContent = $("#div_"+id+" h5").html();
+			$("#edit-remarkId").val(id);
+			$("#edit-noteContent").val(noteContent);
+			//显示模态窗口
+			$("#editCustomerRemarkModal").modal("show");
+		});
+
+		//给"更新"按钮添加点击事件
+		$("#saveEditRemarkBtn").click(function () {
+			//收集参数
+			var id = $("#edit-remarkId").val();
+			var noteContent = $.trim($("#edit-noteContent").val());
+			//判断
+			if (noteContent == null || noteContent.length == 0){
+				alert("备注不能为空！");
+				return;
+			}
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/customer/saveEditCustomerRemark.do",
+				data:{
+					id:id,
+					noteContent:noteContent
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//关闭模态窗口
+						$("#editCustomerRemarkModal").modal("hide");
+						//刷新列表
+						$("#div_"+id+" h5").html(noteContent);
+						$("#div_"+id+" small").html(" "+data.remark.editTime+" 由${user.name}修改");
+
+					} else {
+						alert("更新备注失败！");
+						$("#editCustomerRemarkModal").modal("show");
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+
 	});
 </script>
 
 </head>
 <body>
+
+<!-- 修改客户备注的模态窗口 -->
+<div class="modal fade" id="editCustomerRemarkModal" role="dialog">
+	<div class="modal-dialog" role="document" style="width: 85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title" id="myRemarkModalLabel">修改客户备注</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input type="hidden" id="edit-remarkId">
+					<div class="form-group">
+						<label for="edit-noteContent" class="col-sm-2 control-label">备注</label>
+						<div class="col-sm-10" style="width: 81%;">
+							<textarea class="form-control" rows="3" id="edit-noteContent"></textarea>
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button id="saveEditRemarkBtn" type="button" class="btn btn-primary">更新</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 	<!-- 删除联系人的模态窗口 -->
 	<div class="modal fade" id="removeContactsModal" role="dialog">
