@@ -12,4 +12,6 @@ public interface ContactsRemarkDao {
     int insertContactsRemark(ContactsRemark remark);
 
     int deleteContactsRemarkById(String id);
+
+    int updateContactsRemark(ContactsRemark remark);
 }

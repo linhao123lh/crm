@@ -326,6 +326,11 @@ public class ContactsController {
         return retMap;
     }
 
+    /**
+     * 删除联系人备注
+     * @param id
+     * @return
+     */
     @PostMapping("removeContactsRemark.do")
     @ResponseBody
     public Map<String,Object> removeContactsRemark(String id){
@@ -333,6 +338,36 @@ public class ContactsController {
         Map<String,Object> retMap = new HashMap<String, Object>();
         if (ret > 0){
             retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
+
+    /**
+     * 更新联系人备注
+     * @param id
+     * @param noteContent
+     * @param request
+     * @return
+     */
+    @PostMapping("saveEditContactsRemark.do")
+    @ResponseBody
+    public Map<String,Object> saveEditContactsRemark(String id, String noteContent, HttpServletRequest request){
+        ContactsRemark remark = new ContactsRemark();
+        remark.setEditFlag(1);
+        remark.setNoteContent(noteContent);
+        remark.setId(id);
+        remark.setEditTime(DateUtil.formateDateTime(new Date()));
+        User user = (User) request.getSession().getAttribute("user");
+        remark.setEditPerson(user.getId());
+
+        int ret = contactsRemarkService.saveEditContactsRemark(remark);
+        Map<String ,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+            retMap.put("remark",remark);
         }else {
             retMap.put("success",false);
         }

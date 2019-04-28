@@ -35,4 +35,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from tbl_contacts_remark where id = #{id}
     </delete>
 
+    <!-- 更新联系人备注 -->
+    <update id="updateContactsRemark" parameterType="ContactsRemark">
+        update tbl_contacts_remark set editFlag=#{editFlag},editTime=#{editTime},editPerson=#{editPerson},
+              noteContent=#{noteContent} where id=#{id}
+    </update>
+
 </mapper>

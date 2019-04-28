@@ -97,7 +97,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						htmlStr += " <h5>"+data.remark.noteContent+"</h5>";
 						htmlStr += " <font color='gray'>联系人</font> <font color='gray'>-</font> <b>${contacts.fullName}${contacts.appellation}-${contacts.customerId}</b> <small style='color: gray;'> "+data.remark.noteTime+" 由${user.name}创建 </small>";
 						htmlStr += " <div style='position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;'>";
-						htmlStr += " <a name='etitA' remark_id='"+data.remark.id+"' class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-edit' style='font-size: 20px; color: #E6E6E6;'></span></a>";
+						htmlStr += " <a name='editA' remark_id='"+data.remark.id+"' class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-edit' style='font-size: 20px; color: #E6E6E6;'></span></a>";
 						htmlStr += " &nbsp;&nbsp;&nbsp;&nbsp;";
 						htmlStr += " <a name='deleteA' remark_id='"+data.remark.id+"' class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-remove' style='font-size: 20px; color: #E6E6E6;'></span></a>";
 						htmlStr += " </div>";
@@ -118,7 +118,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		$("#remarkDivList").on("click","a[name='deleteA']",function () {
 			//收集参数
 			var id = $(this).attr("remark_id");
-			alert("id======="+id);
 			//发起ajax请求
 			$.ajax({
 				url:"workbench/contacts/removeContactsRemark.do",
@@ -139,7 +138,53 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				}
 			});
 		});
-		
+
+		//给"修改"图标添加点击事件
+		$("#remarkDivList").on("click","a[name='editA']",function () {
+			//收集参数
+			var id = $(this).attr("remark_id");
+			var noteContent = $("#div_"+id+" h5").html();
+			$("#edit-remarkId").val(id);
+			$("#edit-noteContent").val(noteContent);
+			//显示模态窗口
+			$("#editContactsRemarkModal").modal("show");
+		});
+
+		//给"更新"按钮添加点击事件
+		$("#saveEditRemarkBtn").click(function () {
+			//收集参数
+			var id = $("#edit-remarkId").val();
+			var noteContent = $.trim($("#edit-noteContent").val());
+			//判断
+			if (noteContent == null || noteContent.length == 0){
+				alert("备注不能为空！");
+				return
+			}
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/contacts/saveEditContactsRemark.do",
+				data:{
+					id:id,
+					noteContent:noteContent
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//关闭模态窗口
+						$("#editContactsRemarkModal").modal("hide");
+						//刷新列表
+						$("#div_"+id+" h5").html(noteContent);
+						$("#div_"+id+" small").html(" "+data.remark.editTime+" 由${user.name}修改");
+					} else {
+						alert("更新备注失败！");
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
 		
 	});
 	
@@ -147,6 +192,36 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 
 </head>
 <body>
+
+	<!-- 修改联系人备注的模态窗口 -->
+	<div class="modal fade" id="editContactsRemarkModal" role="dialog">
+		<div class="modal-dialog" role="document" style="width: 85%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" id="myRemarkModalLabel">修改联系人备注</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<input id="edit-remarkId" type="hidden">
+						<div class="form-group">
+							<label for="edit-noteContent" class="col-sm-2 control-label">描述</label>
+							<div class="col-sm-10" style="width: 81%;">
+								<textarea class="form-control" rows="3" id="edit-noteContent">这是一条联系人备注信息</textarea>
+							</div>
+						</div>
+
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button id="saveEditRemarkBtn" type="button" class="btn btn-primary">更新</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- 解除联系人和市场活动关联的模态窗口 -->
 	<div class="modal fade" id="unbundActivityModal" role="dialog">

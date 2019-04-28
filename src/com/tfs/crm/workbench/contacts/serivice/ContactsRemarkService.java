@@ -17,4 +17,6 @@ public interface ContactsRemarkService {
     int saveContactRemark(ContactsRemark remark);
 
     int removeContactsRemarkById(String id);
+
+    int saveEditContactsRemark(ContactsRemark remark);
 }
