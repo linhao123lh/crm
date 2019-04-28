@@ -13,4 +13,6 @@ import java.util.List;
  */
 public interface ContactsRemarkService {
     List<ContactsRemark> queryContactsDetailByContactsId(String id);
+
+    int saveContactRemark(ContactsRemark remark);
 }

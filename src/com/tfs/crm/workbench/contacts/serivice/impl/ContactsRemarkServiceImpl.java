@@ -25,4 +25,9 @@ public class ContactsRemarkServiceImpl implements ContactsRemarkService {
     public List<ContactsRemark> queryContactsDetailByContactsId(String contactsId) {
         return contactsRemarkDao.selectContactsDetailByContactsId(contactsId);
     }
+
+    @Override
+    public int saveContactRemark(ContactsRemark remark) {
+        return contactsRemarkDao.insertContactsRemark(remark);
+    }
 }

@@ -294,4 +294,35 @@ public class ContactsController {
         mv.setViewName("forward:/workbench/contacts/detail.jsp");
         return mv;
     }
+
+
+    /**
+     * 保存创建的联系人备注
+     * @param contactsId
+     * @param noteContent
+     * @return
+     */
+    @PostMapping("saveContactRemark.do")
+    @ResponseBody
+    public Map<String,Object> saveContactRemark(String contactsId, String noteContent, HttpServletRequest request){
+
+        ContactsRemark remark = new ContactsRemark();
+        remark.setId(UUIDUtil.getUuid());
+        remark.setNoteTime(DateUtil.formateDateTime(new Date()));
+        User user = (User) request.getSession().getAttribute("user");
+        remark.setNotePerson(user.getId());
+        remark.setNoteContent(noteContent);
+        remark.setEditFlag(0);
+        remark.setContactsId(contactsId);
+
+        int ret = contactsRemarkService.saveContactRemark(remark);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+            retMap.put("remark",remark);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
 }

@@ -38,21 +38,83 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			cancelAndSaveBtnDefault = true;
 		});
 		
-		$(".remarkDiv").mouseover(function(){
+		/*$(".remarkDiv").mouseover(function(){
+			$(this).children("div").children("div").show();
+		});*/
+		$("#remarkDivList").on("mouseover",".remarkDiv",function () {
 			$(this).children("div").children("div").show();
 		});
 		
-		$(".remarkDiv").mouseout(function(){
+		/*$(".remarkDiv").mouseout(function(){
+			$(this).children("div").children("div").hide();
+		});*/
+		$("#remarkDivList").on("mouseout",".remarkDiv",function () {
 			$(this).children("div").children("div").hide();
 		});
 		
-		$(".myHref").mouseover(function(){
+		/*$(".myHref").mouseover(function(){
+			$(this).children("span").css("color","red");
+		});*/
+		$("#remarkDivList").on("mouseover",".myHref",function () {
 			$(this).children("span").css("color","red");
 		});
 		
-		$(".myHref").mouseout(function(){
+		/*$(".myHref").mouseout(function(){
+			$(this).children("span").css("color","#E6E6E6");
+		});*/
+		$("#remarkDivList").on("mouseout",".myHref",function () {
 			$(this).children("span").css("color","#E6E6E6");
 		});
+		
+		//给"保存"按钮添加点击事件
+		$("#saveContactsRemarkBtn").click(function () {
+			//收集参数
+			var contactsId = "${contacts.id}";
+			var noteContent = $.trim($("#remark").val());
+			//表单验证
+			if (noteContent == null || noteContent.length == 0){
+				alert("备注内容不能为空！");
+				return;
+			}
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/contacts/saveContactRemark.do",
+				data:{
+					contactsId:contactsId,
+					noteContent:noteContent
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						//清空备注框
+						$("#remark").val("");
+						//刷新列表
+						var htmlStr = "";
+						htmlStr += " <div id='div_"+data.remark.id+"' class='remarkDiv' style='height: 60px;'>";
+						htmlStr += " <img title='${user.name}' src='image/user-thumbnail.png' style='width: 30px; height:30px;'>";
+						htmlStr += " <div style='position: relative; top: -40px; left: 40px;' >";
+						htmlStr += " <h5>"+data.remark.noteContent+"</h5>";
+						htmlStr += " <font color='gray'>联系人</font> <font color='gray'>-</font> <b>${contacts.fullName}${contacts.appellation}-${contacts.customerId}</b> <small style='color: gray;'> "+data.remark.noteTime+" 由${user.name}创建 </small>";
+						htmlStr += " <div style='position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;'>";
+						htmlStr += " <a name='etitA' remark_id='${data.remark.id}' class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-edit' style='font-size: 20px; color: #E6E6E6;'></span></a>";
+						htmlStr += " &nbsp;&nbsp;&nbsp;&nbsp;";
+						htmlStr += " <a name='deleteA' remark_id='${data.remark.id}' class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-remove' style='font-size: 20px; color: #E6E6E6;'></span></a>";
+						htmlStr += " </div>";
+						htmlStr += " </div>";
+						htmlStr += " </div>";
+						$("#remarkDiv").before(htmlStr);
+					} else {
+						alert("创建备注失败！")
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+		
+		
 	});
 	
 </script>
@@ -402,21 +464,21 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 	</div>
 	
 	<!-- 备注 -->
-	<div style="position: relative; top: 60px; left: 40px;">
+	<div id="remarkDivList" style="position: relative; top: 60px; left: 40px;">
 		<div class="page-header">
 			<h4>备注</h4>
 		</div>
 		<c:if test="${not empty conrList}">
 			<c:forEach items="${conrList}" var="remark">
-				<div class="remarkDiv" style="height: 60px;">
+				<div id="div_${remark.id}" class="remarkDiv" style="height: 60px;">
 					<img title="${remark.notePerson}" src="image/user-thumbnail.png" style="width: 30px; height:30px;">
 					<div style="position: relative; top: -40px; left: 40px;" >
 						<h5>${remark.noteContent}</h5>
 						<font color="gray">联系人</font> <font color="gray">-</font> <b>${contacts.fullName}${contacts.appellation}-${contacts.customerId}</b> <small style="color: gray;"> ${remark.editFlag==0?remark.noteTime:remark.editTime} 由${remark.editFlag==0?remark.notePerson:remark.editPerson}${remark.editFlag==0?'创建':'修改'} </small>
 						<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
-							<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>
+							<a name="editA" remark_id="${remark.id}" class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>
 							&nbsp;&nbsp;&nbsp;&nbsp;
-							<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>
+							<a name="deleteA" remark_id="${remark.id}" class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>
 						</div>
 					</div>
 				</div>
@@ -456,7 +518,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<textarea id="remark" class="form-control" style="width: 850px; resize : none;" rows="2"  placeholder="添加备注..."></textarea>
 				<p id="cancelAndSaveBtn" style="position: relative;left: 737px; top: 10px; display: none;">
 					<button id="cancelBtn" type="button" class="btn btn-default">取消</button>
-					<button type="button" class="btn btn-primary">保存</button>
+					<button id="saveContactsRemarkBtn" type="button" class="btn btn-primary">保存</button>
 				</p>
 			</form>
 		</div>
