@@ -97,15 +97,41 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						htmlStr += " <h5>"+data.remark.noteContent+"</h5>";
 						htmlStr += " <font color='gray'>联系人</font> <font color='gray'>-</font> <b>${contacts.fullName}${contacts.appellation}-${contacts.customerId}</b> <small style='color: gray;'> "+data.remark.noteTime+" 由${user.name}创建 </small>";
 						htmlStr += " <div style='position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;'>";
-						htmlStr += " <a name='etitA' remark_id='${data.remark.id}' class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-edit' style='font-size: 20px; color: #E6E6E6;'></span></a>";
+						htmlStr += " <a name='etitA' remark_id='"+data.remark.id+"' class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-edit' style='font-size: 20px; color: #E6E6E6;'></span></a>";
 						htmlStr += " &nbsp;&nbsp;&nbsp;&nbsp;";
-						htmlStr += " <a name='deleteA' remark_id='${data.remark.id}' class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-remove' style='font-size: 20px; color: #E6E6E6;'></span></a>";
+						htmlStr += " <a name='deleteA' remark_id='"+data.remark.id+"' class='myHref' href='javascript:void(0);'><span class='glyphicon glyphicon-remove' style='font-size: 20px; color: #E6E6E6;'></span></a>";
 						htmlStr += " </div>";
 						htmlStr += " </div>";
 						htmlStr += " </div>";
 						$("#remarkDiv").before(htmlStr);
 					} else {
 						alert("创建备注失败！")
+					}
+				},
+				error:function () {
+					alert("请求失败！");
+				}
+			});
+		});
+
+		//给"删除"图标添加点击事件
+		$("#remarkDivList").on("click","a[name='deleteA']",function () {
+			//收集参数
+			var id = $(this).attr("remark_id");
+			alert("id======="+id);
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/contacts/removeContactsRemark.do",
+				data:{
+					id:id
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						$("#div_"+id).remove();
+					} else {
+						alert("删除备注失败！");
 					}
 				},
 				error:function () {

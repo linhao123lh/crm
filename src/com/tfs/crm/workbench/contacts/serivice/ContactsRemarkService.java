@@ -15,4 +15,6 @@ public interface ContactsRemarkService {
     List<ContactsRemark> queryContactsDetailByContactsId(String id);
 
     int saveContactRemark(ContactsRemark remark);
+
+    int removeContactsRemarkById(String id);
 }

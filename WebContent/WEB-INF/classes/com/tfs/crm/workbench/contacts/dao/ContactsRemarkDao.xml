@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select co.id, u1.name as notePerson, co.noteContent, co.noteTime, u2.name as editPerson, co.editTime, co.editFlag
         from tbl_contacts_remark co
         join tbl_user u1 on co.notePerson = u1.id
-        join tbl_user u2 on co.editPerson = u2.id
+        left join tbl_user u2 on co.editPerson = u2.id
         where co.contactsId = #{contactsId}
     </select>
 
@@ -29,5 +29,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         values
         (#{id},#{notePerson},#{noteContent},#{noteTime},#{editFlag},#{contactsId})
     </insert>
+
+    <!-- 删除联系人备注 -->
+    <delete id="deleteContactsRemarkById" parameterType="string">
+        delete from tbl_contacts_remark where id = #{id}
+    </delete>
 
 </mapper>

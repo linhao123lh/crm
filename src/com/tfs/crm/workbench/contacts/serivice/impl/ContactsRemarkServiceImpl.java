@@ -30,4 +30,9 @@ public class ContactsRemarkServiceImpl implements ContactsRemarkService {
     public int saveContactRemark(ContactsRemark remark) {
         return contactsRemarkDao.insertContactsRemark(remark);
     }
+
+    @Override
+    public int removeContactsRemarkById(String id) {
+        return contactsRemarkDao.deleteContactsRemarkById(id);
+    }
 }

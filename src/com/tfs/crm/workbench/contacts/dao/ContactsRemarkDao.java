@@ -10,4 +10,6 @@ public interface ContactsRemarkDao {
     List<ContactsRemark> selectContactsDetailByContactsId(String contactsId);
 
     int insertContactsRemark(ContactsRemark remark);
+
+    int deleteContactsRemarkById(String id);
 }

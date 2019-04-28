@@ -325,4 +325,17 @@ public class ContactsController {
         }
         return retMap;
     }
+
+    @PostMapping("removeContactsRemark.do")
+    @ResponseBody
+    public Map<String,Object> removeContactsRemark(String id){
+        int ret = contactsRemarkService.removeContactsRemarkById(id);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
 }
