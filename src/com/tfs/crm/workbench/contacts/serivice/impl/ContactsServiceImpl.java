@@ -93,4 +93,14 @@ public class ContactsServiceImpl implements ContactsService {
     public List<Contacts> queryContactsByCustomerId(String customerId) {
         return contactsDao.queryContactsByCustomerId(customerId);
     }
+
+    /**
+     * 联系人详情页面获取联系人信息
+     * @param id
+     * @return
+     */
+    @Override
+    public Contacts queryContactsForDetailById(String id) {
+        return contactsDao.selectContactsForDetailById(id);
+    }
 }

@@ -95,4 +95,14 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction queryTransactionById(String id) {
         return transactionDao.selectCustomerIdContactsIdById(id);
     }
+
+    /**
+     * 根据联系人Id查询交易
+     * @param contactsId
+     * @return
+     */
+    @Override
+    public List<Transaction> queryTransactionListByContactsId(String contactsId) {
+        return transactionDao.selectTransactionLIstByContactsId(contactsId);
+    }
 }

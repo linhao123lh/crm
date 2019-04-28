@@ -6,13 +6,20 @@ import com.tfs.crm.commons.util.DateUtil;
 import com.tfs.crm.commons.util.UUIDUtil;
 import com.tfs.crm.settings.qx.user.domain.User;
 import com.tfs.crm.settings.qx.user.service.UserService;
+import com.tfs.crm.workbench.activity.domain.MarketActivity;
+import com.tfs.crm.workbench.activity.service.MarketActivityService;
 import com.tfs.crm.workbench.contacts.domain.Contacts;
+import com.tfs.crm.workbench.contacts.domain.ContactsRemark;
+import com.tfs.crm.workbench.contacts.serivice.ContactsRemarkService;
 import com.tfs.crm.workbench.contacts.serivice.ContactsService;
 import com.tfs.crm.workbench.customer.domain.Customer;
 import com.tfs.crm.workbench.customer.serivce.CustomerService;
+import com.tfs.crm.workbench.transaction.domain.Transaction;
+import com.tfs.crm.workbench.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -30,6 +37,12 @@ public class ContactsController {
     private CustomerService customerService;
     @Autowired
     private ContactsService contactsService;
+    @Autowired
+    private ContactsRemarkService contactsRemarkService;
+    @Autowired
+    private TransactionService transactionService;
+    @Autowired
+    private MarketActivityService marketActivityService;
 
     /**
      * 创建联系人
@@ -251,5 +264,34 @@ public class ContactsController {
             retMap.put("success",false);
         }
         return retMap;
+    }
+
+    /**
+     * 联系人详情页面
+     * @param id
+     * @return
+     */
+    @RequestMapping("queryContactsDetail.do")
+    public ModelAndView queryContactsDetail(String id){
+
+        //查询联系人信息
+        Contacts contacts = contactsService.queryContactsForDetailById(id);
+
+        //查询联系人备注信息
+        List<ContactsRemark> conrList = contactsRemarkService.queryContactsDetailByContactsId(id);
+
+        //查询交易
+        List<Transaction>  transactionList = transactionService.queryTransactionListByContactsId(id);
+
+        //查询市场活动
+        List<MarketActivity> activityList = marketActivityService.queryActivityByContactsId(id);
+
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("contacts",contacts);
+        mv.addObject("conrList",conrList);
+        mv.addObject("transactionList",transactionList);
+        mv.addObject("activityList",activityList);
+        mv.setViewName("forward:/workbench/contacts/detail.jsp");
+        return mv;
     }
 }

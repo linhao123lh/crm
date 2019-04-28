@@ -22,4 +22,6 @@ public interface ContactsService {
     int deleteContactsById(String[] id);
 
     List<Contacts> queryContactsByCustomerId(String customerId);
+
+    Contacts queryContactsForDetailById(String id);
 }

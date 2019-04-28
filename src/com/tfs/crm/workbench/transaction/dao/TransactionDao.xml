@@ -142,13 +142,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from tbl_transaction tra
         left join tbl_dictionary_value dv1 on tra.stage = dv1.id
         left join tbl_dictionary_value dv2 on tra.type = dv2.id
-        where customerId = #{customerId}
+        where tra.customerId = #{customerId}
         order by tra.expectedClosingDate
     </select>
 
     <!-- 根据用户id查询 -->
     <select id="selectCustomerIdContactsIdById" parameterType="string" resultType="Transaction">
         select customerId,contactsId from tbl_transaction where id = #{id}
+    </select>
+
+    <!-- 联系人id查询交易List -->
+    <select id="selectTransactionLIstByContactsId" parameterType="string" resultType="Transaction">
+        select tra.id,tra.amountOfMoney,tra.name,tra.expectedClosingDate,tra.customerId,dv1.text as stage,dv2.text as type
+        from tbl_transaction tra
+        left join tbl_dictionary_value dv1 on tra.stage = dv1.id
+        left join tbl_dictionary_value dv2 on tra.type = dv2.id
+        where tra.contactsId = #{contactsId}
+        order by tra.expectedClosingDate
     </select>
 
 </mapper>

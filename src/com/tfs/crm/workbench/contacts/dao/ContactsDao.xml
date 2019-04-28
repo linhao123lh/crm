@@ -121,4 +121,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where customerId = #{customerId}
 	</select>
 
+	<!-- 获取联系人详情页面的联系人信息 -->
+	<select id="selectContactsForDetailById" parameterType="string" resultType="Contacts">
+		select c.id,u1.name as owner,dv1.text as source,dv2.text as appellation,c.fullName,c.email,c.job,c.mphone,
+			c.description,c.country,c.province,c.city,c.street,c.zipcode,c.birth, tc.name as customerId,
+			u2.name as createBy,c.createTime,u3.name as editBy,c.editTime,c.contactSummary
+		from tbl_contacts c
+		join tbl_user u1 on c.owner = u1.id
+		left join tbl_dictionary_value dv1 on c.source = dv1.id
+		left join tbl_dictionary_value dv2 on c.appellation = dv2.id
+		left join tbl_customer tc on c.customerId = tc.id
+		join tbl_user u2 on c.createBy = u2.id
+		left join tbl_user u3 on c.editBy = u3.id
+		where c.id = #{id}
+	</select>
+
 </mapper>

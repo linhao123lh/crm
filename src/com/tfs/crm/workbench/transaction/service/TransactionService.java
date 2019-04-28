@@ -20,4 +20,6 @@ public interface TransactionService {
     List<Transaction> queryTransactionByCustomerId(String id);
 
     Transaction queryTransactionById(String id);
+
+    List<Transaction> queryTransactionListByContactsId(String id);
 }

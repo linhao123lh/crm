@@ -768,7 +768,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							</c:forEach>
 						</c:if>
 						<%--<tr>
-							<td><a href="../contacts/detail.html" style="text-decoration: none;">李四</a></td>
+							<td><a href="../contacts/detail.jsp" style="text-decoration: none;">李四</a></td>
 							<td>lisi@bjpowernode.com</td>
 							<td></td>
 							<td>13543645364</td>

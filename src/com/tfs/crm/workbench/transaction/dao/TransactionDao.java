@@ -25,4 +25,6 @@ public interface TransactionDao {
     List<Transaction> selectTransactionListByCustomerId(String customerId);
 
     Transaction selectCustomerIdContactsIdById(String id);
+
+    List<Transaction> selectTransactionLIstByContactsId(String contactsId);
 }

@@ -27,4 +27,6 @@ public interface MarketActivityService {
     List<MarketActivity> queryMarketActivityByIds(String[] ids);
 
     List<MarketActivity> queryActivityByName(String name);
+
+    List<MarketActivity> queryActivityByContactsId(String id);
 }

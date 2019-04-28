@@ -165,13 +165,11 @@ $(function () {
 		var expectedClosingDate = $("#edit-expectedClosingDate").val();
 
 		var customerId = $("#edit-customerId").val();
-		alert("customerId====="+customerId);
 		var stage = $("#edit-stage").val();
 		var type = $("#edit-type").val();
 		var source = $("#edit-source").val();
 		var activityId = $("#findActivityId").val();
 		var contactsId = $("#findContactsId").val();
-		alert("contactsId====="+contactsId);
 		var description = $.trim($("#edit-description").val());
 		var contactSummary = $.trim($("#edit-contactSummary").val());
 		var nextContactTime = $("#edit-nextContactTime").val();

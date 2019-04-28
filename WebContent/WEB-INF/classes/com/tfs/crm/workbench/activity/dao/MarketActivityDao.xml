@@ -154,4 +154,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where ma.name like '%' #{name} '%'
 		order by ma.startDate
 	</select>
+
+	<!-- 根据联系人Id查询市场活动list -->
+	<select id="selectActivityByContactsId" parameterType="string" resultType="MarketActivity">
+		select mar.id, u1.name as owner, mar.name,dv1.text as state, mar.startDate, mar.endDate
+		from tbl_marketing_activities mar
+		join tbl_user u1 on mar.owner = u1.id
+		left join tbl_dictionary_value dv1 on mar.state = dv1.id
+		left join tbl_contacts_activity_relation tcar on mar.id = tcar.activityId
+		where tcar.contactsId = #{contactsId}
+		order by mar.startDate
+	</select>
+
 </mapper>

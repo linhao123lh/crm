@@ -13,4 +13,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
+    <!-- 根据联系人Id查询联系人备注 -->
+    <select id="selectContactsDetailByContactsId" parameterType="string" resultType="ContactsRemark">
+        select co.id, u1.name as notePerson, co.noteContent, co.noteTime, u2.name as editPerson, co.editTime, co.editFlag
+        from tbl_contacts_remark co
+        join tbl_user u1 on co.notePerson = u1.id
+        join tbl_user u2 on co.editPerson = u2.id
+        where co.contactsId = #{contactsId}
+    </select>
+
 </mapper>

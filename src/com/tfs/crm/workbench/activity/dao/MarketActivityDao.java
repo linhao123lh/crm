@@ -27,4 +27,6 @@ public interface MarketActivityDao {
     List<MarketActivity> queryMarketActivityByIds(String[] ids);
 
     List<MarketActivity> queryActivityByName(String name);
+
+    List<MarketActivity> selectActivityByContactsId(String contactsId);
 }

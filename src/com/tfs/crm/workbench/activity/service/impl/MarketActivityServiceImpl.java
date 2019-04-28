@@ -115,6 +115,16 @@ public class MarketActivityServiceImpl implements MarketActivityService {
     }
 
     /**
+     * 通过联系人id查询市场活动
+     * @param contactsId
+     * @return
+     */
+    @Override
+    public List<MarketActivity> queryActivityByContactsId(String contactsId) {
+        return marketActivityDao.selectActivityByContactsId(contactsId);
+    }
+
+    /**
      * 保存更改的市场活动
      * @param activity
      * @return
