@@ -23,4 +23,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where tr.transactionId = #{transactionId}
         order by tr.noteTime
     </select>
+
+    <!-- 创建交易备注 -->
+    <insert id="insertTransactionRemark" parameterType="TransactionRemark">
+        insert into tbl_transaction_remark
+        (id, notePerson, noteContent, noteTime, editFlag, transactionId)
+        values
+        (#{id},#{notePerson},#{noteContent},#{noteTime},#{editFlag},#{transactionId})
+    </insert>
+
 </mapper>

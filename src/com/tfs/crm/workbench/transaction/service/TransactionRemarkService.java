@@ -13,4 +13,7 @@ import java.util.List;
  */
 public interface TransactionRemarkService {
     List<TransactionRemark> queryRemarkListByTransactionId(String transactionId);
+
+    int saveCreateTransactionRemark(TransactionRemark remark);
+
 }

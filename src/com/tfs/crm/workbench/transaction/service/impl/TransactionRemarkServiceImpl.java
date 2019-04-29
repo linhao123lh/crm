@@ -30,4 +30,14 @@ public class TransactionRemarkServiceImpl implements TransactionRemarkService {
     public List<TransactionRemark> queryRemarkListByTransactionId(String transactionId) {
         return transactionRemarkDao.selectRemarkListByTransactionId(transactionId);
     }
+
+    /**
+     * 创建交易备注
+     * @param remark
+     * @return
+     */
+    @Override
+    public int saveCreateTransactionRemark(TransactionRemark remark) {
+        return transactionRemarkDao.insertTransactionRemark(remark);
+    }
 }

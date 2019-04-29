@@ -259,6 +259,11 @@ public class TransactionController {
         return retMap;
     }
 
+    /**
+     * 交易详情页面
+     * @param id
+     * @return
+     */
     @RequestMapping("queryTransactionDetail.do")
     public ModelAndView queryTransactionDetail(String id){
 
@@ -273,6 +278,39 @@ public class TransactionController {
         mv.addObject("remarkList",remarkList);
         mv.setViewName("forward:/workbench/transaction/detail.jsp");
         return mv;
+    }
+
+
+    /**
+     * 创建交易备注
+     * @param transactionId
+     * @param noteContent
+     * @param request
+     * @return
+     */
+    @PostMapping("saveCreateTransactionRemark.do")
+    @ResponseBody
+    public Map<String,Object> saveCreateTransactionRemark(String transactionId, String noteContent, HttpServletRequest request){
+
+        TransactionRemark remark = new TransactionRemark();
+        remark.setId(UUIDUtil.getUuid());
+        remark.setTransactionId(transactionId);
+        remark.setNoteTime(DateUtil.formateDateTime(new Date()));
+        User user = (User) request.getSession().getAttribute("user");
+        remark.setNotePerson(user.getId());
+        remark.setNoteContent(noteContent);
+        remark.setEditFlag(0);
+
+        int ret = transactionRemarkService.saveCreateTransactionRemark(remark);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret > 0){
+            retMap.put("success",true);
+            retMap.put("remark",remark);
+        }else {
+            retMap.put("success",false);
+        }
+
+        return retMap;
     }
 
 }

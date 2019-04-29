@@ -8,4 +8,6 @@ public interface TransactionRemarkDao {
     int saveTransactionRemarkByList(List<TransactionRemark> tRemarkList);
 
     List<TransactionRemark> selectRemarkListByTransactionId(String transactionId);
+
+    int insertTransactionRemark(TransactionRemark remark);
 }
