@@ -16,4 +16,5 @@ public interface TransactionRemarkService {
 
     int saveCreateTransactionRemark(TransactionRemark remark);
 
+    int removeTransactionRemarkById(String id);
 }

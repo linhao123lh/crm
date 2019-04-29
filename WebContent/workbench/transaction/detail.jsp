@@ -150,6 +150,32 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			});
 		});
 
+		//给"删除"图标添加点击事件
+		$("#remarkDivList").on("click","a[name='deleteA']",function () {
+			//收集参数
+			var id = $(this).attr("remark_id");
+			//发起ajax请求
+			$.ajax({
+				url:"workbench/transaction/removeTransactionRemark.do",
+				data:{
+					id:id
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success){
+						$("#div_"+id).remove();
+					} else {
+						alert("删除交易备注失败！");
+					}
+				},
+				error:function () {
+					alert("请求失败!");
+				}
+			});
+		});
+
+
 	});
 	</script>
 </head>

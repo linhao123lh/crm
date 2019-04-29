@@ -32,4 +32,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         (#{id},#{notePerson},#{noteContent},#{noteTime},#{editFlag},#{transactionId})
     </insert>
 
+    <!-- 删除交易备注 -->
+    <delete id="deleteTransactionRemarkById" parameterType="string">
+        delete from tbl_transaction_remark where id = #{id}
+    </delete>
+
 </mapper>

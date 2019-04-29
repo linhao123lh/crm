@@ -40,4 +40,14 @@ public class TransactionRemarkServiceImpl implements TransactionRemarkService {
     public int saveCreateTransactionRemark(TransactionRemark remark) {
         return transactionRemarkDao.insertTransactionRemark(remark);
     }
+
+    /**
+     * 删除交易备注
+     * @param id
+     * @return
+     */
+    @Override
+    public int removeTransactionRemarkById(String id) {
+        return transactionRemarkDao.deleteTransactionRemarkById(id);
+    }
 }

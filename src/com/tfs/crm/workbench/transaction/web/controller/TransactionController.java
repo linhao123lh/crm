@@ -313,4 +313,18 @@ public class TransactionController {
         return retMap;
     }
 
+    @PostMapping("removeTransactionRemark.do")
+    @ResponseBody
+    public Map<String,Object> removeTransactionRemark(String id){
+
+        int ret = transactionRemarkService.removeTransactionRemarkById(id);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret >0){
+            retMap.put("success",true);
+        }else {
+            retMap.put("success",false);
+        }
+        return retMap;
+    }
+
 }

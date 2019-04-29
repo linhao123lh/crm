@@ -10,4 +10,6 @@ public interface TransactionRemarkDao {
     List<TransactionRemark> selectRemarkListByTransactionId(String transactionId);
 
     int insertTransactionRemark(TransactionRemark remark);
+
+    int deleteTransactionRemarkById(String id);
 }
