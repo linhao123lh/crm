@@ -12,4 +12,6 @@ public interface TransactionRemarkDao {
     int insertTransactionRemark(TransactionRemark remark);
 
     int deleteTransactionRemarkById(String id);
+
+    int updateTransactionRemark(TransactionRemark remark);
 }

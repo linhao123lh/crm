@@ -50,4 +50,9 @@ public class TransactionRemarkServiceImpl implements TransactionRemarkService {
     public int removeTransactionRemarkById(String id) {
         return transactionRemarkDao.deleteTransactionRemarkById(id);
     }
+
+    @Override
+    public int saveEditTransactionRemark(TransactionRemark remark) {
+        return transactionRemarkDao.updateTransactionRemark(remark);
+    }
 }

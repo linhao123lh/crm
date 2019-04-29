@@ -313,6 +313,11 @@ public class TransactionController {
         return retMap;
     }
 
+    /**
+     * 删除交易备注
+     * @param id
+     * @return
+     */
     @PostMapping("removeTransactionRemark.do")
     @ResponseBody
     public Map<String,Object> removeTransactionRemark(String id){
@@ -324,6 +329,37 @@ public class TransactionController {
         }else {
             retMap.put("success",false);
         }
+        return retMap;
+    }
+
+    /**
+     * 更新交易备注
+     * @param id
+     * @param noteContent
+     * @param request
+     * @return
+     */
+    @PostMapping("saveEditTransactionRemark.do")
+    @ResponseBody
+    public Map<String,Object> saveEditTransactionRemark(String id, String noteContent, HttpServletRequest request){
+
+        TransactionRemark remark = new TransactionRemark();
+        remark.setId(id);
+        remark.setEditFlag(1);
+        remark.setNoteContent(noteContent);
+        remark.setEditTime(DateUtil.formateDateTime(new Date()));
+        User user = (User) request.getSession().getAttribute("user");
+        remark.setEditPerson(user.getId());
+
+        int ret = transactionRemarkService.saveEditTransactionRemark(remark);
+        Map<String,Object> retMap = new HashMap<String, Object>();
+        if (ret>0){
+            retMap.put("success",true);
+            retMap.put("remark",remark);
+        }else {
+            retMap.put("success",false);
+        }
+
         return retMap;
     }
 
