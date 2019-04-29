@@ -8,6 +8,8 @@ import com.tfs.crm.settings.qx.user.service.UserService;
 import com.tfs.crm.workbench.contacts.domain.Contacts;
 import com.tfs.crm.workbench.contacts.serivice.ContactsService;
 import com.tfs.crm.workbench.transaction.domain.Transaction;
+import com.tfs.crm.workbench.transaction.domain.TransactionRemark;
+import com.tfs.crm.workbench.transaction.service.TransactionRemarkService;
 import com.tfs.crm.workbench.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,8 @@ public class TransactionController {
     private UserService userService;
     @Autowired
     private ContactsService contactsService;
+    @Autowired
+    private TransactionRemarkService transactionRemarkService;
 
     /**
      * 创建交易
@@ -253,6 +257,22 @@ public class TransactionController {
             retMap.put("success",false);
         }
         return retMap;
+    }
+
+    @RequestMapping("queryTransactionDetail.do")
+    public ModelAndView queryTransactionDetail(String id){
+
+        //交易
+        Transaction transaction = transactionService.queryTransactionForDetailById(id);
+
+        //交易备注
+        List<TransactionRemark> remarkList = transactionRemarkService.queryRemarkListByTransactionId(id);
+
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("transaction",transaction);
+        mv.addObject("remarkList",remarkList);
+        mv.setViewName("forward:/workbench/transaction/detail.jsp");
+        return mv;
     }
 
 }

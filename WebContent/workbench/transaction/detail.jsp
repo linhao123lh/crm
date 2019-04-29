@@ -102,7 +102,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 	<!-- 大标题 -->
 	<div style="position: relative; left: 40px; top: -30px;">
 		<div class="page-header">
-			<h3>动力节点-交易1222 <small>￥1000</small></h3>
+			<h3>${transaction.name} <small>${transaction.amountOfMoney}</small></h3>
 		</div>
 		<div style="position: relative; height: 50px; width: 250px;  top: -72px; left: 700px;">
 			<button type="button" class="btn btn-default" onclick="window.location.href='edit.jsp';"><span class="glyphicon glyphicon-edit"></span> 编辑</button>
@@ -140,31 +140,31 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 	<div style="position: relative; top: 0px;">
 		<div style="position: relative; left: 40px; height: 30px;">
 			<div style="width: 300px; color: gray;">所有者</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;zhangsan</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;${transaction.owner}</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">金额</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>&nbsp;1000</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>&nbsp;${transaction.amountOfMoney}</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 10px;">
 			<div style="width: 300px; color: gray;">名称</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;动力节点-交易1</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;${transaction.name}</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">预计成交日期</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>&nbsp;1970-01-01</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>&nbsp;${transaction.expectedClosingDate}</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 20px;">
 			<div style="width: 300px; color: gray;">客户名称</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;动力节点</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;${transaction.customerId}</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">阶段</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b id="detail-stage">&nbsp;资质审查</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b id="detail-stage">&nbsp;${transaction.stage}</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 30px;">
 			<div style="width: 300px; color: gray;">类型</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;已有业务</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;${transaction.type}</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">可能性</div>
 			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b id="detail-possibility">&nbsp;90</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
@@ -172,32 +172,32 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 40px;">
 			<div style="width: 300px; color: gray;">来源</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;广告</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;${transaction.source}</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">市场活动源</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>&nbsp;网络推广</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>&nbsp;${transaction.activityId}</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 50px;">
 			<div style="width: 300px; color: gray;">联系人名称</div>
-			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>&nbsp;zhangsan</b></div>
+			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>&nbsp;${transaction.contactsId}</b></div>
 			<div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 60px;">
 			<div style="width: 300px; color: gray;">创建者</div>
-			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>&nbsp;zhangsan&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">${tran.createTime }</small></div>
+			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>&nbsp;${transaction.createBy}&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">${transaction.createTime}</small></div>
 			<div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 70px;">
 			<div style="width: 300px; color: gray;">修改者</div>
-			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b id="detail-editBy">&nbsp;zhangsan&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;" id="detail-editTime">${tran.editTime }</small></div>
+			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b id="detail-editBy">&nbsp;${transaction.editBy}&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;" id="detail-editTime">${transaction.editTime}</small></div>
 			<div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 80px;">
 			<div style="width: 300px; color: gray;">描述</div>
 			<div style="width: 630px;position: relative; left: 200px; top: -20px;">
 				<b>
-					&nbsp;描述测试
+					&nbsp;${transaction.description}
 				</b>
 			</div>
 			<div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
@@ -206,26 +206,43 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			<div style="width: 300px; color: gray;">联系纪要</div>
 			<div style="width: 630px;position: relative; left: 200px; top: -20px;">
 				<b>
-					&nbsp;
+					&nbsp;${transaction.contactSummary}
 				</b>
 			</div>
 			<div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 100px;">
 			<div style="width: 300px; color: gray;">下次联系时间</div>
-			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>&nbsp;</b></div>
+			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>&nbsp;${transaction.nextContactTime}</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
 	</div>
 	
 	<!-- 备注 -->
-	<div style="position: relative; top: 100px; left: 40px;">
+	<div id="remarkDivList" style="position: relative; top: 100px; left: 40px;">
 		<div class="page-header">
 			<h4>备注</h4>
 		</div>
-		
+
+		<c:if test="${not empty remarkList}">
+			<c:forEach items="${remarkList}" var="remark">
+				<div id="div_${remark.id}" class="remarkDiv" style="height: 60px;">
+					<img title="${remark.notePerson}" src="image/user-thumbnail.png" style="width: 30px; height:30px;">
+					<div style="position: relative; top: -40px; left: 40px;" >
+						<h5>${remark.noteContent}</h5>
+						<font color="gray">交易</font> <font color="gray">-</font> <b>${transaction.name}</b> <small style="color: gray;"> ${remark.editFlag==0?remark.noteTime:editTime} 由${remark.editFlag==0?remark.notePerson:editPerson}${remark.editFlag==0?'创建':'修改'}</small>
+						<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
+							<a name="editA" remark_id="${remark.id}" class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<a name="deleteA" remark_id="${remark.id}" class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</c:if>
+
 		<!-- 备注1 -->
-		<div class="remarkDiv" style="height: 60px;">
+		<%--<div class="remarkDiv" style="height: 60px;">
 			<img title="zhangsan" src="../../image/user-thumbnail.png" style="width: 30px; height:30px;">
 			<div style="position: relative; top: -40px; left: 40px;" >
 				<h5>哎呦！</h5>
@@ -236,10 +253,10 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>
 				</div>
 			</div>
-		</div>
+		</div>--%>
 		
 		<!-- 备注2 -->
-		<div class="remarkDiv" style="height: 60px;">
+		<%--<div class="remarkDiv" style="height: 60px;">
 			<img title="zhangsan" src="../../image/user-thumbnail.png" style="width: 30px; height:30px;">
 			<div style="position: relative; top: -40px; left: 40px;" >
 				<h5>呵呵！</h5>
@@ -250,7 +267,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>
 				</div>
 			</div>
-		</div>
+		</div>--%>
 		
 		<div id="remarkDiv" style="background-color: #E6E6E6; width: 870px; height: 90px;">
 			<form role="form" style="position: relative;top: 10px; left: 10px;">

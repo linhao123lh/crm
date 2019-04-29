@@ -14,4 +14,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
+    <!-- 查询交易下的备注列表 -->
+    <select id="selectRemarkListByTransactionId" parameterType="string" resultType="TransactionRemark">
+        select tr.id, u1.name as notePerson, tr.noteContent, tr.noteTime, u2.name as editPerson, tr.editTime, tr.editFlag
+        from tbl_transaction_remark tr
+        join tbl_user u1 on tr.notePerson = u1.id
+        left join tbl_user u2 on tr.editPerson = u2.id
+        where tr.transactionId = #{transactionId}
+        order by tr.noteTime
+    </select>
 </mapper>

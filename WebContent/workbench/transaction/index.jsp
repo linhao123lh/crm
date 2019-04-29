@@ -134,7 +134,7 @@
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += " <tr>";
 						htmlStr += " <td><input value='"+obj.id+"' type='checkbox' /></td>";
-						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=detail.jsp'</a>"+obj.name+"</td>";
+						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"workbench/transaction/queryTransactionDetail.do?id="+obj.id+"\";'</a>"+obj.name+"</td>";
 						htmlStr += " <td>"+obj.customerId+"</td>";
 						htmlStr += " <td>"+obj.amountOfMoney+"</td>";
 						htmlStr += " <td>"+obj.expectedClosingDate+"</td>";

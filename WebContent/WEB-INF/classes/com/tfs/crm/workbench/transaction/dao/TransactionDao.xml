@@ -161,4 +161,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by tra.expectedClosingDate
     </select>
 
+    <!-- 交易详情页面的交易信息 -->
+    <select id="selectTransactionForDeatilById" parameterType="string" resultType="Transaction">
+         select t.id,t.name,tcr.name as customerId,t.amountOfMoney,t.expectedClosingDate,dv1.text as stage,dv2.text as type,
+                u1.name as owner,dv3.text as source,tma.name as activityId,tcs.fullName as contactsId,u2.name as createBy,
+                t.createTime,u3.name as editBy,t.editTime,t.description,t.contactSummary,t.nextContactTime
+        from tbl_transaction t
+        join tbl_customer tcr on t.customerId = tcr.id
+        left join tbl_dictionary_value dv1 on t.stage = dv1.id
+        left join tbl_dictionary_value dv2 on t.type = dv2.id
+        join tbl_user u1 on t.owner = u1.id
+        left join tbl_dictionary_value dv3 on t.source = dv3.id
+        left join tbl_marketing_activities tma on t.activityId = tma.id
+        left join tbl_contacts tcs on t.contactsId = tcs.id
+        join tbl_user u2 on t.createBy = u2.id
+        left join tbl_user u3 on t.editBy = u3.id
+        where t.id = #{id}
+    </select>
+
 </mapper>
