@@ -360,6 +360,34 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			}
 		});
 
+		//页面加载完默认选中，"添加字段"下的所有复选框
+        $("#definedColumns input[type='checkbox']").prop("checked",true);
+
+        //给"添加字段"下所有的复选框添加单击事件
+        $("#definedColumns input[type='checkbox']").click(function () {
+            if (this.checked){
+                $("td[name='"+this.name+"']").show();
+            } else {
+                $("td[name='"+this.name+"']").hide();
+            }
+        });
+
+        //给"全选"按钮添加点击事件
+        $("#ckd_all").click(function () {
+            $("#contactsListTBody input[type='checkbox']").prop("checked",this.checked);
+        });
+
+        //给列表中所有的复选框添加单击事件
+        $("#contactsListTBody").on("click","input[type='checkbox']",function () {
+           if ($("#contactsListTBody input[type='checkbox']").length == $("#contactsListTBody input[type='checkbox']:checked").length){
+               $("#ckd_all").prop("checked",true);
+            }  else {
+               $("#ckd_all").prop("checked",false);
+           }
+        });
+
+
+
 		//分页查询
 		function display(pageNo,pageSize) {
 			//收集参数
@@ -388,22 +416,22 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += " <tr>";
 						htmlStr += " <td><input value='"+obj.id+"' type='checkbox' /></td>";
-						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"workbench/contacts/queryContactsDetail.do?id="+obj.id+"\";'>"+obj.fullName+"</a></td>";
-						htmlStr += " <td>"+obj.appellation+"</td>";
-						htmlStr += " <td>"+obj.customerId+"</td>";
-						htmlStr += " <td>"+obj.owner+"</td>";
-						htmlStr += " <td>"+obj.source+"</td>";
-						htmlStr += " <td>"+obj.email+"</td>";
-						htmlStr += " <td>"+obj.birth+"</td>";
-						htmlStr += " <td>"+obj.job+"</td>";
-						htmlStr += " <td>"+obj.mphone+"</td>";
-						htmlStr += " <td>"+obj.createBy+"</td>";
-						htmlStr += " <td>"+obj.createTime+"</td>";
-						htmlStr += " <td>"+(obj.editBy == null?'' : obj.editBy)+"</td>";
-						htmlStr += " <td>"+(obj.editTime == null?'' : obj.editTime)+"</td>";
-						htmlStr += " <td>"+obj.country+obj.province+obj.city+obj.street+"</td>";
-						htmlStr += " <td>"+obj.description+"</td>";
-						htmlStr += " <td>"+obj.contactSummary+"</td>";
+						htmlStr += " <td name='fullName'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"workbench/contacts/queryContactsDetail.do?id="+obj.id+"\";'>"+obj.fullName+"</a></td>";
+						htmlStr += " <td name='appellation'>"+obj.appellation+"</td>";
+						htmlStr += " <td name='customerName'>"+obj.customerId+"</td>";
+						htmlStr += " <td name='woner'>"+obj.owner+"</td>";
+						htmlStr += " <td name='source'>"+obj.source+"</td>";
+						htmlStr += " <td name='email'>"+obj.email+"</td>";
+						htmlStr += " <td name='birth'>"+obj.birth+"</td>";
+						htmlStr += " <td name='job'>"+obj.job+"</td>";
+						htmlStr += " <td name='mphone'>"+obj.mphone+"</td>";
+						htmlStr += " <td name='createBy'>"+obj.createBy+"</td>";
+						htmlStr += " <td name='createBy'>"+obj.createTime+"</td>";
+						htmlStr += " <td name='editBy'>"+(obj.editBy == null?'' : obj.editBy)+"</td>";
+						htmlStr += " <td name='fullName'>"+(obj.editTime == null?'' : obj.editTime)+"</td>";
+						htmlStr += " <td name='editTime'>"+obj.country+obj.province+obj.city+obj.street+"</td>";
+						htmlStr += " <td name='description'>"+obj.description+"</td>";
+						htmlStr += " <td name='contactSummary'>"+obj.contactSummary+"</td>";
 						htmlStr += " </tr>";
 					});
 					$("#contactsListTBody").html(htmlStr);
@@ -857,22 +885,22 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<ul id="definedColumns" class="dropdown-menu" role="menu"> 
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 姓名</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 称呼</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 客户名称</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 所有者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 来源</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 邮箱</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 生日</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 职位</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 手机</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 创建者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 创建时间</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 修改者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 修改时间</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 地址</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 描述</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 联系纪要</a></li>
+						<li><a href="javascript:void(0);"><input name="fullName" type="checkbox"/> 姓名</a></li>
+						<li><a href="javascript:void(0);"><input name="appellation" type="checkbox"/> 称呼</a></li>
+						<li><a href="javascript:void(0);"><input name="customerName" type="checkbox"/> 客户名称</a></li>
+						<li><a href="javascript:void(0);"><input name="woner" type="checkbox"/> 所有者</a></li>
+						<li><a href="javascript:void(0);"><input name="source" type="checkbox"/> 来源</a></li>
+						<li><a href="javascript:void(0);"><input name="email" type="checkbox"/> 邮箱</a></li>
+						<li><a href="javascript:void(0);"><input name="birth" type="checkbox"/> 生日</a></li>
+						<li><a href="javascript:void(0);"><input name="job" type="checkbox"/> 职位</a></li>
+						<li><a href="javascript:void(0);"><input name="mphone" type="checkbox"/> 手机</a></li>
+						<li><a href="javascript:void(0);"><input name="createBy" type="checkbox"/> 创建者</a></li>
+						<li><a href="javascript:void(0);"><input name="createTime" type="checkbox"/> 创建时间</a></li>
+						<li><a href="javascript:void(0);"><input name="editBy" type="checkbox"/> 修改者</a></li>
+						<li><a href="javascript:void(0);"><input name="editTime" type="checkbox"/> 修改时间</a></li>
+						<li><a href="javascript:void(0);"><input name="address" type="checkbox"/> 地址</a></li>
+						<li><a href="javascript:void(0);"><input name="description" type="checkbox"/> 描述</a></li>
+						<li><a href="javascript:void(0);"><input name="contactSummary" type="checkbox"/> 联系纪要</a></li>
 					</ul>
 				</div>
 
@@ -889,23 +917,23 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<table class="table table-hover">
 					<thead>
 						<tr style="color: #B3B3B3;">
-							<td><input type="checkbox" /></td>
-							<td>姓名</td>
-							<td>称呼</td>
-							<td>客户名称</td>
-							<td>所有者</td>
-							<td>来源</td>
-							<td>邮箱</td>
-							<td>生日</td>
-							<td>职位</td>
-							<td>手机</td>
-							<td>创建者</td>
-							<td>创建时间</td>
-							<td>修改者</td>
-							<td>修改时间</td>
-							<td>地址</td>
-							<td>描述</td>
-							<td>联系纪要</td>
+							<td><input id="ckd_all" type="checkbox" /></td>
+							<td name="fullName">姓名</td>
+							<td name="appellation">称呼</td>
+							<td name="customerName">客户名称</td>
+							<td name="woner">所有者</td>
+							<td name="source">来源</td>
+							<td name="email">邮箱</td>
+							<td name="birth">生日</td>
+							<td name="job">职位</td>
+							<td name="mphone">手机</td>
+							<td name="createBy">创建者</td>
+							<td name="createTime">创建时间</td>
+							<td name="editBy">修改者</td>
+							<td name="editTime">修改时间</td>
+							<td name="address">地址</td>
+							<td name="description">描述</td>
+							<td name="contactSummary">联系纪要</td>
 						</tr>
 					</thead>
 					<tbody id="contactsListTBody">
