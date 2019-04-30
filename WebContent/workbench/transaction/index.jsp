@@ -101,7 +101,34 @@
 			}
 		});
 
-		
+		//页面加载完毕，给"添加字段"下面的所有复选框被选中
+		$("#definedColumns input[type='checkbox']").prop("checked",true);
+
+		//给"添加字段"下面的所有复选框添加点击事件
+		$("#definedColumns input[type='checkbox']").click(function () {
+			if (this.checked){
+				$("td[name='"+this.name+"']").show();
+			} else {
+				$("td[name='"+this.name+"']").hide();
+			}
+		});
+
+		//给"全选"复选框添加点击事件
+		$("#ckd_all").click(function () {
+			$("#transactionListTBody input[type='checkbox']").prop("checked",this.checked);
+		});
+
+		//给列表所有复选框添加点击事件
+		$("#transactionListTBody").on("click","input[type='checkbox']",function () {
+			if ($("#transactionListTBody input[type='checkbox']").length == $("#transactionListTBody input[type='checkbox']:checked").length){
+				$("#ckd_all").prop("checked",true);
+			} else {
+				$("#ckd_all").prop("checked",false);
+			}
+		});
+
+
+		//分页查询
 		function display(pageNo,pageSize) {
 			//收集参数
 			var owner = $.trim($("#query-owner").val());
@@ -134,23 +161,23 @@
 					$.each(data.dataList,function (index,obj) {
 						htmlStr += " <tr>";
 						htmlStr += " <td><input value='"+obj.id+"' type='checkbox' /></td>";
-						htmlStr += " <td><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"workbench/transaction/queryTransactionDetail.do?id="+obj.id+"\";'</a>"+obj.name+"</td>";
-						htmlStr += " <td>"+obj.customerId+"</td>";
-						htmlStr += " <td>"+obj.amountOfMoney+"</td>";
-						htmlStr += " <td>"+obj.expectedClosingDate+"</td>";
-						htmlStr += " <td>"+obj.stage+"</td>";
-						htmlStr += " <td>"+obj.type+"</td>";
-						htmlStr += " <td>"+obj.owner+"</td>";
-						htmlStr += " <td>"+obj.source+"</td>";
-						htmlStr += " <td>"+obj.activityId+"</td>";
-						htmlStr += " <td>"+obj.contactsId+"</td>";
-						htmlStr += " <td>"+obj.createBy+"</td>";
-						htmlStr += " <td>"+obj.createTime+"</td>";
-						htmlStr += " <td>"+(obj.editBy==null?'':obj.editBy)+"</td>";
-						htmlStr += " <td>"+(obj.editTime==null?'':obj.editTime)+"</td>";
-						htmlStr += " <td>"+obj.description+"</td>";
-						htmlStr += " <td>"+obj.contactSummary+"</td>";
-						htmlStr += " <td>"+obj.nextContactTime+"</td>";
+						htmlStr += " <td name='name'><a style='text-decoration: none; cursor: pointer;' onclick='window.location.href=\"workbench/transaction/queryTransactionDetail.do?id="+obj.id+"\";'</a>"+obj.name+"</td>";
+						htmlStr += " <td name='customerName'>"+obj.customerId+"</td>";
+						htmlStr += " <td name='amountOfMoney'>"+obj.amountOfMoney+"</td>";
+						htmlStr += " <td name='expectedClosingDate'>"+obj.expectedClosingDate+"</td>";
+						htmlStr += " <td name='stage'>"+obj.stage+"</td>";
+						htmlStr += " <td name='type'>"+obj.type+"</td>";
+						htmlStr += " <td name='owner'>"+obj.owner+"</td>";
+						htmlStr += " <td name='source'>"+obj.source+"</td>";
+						htmlStr += " <td name='activityName'>"+obj.activityId+"</td>";
+						htmlStr += " <td name='contactsName'>"+obj.contactsId+"</td>";
+						htmlStr += " <td name='createBy'>"+obj.createBy+"</td>";
+						htmlStr += " <td name='createTime'>"+obj.createTime+"</td>";
+						htmlStr += " <td name='editBy'>"+(obj.editBy==null?'':obj.editBy)+"</td>";
+						htmlStr += " <td name='editTime'>"+(obj.editTime==null?'':obj.editTime)+"</td>";
+						htmlStr += " <td name='description'>"+obj.description+"</td>";
+						htmlStr += " <td name='contactSummary'>"+obj.contactSummary+"</td>";
+						htmlStr += " <td name='nextContactTime'>"+obj.nextContactTime+"</td>";
 						htmlStr += " </tr>";
 					});
 					$("#transactionListTBody").html(htmlStr);
@@ -351,24 +378,23 @@
 						<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<ul id="definedColumns" class="dropdown-menu" role="menu"> 
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 名称</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 客户名称</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 金额</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 预计成交日期</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 阶段</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 类型</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 可能性</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 所有者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 来源</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 市场活动源</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 联系人名称</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 创建者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 创建时间</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 修改者</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 修改时间</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 描述</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 联系纪要</a></li>
-						<li><a href="javascript:void(0);"><input type="checkbox"/> 下次联系时间</a></li>
+						<li><a href="javascript:void(0);"><input name="name" type="checkbox"/> 名称</a></li>
+						<li><a href="javascript:void(0);"><input name="customerName" type="checkbox"/> 客户名称</a></li>
+						<li><a href="javascript:void(0);"><input name="amountOfMoney" type="checkbox"/> 金额</a></li>
+						<li><a href="javascript:void(0);"><input name="expectedClosingDate" type="checkbox"/> 预计成交日期</a></li>
+						<li><a href="javascript:void(0);"><input name="stage" type="checkbox"/> 阶段</a></li>
+						<li><a href="javascript:void(0);"><input name="type" type="checkbox"/> 类型</a></li>
+						<li><a href="javascript:void(0);"><input name="owner" type="checkbox"/> 所有者</a></li>
+						<li><a href="javascript:void(0);"><input name="source" type="checkbox"/> 来源</a></li>
+						<li><a href="javascript:void(0);"><input name="activityName" type="checkbox"/> 市场活动源</a></li>
+						<li><a href="javascript:void(0);"><input name="contactsName" type="checkbox"/> 联系人名称</a></li>
+						<li><a href="javascript:void(0);"><input name="createBy" type="checkbox"/> 创建者</a></li>
+						<li><a href="javascript:void(0);"><input name="createTime" type="checkbox"/> 创建时间</a></li>
+						<li><a href="javascript:void(0);"><input name="editBy" type="checkbox"/> 修改者</a></li>
+						<li><a href="javascript:void(0);"><input name="editTime" type="checkbox"/> 修改时间</a></li>
+						<li><a href="javascript:void(0);"><input name="description" type="checkbox"/> 描述</a></li>
+						<li><a href="javascript:void(0);"><input name="contactSummary" type="checkbox"/> 联系纪要</a></li>
+						<li><a href="javascript:void(0);"><input name="nextContactTime" type="checkbox"/> 下次联系时间</a></li>
 					</ul>
 				</div>
 
@@ -385,24 +411,24 @@
 				<table class="table table-hover">
 					<thead>
 						<tr style="color: #B3B3B3;">
-							<td><input type="checkbox" /></td>
-							<td>名称</td>
-							<td>客户名称</td>
-							<td>金额</td>
-							<td>预计成交日期</td>
-							<td>阶段</td>
-							<td>类型</td>
-							<td>所有者</td>
-							<td>来源</td>
-							<td>市场活动源</td>
-							<td>联系人名称</td>
-							<td>创建者</td>
-							<td>创建时间</td>
-							<td>修改者</td>
-							<td>修改时间</td>
-							<td>描述</td>
-							<td>联系纪要</td>
-							<td>下次联系时间</td>
+							<td><input id="ckd_all" type="checkbox" /></td>
+							<td name="name">名称</td>
+							<td name="customerName">客户名称</td>
+							<td name="amountOfMoney">金额</td>
+							<td name="expectedClosingDate">预计成交日期</td>
+							<td name="stage">阶段</td>
+							<td name="type">类型</td>
+							<td name="owner">所有者</td>
+							<td name="source">来源</td>
+							<td name="activityName">市场活动源</td>
+							<td name="contactsName">联系人名称</td>
+							<td name="createBy">创建者</td>
+							<td name="createTime">创建时间</td>
+							<td name="editBy">修改者</td>
+							<td name="editTime">修改时间</td>
+							<td name="description">描述</td>
+							<td name="contactSummary">联系纪要</td>
+							<td name="nextContactTime">下次联系时间</td>
 						</tr>
 					</thead>
 					<tbody id="transactionListTBody">
